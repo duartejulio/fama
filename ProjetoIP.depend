@@ -1,0 +1,854 @@
+# depslib dependency file v1.0
+1314574313 source:c:\users\joilson\desktop\projetoip\corpus.cpp
+	"corpus.h"
+
+1314574313 c:\users\joilson\desktop\projetoip\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1314580971 source:c:\users\joilson\desktop\projetoip\main.cpp
+	<iostream>
+	<vector>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"avaliador_acuracia.h"
+
+1314574313 source:c:\users\joilson\desktop\projetoip\corpusmatriz.cpp
+	"corpusmatriz.h"
+	<fstream>
+
+1314444642 c:\users\joilson\desktop\projetoip\corpusmatriz.h
+	"corpus.h"
+
+1320800669 source:c:\users\zapdos\desktop\ip\projetoip\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1320006033 c:\users\zapdos\desktop\ip\projetoip\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1314929779 c:\users\zapdos\desktop\ip\projetoip\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1320807428 source:c:\users\zapdos\desktop\ip\projetoip\corpus.cpp
+	"corpus.h"
+
+1321017255 source:c:\users\zapdos\desktop\ip\projetoip\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+
+1314937894 c:\users\zapdos\desktop\ip\projetoip\avaliador.h
+	<vector>
+	"corpus.h"
+
+1314061080 source:c:\users\zapdos\desktop\ip\projetoip\avaliador.cpp
+	"avaliador.h"
+
+1314572542 source:c:\users\joilson\desktop\projetoip\maisprovavel.cpp
+	"maisprovavel.h"
+	"corpus.h"
+	<vector>
+
+1314481306 c:\users\joilson\desktop\projetoip\maisprovavel.h
+	<map>
+	"treinador.h"
+
+1314480445 c:\users\joilson\desktop\projetoip\treinador.h
+
+1314468397 source:c:\users\joilson\desktop\projetoip\treinador.cpp
+	"treinador.h"
+
+1314057479 source:c:\users\joilson\desktop\projetoip\avaliador.cpp
+	"avaliador.h"
+
+1314538904 c:\users\joilson\desktop\projetoip\avaliador.h
+	<vector>
+
+1314576864 source:c:\users\joilson\desktop\projetoip\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+	"corpus.h"
+	<vector>
+
+1314538962 c:\users\joilson\desktop\projetoip\avaliador_acuracia.h
+	"avaliador.h"
+	<vector>
+
+1314937942 source:c:\users\zapdos\desktop\ip\projetoip\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1314937894 c:\users\zapdos\desktop\ip\projetoip\avaliador_acuracia.h
+	"avaliador.h"
+
+1321017608 c:\users\zapdos\desktop\ip\projetoip\maisprovavel.h
+	<map>
+	<vector>
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1321016170 c:\users\zapdos\desktop\ip\projetoip\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1320010234 source:c:\users\zapdos\desktop\ip\projetoip\maisprovavel.cpp
+	"maisprovavel.h"
+
+1314471998 source:c:\users\zapdos\desktop\ip\projetoip\treinador.cpp
+	"treinador.h"
+
+1321015992 c:\users\zapdos\desktop\ip\projetoip\classificador.h
+	"corpus.h"
+
+1321015992 source:c:\users\zapdos\desktop\ip\projetoip\classificador.cpp
+	"classificador.h"
+
+1321015992 source:c:\users\zapdos\desktop\ip\projetoip\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1321015992 c:\users\zapdos\desktop\ip\projetoip\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1314061080 source:c:\users\joilson\desktop\projetoipv10\avaliador.cpp
+	"avaliador.h"
+
+1314937896 c:\users\joilson\desktop\projetoipv10\avaliador.h
+	<vector>
+	"corpus.h"
+
+1314929780 c:\users\joilson\desktop\projetoipv10\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1314937944 source:c:\users\joilson\desktop\projetoipv10\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1314937896 c:\users\joilson\desktop\projetoipv10\avaliador_acuracia.h
+	"avaliador.h"
+
+1321015994 source:c:\users\joilson\desktop\projetoipv10\classificador.cpp
+	"classificador.h"
+
+1329594406 c:\users\joilson\desktop\projetoipv10\classificador.h
+	"corpus.h"
+
+1329591412 source:c:\users\joilson\desktop\projetoipv10\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329593815 c:\users\joilson\desktop\projetoipv10\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1320807430 source:c:\users\joilson\desktop\projetoipv10\corpus.cpp
+	"corpus.h"
+
+1320800670 source:c:\users\joilson\desktop\projetoipv10\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1320006034 c:\users\joilson\desktop\projetoipv10\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1329594144 source:c:\users\joilson\desktop\projetoipv10\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+
+1329594139 c:\users\joilson\desktop\projetoipv10\maisprovavel.h
+	<map>
+	<vector>
+	"treinador.h"
+
+1329594025 c:\users\joilson\desktop\projetoipv10\treinador.h
+	"corpus.h"
+	"classificador.h"
+	"classificador_maisprovavel.h"
+
+1314471998 source:c:\users\joilson\desktop\projetoipv10\treinador.cpp
+	"treinador.h"
+
+1329594139 source:c:\users\joilson\desktop\projetoipv10\maisprovavel.cpp
+	"maisprovavel.h"
+
+1314061080 source:c:\users\joilson\desktop\projetoipv11\avaliador.cpp
+	"avaliador.h"
+
+1314937896 c:\users\joilson\desktop\projetoipv11\avaliador.h
+	<vector>
+	"corpus.h"
+
+1314929780 c:\users\joilson\desktop\projetoipv11\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1314937944 source:c:\users\joilson\desktop\projetoipv11\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1314937896 c:\users\joilson\desktop\projetoipv11\avaliador_acuracia.h
+	"avaliador.h"
+
+1321015994 source:c:\users\joilson\desktop\projetoipv11\classificador.cpp
+	"classificador.h"
+
+1329594406 c:\users\joilson\desktop\projetoipv11\classificador.h
+	"corpus.h"
+
+1329591412 source:c:\users\joilson\desktop\projetoipv11\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329593815 c:\users\joilson\desktop\projetoipv11\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1320807430 source:c:\users\joilson\desktop\projetoipv11\corpus.cpp
+	"corpus.h"
+
+1329600626 source:c:\users\joilson\desktop\projetoipv11\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1320006034 c:\users\joilson\desktop\projetoipv11\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1329594139 source:c:\users\joilson\desktop\projetoipv11\maisprovavel.cpp
+	"maisprovavel.h"
+
+1329594139 c:\users\joilson\desktop\projetoipv11\maisprovavel.h
+	<map>
+	<vector>
+	"treinador.h"
+
+1329594025 c:\users\joilson\desktop\projetoipv11\treinador.h
+	"corpus.h"
+	"classificador.h"
+	"classificador_maisprovavel.h"
+
+1314471998 source:c:\users\joilson\desktop\projetoipv11\treinador.cpp
+	"treinador.h"
+
+1329598790 source:c:\users\joilson\desktop\projetoipv11\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+
+1314061080 source:c:\users\zapdos\desktop\ip\projetoipv12\avaliador.cpp
+	"avaliador.h"
+
+1314937896 c:\users\zapdos\desktop\ip\projetoipv12\avaliador.h
+	<vector>
+	"corpus.h"
+
+1314929780 c:\users\zapdos\desktop\ip\projetoipv12\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1314937944 source:c:\users\zapdos\desktop\ip\projetoipv12\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1314937896 c:\users\zapdos\desktop\ip\projetoipv12\avaliador_acuracia.h
+	"avaliador.h"
+
+1321015994 source:c:\users\zapdos\desktop\ip\projetoipv12\classificador.cpp
+	"classificador.h"
+
+1329594408 c:\users\zapdos\desktop\ip\projetoipv12\classificador.h
+	"corpus.h"
+
+1329591414 source:c:\users\zapdos\desktop\ip\projetoipv12\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329593816 c:\users\zapdos\desktop\ip\projetoipv12\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1320807430 source:c:\users\zapdos\desktop\ip\projetoipv12\corpus.cpp
+	"corpus.h"
+
+1329600628 source:c:\users\zapdos\desktop\ip\projetoipv12\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1320006034 c:\users\zapdos\desktop\ip\projetoipv12\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1329668276 source:c:\users\zapdos\desktop\ip\projetoipv12\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+
+1329685443 c:\users\zapdos\desktop\ip\projetoipv12\maisprovavel.h
+	<map>
+	<vector>
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1329685443 c:\users\zapdos\desktop\ip\projetoipv12\treinador.h
+	"corpus.h"
+	"classificador.h"
+	"classificador_maisprovavel.h"
+
+1329683056 source:c:\users\zapdos\desktop\ip\projetoipv12\maisprovavel.cpp
+	"maisprovavel.h"
+
+1314471998 source:c:\users\zapdos\desktop\ip\projetoipv12\treinador.cpp
+	"treinador.h"
+
+1329685115 source:c:\users\zapdos\desktop\ip\projetoipv12\classificadorhmm.cpp
+	"classificadorhmm.h"
+
+1329685351 c:\users\zapdos\desktop\ip\projetoipv12\classificadorhmm.h
+	"classificador.h"
+
+1329685289 source:c:\users\zapdos\desktop\ip\projetoipv12\hmm.cpp
+	"hmm.h"
+
+1329683056 c:\users\zapdos\desktop\ip\projetoipv12\hmm.h
+	"treinador.h"
+
+1329838158 source:c:\users\zapdos\desktop\repository\avaliador.cpp
+	"avaliador.h"
+
+1329852927 c:\users\zapdos\desktop\repository\avaliador.h
+	"corpus.h"
+
+1330394387 c:\users\zapdos\desktop\repository\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1329838161 source:c:\users\zapdos\desktop\repository\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1329838154 c:\users\zapdos\desktop\repository\avaliador_acuracia.h
+	"avaliador.h"
+
+1329838162 source:c:\users\zapdos\desktop\repository\classificador.cpp
+	"classificador.h"
+
+1329838158 c:\users\zapdos\desktop\repository\classificador.h
+	"corpus.h"
+
+1329879200 source:c:\users\zapdos\desktop\repository\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329838158 c:\users\zapdos\desktop\repository\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1330647724 source:c:\users\zapdos\desktop\repository\classificadorhmm.cpp
+	"classificadorhmm.h"
+	<stdlib.h>
+
+1330393168 c:\users\zapdos\desktop\repository\classificadorhmm.h
+	"classificador.h"
+	<fstream>
+	<cmath>
+
+1329838158 source:c:\users\zapdos\desktop\repository\corpus.cpp
+	"corpus.h"
+
+1329852966 source:c:\users\zapdos\desktop\repository\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1329852966 c:\users\zapdos\desktop\repository\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1335657308 source:c:\users\zapdos\desktop\repository\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"hmm.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+	"classificadorhmm.h"
+
+1335657366 c:\users\zapdos\desktop\repository\maisprovavel.h
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1335657308 c:\users\zapdos\desktop\repository\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1329854486 source:c:\users\zapdos\desktop\repository\maisprovavel.cpp
+	"maisprovavel.h"
+
+1329838161 source:c:\users\zapdos\desktop\repository\treinador.cpp
+	"treinador.h"
+
+1329690044 source:c:\users\zapdos\desktop\repository2\avaliador.cpp
+	"avaliador.h"
+
+1329690046 c:\users\zapdos\desktop\repository2\avaliador.h
+	<vector>
+	"corpus.h"
+
+1329690046 c:\users\zapdos\desktop\repository2\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1329690046 source:c:\users\zapdos\desktop\repository2\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1329690041 c:\users\zapdos\desktop\repository2\avaliador_acuracia.h
+	"avaliador.h"
+
+1329690046 source:c:\users\zapdos\desktop\repository2\classificador.cpp
+	"classificador.h"
+
+1329690044 c:\users\zapdos\desktop\repository2\classificador.h
+	"corpus.h"
+
+1329690046 source:c:\users\zapdos\desktop\repository2\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329690044 c:\users\zapdos\desktop\repository2\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1329690046 source:c:\users\zapdos\desktop\repository2\classificadorhmm.cpp
+	"classificadorhmm.h"
+
+1329690044 c:\users\zapdos\desktop\repository2\classificadorhmm.h
+	"classificador.h"
+
+1329690044 source:c:\users\zapdos\desktop\repository2\corpus.cpp
+	"corpus.h"
+
+1329690046 source:c:\users\zapdos\desktop\repository2\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1329690044 c:\users\zapdos\desktop\repository2\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1329690065 source:c:\users\zapdos\desktop\repository2\hmm.cpp
+	"hmm.h"
+
+1329686395 c:\users\zapdos\desktop\repository2\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1329690046 c:\users\zapdos\desktop\repository2\treinador.h
+	"corpus.h"
+	"classificador.h"
+	"classificador_maisprovavel.h"
+
+1329690046 source:c:\users\zapdos\desktop\repository2\maisprovavel.cpp
+	"maisprovavel.h"
+
+1329690044 c:\users\zapdos\desktop\repository2\maisprovavel.h
+	<map>
+	<vector>
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1329690046 source:c:\users\zapdos\desktop\repository2\treinador.cpp
+	"treinador.h"
+
+1335656218 source:c:\users\zapdos\desktop\repository\hmm.cpp
+	"hmm.h"
+
+1335657366 c:\users\zapdos\desktop\repository\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1329838322 source:c:\users\joilson\desktop\ip\avaliador.cpp
+	"avaliador.h"
+
+1329855102 c:\users\joilson\desktop\ip\avaliador.h
+	"corpus.h"
+
+1330433420 c:\users\joilson\desktop\ip\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1329838324 source:c:\users\joilson\desktop\ip\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1329838322 c:\users\joilson\desktop\ip\avaliador_acuracia.h
+	"avaliador.h"
+
+1329838325 source:c:\users\joilson\desktop\ip\classificador.cpp
+	"classificador.h"
+
+1329838322 c:\users\joilson\desktop\ip\classificador.h
+	"corpus.h"
+
+1329880191 source:c:\users\joilson\desktop\ip\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329838322 c:\users\joilson\desktop\ip\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1329949814 source:c:\users\joilson\desktop\ip\classificadorhmm.cpp
+	"classificadorhmm.h"
+
+1330433420 c:\users\joilson\desktop\ip\classificadorhmm.h
+	"classificador.h"
+	<fstream>
+	<cmath>
+
+1329838322 source:c:\users\joilson\desktop\ip\corpus.cpp
+	"corpus.h"
+
+1329855102 source:c:\users\joilson\desktop\ip\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1329855102 c:\users\joilson\desktop\ip\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1330433420 source:c:\users\joilson\desktop\ip\hmm.cpp
+	"hmm.h"
+
+1330340979 c:\users\joilson\desktop\ip\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1329855102 c:\users\joilson\desktop\ip\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1329943008 source:c:\users\joilson\desktop\ip\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"hmm.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+	"classificadorhmm.h"
+
+1329855102 c:\users\joilson\desktop\ip\maisprovavel.h
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1329855102 source:c:\users\joilson\desktop\ip\maisprovavel.cpp
+	"maisprovavel.h"
+
+1329838324 source:c:\users\joilson\desktop\ip\treinador.cpp
+	"treinador.h"
+
+1329838158 source:c:\users\zapdos\desktop\google code ip\avaliador.cpp
+	"avaliador.h"
+
+1329852927 c:\users\zapdos\desktop\google code ip\avaliador.h
+	"corpus.h"
+
+1340058516 c:\users\zapdos\desktop\google code ip\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1329838161 source:c:\users\zapdos\desktop\google code ip\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1329838154 c:\users\zapdos\desktop\google code ip\avaliador_acuracia.h
+	"avaliador.h"
+
+1329838162 source:c:\users\zapdos\desktop\google code ip\classificador.cpp
+	"classificador.h"
+
+1329838158 c:\users\zapdos\desktop\google code ip\classificador.h
+	"corpus.h"
+
+1340475246 source:c:\users\zapdos\desktop\google code ip\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329838158 c:\users\zapdos\desktop\google code ip\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1339870220 source:c:\users\zapdos\desktop\google code ip\classificadorhmm.cpp
+	"classificadorhmm.h"
+	<stdlib.h>
+
+1340059062 c:\users\zapdos\desktop\google code ip\classificadorhmm.h
+	"classificador.h"
+	<fstream>
+	<cmath>
+
+1339252962 source:c:\users\zapdos\desktop\google code ip\corpus.cpp
+	"corpus.h"
+
+1340328871 source:c:\users\zapdos\desktop\google code ip\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1329852966 c:\users\zapdos\desktop\google code ip\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1338673427 source:c:\users\zapdos\desktop\google code ip\hmm.cpp
+	"hmm.h"
+
+1335657366 c:\users\zapdos\desktop\google code ip\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1335657308 c:\users\zapdos\desktop\google code ip\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1335657366 source:c:\users\zapdos\desktop\google code ip\maisprovavel.cpp
+	"maisprovavel.h"
+
+1335657366 c:\users\zapdos\desktop\google code ip\maisprovavel.h
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1329838161 source:c:\users\zapdos\desktop\google code ip\treinador.cpp
+	"treinador.h"
+
+1340490406 source:c:\users\zapdos\desktop\google code ip\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"hmm.h"
+	"tbl.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+	"classificadorhmm.h"
+	"classificadortbl.h"
+
+1339901532 source:c:\users\zapdos\desktop\google code ip\classificadortbl.cpp
+	"classificadortbl.h"
+
+1340067033 c:\users\zapdos\desktop\google code ip\classificadortbl.h
+	"classificador.h"
+	"maisprovavel.h"
+	<fstream>
+
+1340487737 source:c:\users\zapdos\desktop\google code ip\tbl.cpp
+	"tbl.h"
+
+1340579630 c:\users\zapdos\desktop\google code ip\tbl.h
+	"treinador.h"
+	"classificadortbl.h"
+	"maisprovavel.h"
+	<set>
+
+1335659151 source:c:\users\joilson\desktop\google code ip\avaliador.cpp
+	"avaliador.h"
+
+1335659155 c:\users\joilson\desktop\google code ip\avaliador.h
+	"corpus.h"
+
+1338734042 c:\users\joilson\desktop\google code ip\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1335659155 source:c:\users\joilson\desktop\google code ip\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1335659149 c:\users\joilson\desktop\google code ip\avaliador_acuracia.h
+	"avaliador.h"
+
+1335659155 source:c:\users\joilson\desktop\google code ip\classificador.cpp
+	"classificador.h"
+
+1335659152 c:\users\joilson\desktop\google code ip\classificador.h
+	"corpus.h"
+
+1338734042 source:c:\users\joilson\desktop\google code ip\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1335659151 c:\users\joilson\desktop\google code ip\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1338734042 source:c:\users\joilson\desktop\google code ip\classificadorhmm.cpp
+	"classificadorhmm.h"
+	<stdlib.h>
+
+1335659152 c:\users\joilson\desktop\google code ip\classificadorhmm.h
+	"classificador.h"
+	<fstream>
+	<cmath>
+
+1338734040 source:c:\users\joilson\desktop\google code ip\classificadortbl.cpp
+	"classificadortbl.h"
+
+1338734042 c:\users\joilson\desktop\google code ip\classificadortbl.h
+	"classificador.h"
+	<fstream>
+
+1338734040 source:c:\users\joilson\desktop\google code ip\corpus.cpp
+	"corpus.h"
+
+1335659155 source:c:\users\joilson\desktop\google code ip\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1335659152 c:\users\joilson\desktop\google code ip\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1338734040 source:c:\users\joilson\desktop\google code ip\hmm.cpp
+	"hmm.h"
+
+1335659596 c:\users\joilson\desktop\google code ip\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1335659155 c:\users\joilson\desktop\google code ip\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1338734040 source:c:\users\joilson\desktop\google code ip\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"maisprovavel.h"
+	"hmm.h"
+	"tbl.h"
+	"avaliador_acuracia.h"
+	"classificador_maisprovavel.h"
+	"classificadorhmm.h"
+	"classificadortbl.h"
+
+1335659596 c:\users\joilson\desktop\google code ip\maisprovavel.h
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1338734040 c:\users\joilson\desktop\google code ip\tbl.h
+	"treinador.h"
+	"classificadortbl.h"
+	"maisprovavel.h"
+
+1335659596 source:c:\users\joilson\desktop\google code ip\maisprovavel.cpp
+	"maisprovavel.h"
+
+1338734042 source:c:\users\joilson\desktop\google code ip\tbl.cpp
+	"tbl.h"
+
+1335659155 source:c:\users\joilson\desktop\google code ip\treinador.cpp
+	"treinador.h"
+
+1329838158 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador.cpp
+	"avaliador.h"
+
+1329852927 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador.h
+	"corpus.h"
+
+1340058516 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1329838154 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador_acuracia.h
+	"avaliador.h"
+
+1329838162 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador.cpp
+	"classificador.h"
+
+1329838158 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador.h
+	"corpus.h"
+
+1340475246 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador_maisprovavel.cpp
+	"classificador_maisprovavel.h"
+
+1329838158 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador_maisprovavel.h
+	"classificador.h"
+	<fstream>
+
+1339870220 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificadorhmm.cpp
+	"classificadorhmm.h"
+	<stdlib.h>
+
+1340059062 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificadorhmm.h
+	"classificador.h"
+	<fstream>
+	<cmath>
+
+1339901532 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificadortbl.cpp
+	"classificadortbl.h"
+
+1340067033 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificadortbl.h
+	"classificador.h"
+	"maisprovavel.h"
+	<fstream>
+
+1335657366 c:\users\duarte\documents\projetos\ipmachinelearning\fama\maisprovavel.h
+	"treinador.h"
+	"classificador_maisprovavel.h"
+
+1335657308 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1339252962 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus.cpp
+	"corpus.h"
+
+1340328871 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1329852966 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1338673427 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\hmm.cpp
+	"hmm.h"
+
+1335657366 c:\users\duarte\documents\projetos\ipmachinelearning\fama\hmm.h
+	"treinador.h"
+	"classificadorhmm.h"
+
+1335657366 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\maisprovavel.cpp
+	"maisprovavel.h"
+
+1340579630 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\tbl.cpp
+	"tbl.h"
+
+1340579630 c:\users\duarte\documents\projetos\ipmachinelearning\fama\tbl.h
+	"treinador.h"
+	"classificadortbl.h"
+	"maisprovavel.h"
+	<set>
+
+1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador.cpp
+	"treinador.h"
+
