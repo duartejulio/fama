@@ -1,0 +1,58 @@
+# depslib dependency file v1.0
+1341319592 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1341319244 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1341319206 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1341321336 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\testestump\main.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"corpusmatriz.h"
+	"avaliador_acuracia.h"
+	"stump.h"
+
+1329838154 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador_acuracia.h
+	"avaliador.h"
+
+1329852927 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador.h
+	"corpus.h"
+
+1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1341318602 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus.cpp
+	"corpus.h"
+
+1329838158 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador.cpp
+	"avaliador.h"
+
+1329838162 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador.cpp
+	"classificador.h"
+
+1329838158 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador.h
+	"corpus.h"
+
+1341316995 c:\users\duarte\documents\projetos\ipmachinelearning\fama\testestump\stump.h
+	"treinador.h"
+	"classificador.h"
+
+1335657308 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador.h
+	"corpus.h"
+	"classificador.h"
+
+1341320611 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\testestump\stump.cpp
+	"stump.h"
+	<cmath>
+
+1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador.cpp
+	"treinador.h"
+

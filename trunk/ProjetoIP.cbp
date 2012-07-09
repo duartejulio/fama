@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ProjetoIP" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\ProjetoIP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\ProjetoIP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="avaliador.cpp" />
+		<Unit filename="avaliador.h" />
+		<Unit filename="avaliador_acuracia.cpp" />
+		<Unit filename="avaliador_acuracia.h" />
+		<Unit filename="classificador.cpp" />
+		<Unit filename="classificador.h" />
+		<Unit filename="classificador_maisprovavel.cpp" />
+		<Unit filename="classificador_maisprovavel.h" />
+		<Unit filename="classificadorhmm.cpp" />
+		<Unit filename="classificadorhmm.h" />
+		<Unit filename="classificadortbl.cpp" />
+		<Unit filename="classificadortbl.h" />
+		<Unit filename="corpus.cpp" />
+		<Unit filename="corpus.h" />
+		<Unit filename="corpusmatriz.cpp" />
+		<Unit filename="corpusmatriz.h" />
+		<Unit filename="hmm.cpp" />
+		<Unit filename="hmm.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="maisprovavel.cpp" />
+		<Unit filename="maisprovavel.h" />
+		<Unit filename="tbl.cpp" />
+		<Unit filename="tbl.h" />
+		<Unit filename="treinador.cpp" />
+		<Unit filename="treinador.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
