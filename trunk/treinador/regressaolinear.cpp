@@ -1,6 +1,6 @@
 #include "regressaolinear.h"
 
-#include "auxfunc.h"
+#include "../outros/auxfunc.h"
 
 #include <string>
 #include <sstream>

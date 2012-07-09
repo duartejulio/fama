@@ -1,8 +1,8 @@
 #ifndef TREINADOR_H
 #define TREINADOR_H
 
-#include "corpus.h"
-#include "classificador.h"
+#include "../corpus/corpus.h"
+#include "../classificador/classificador.h"
 
 class Treinador
 {

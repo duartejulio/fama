@@ -3,10 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "corpusmatriz.h"
-#include "regressaolinear.h"
-#include "avaliador_acuracia.h"
-#include "classificador.h"
+#include "../corpus/corpusmatriz.h"
+#include "../treinador/regressaolinear.h"
 
 using namespace std;
 
@@ -19,7 +17,7 @@ int main()
     CorpusMatriz objCorpus( atributos );
     objCorpus.ajustarSeparador(',');
 
-    objCorpus.carregarArquivo( "inputs/ex1data1.txt" );// CORPUS COMPLETO
+    objCorpus.carregarArquivo( "../inputs/ex1data1.txt" );// CORPUS COMPLETO
 
     RegressaoLinear objRLin;
     objClass = objRLin.executarTreinamento( objCorpus, 1 );
