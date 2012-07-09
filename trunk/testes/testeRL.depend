@@ -1,0 +1,56 @@
+# depslib dependency file v1.0
+1341854599 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\testes\mainrl.cpp
+	<iostream>
+	<vector>
+	<cstdio>
+	<cstdlib>
+	"../corpus/corpusmatriz.h"
+	"../treinador/regressaolinear.h"
+
+1341319244 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1341319206 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpus.h
+	<iostream>
+	<vector>
+	<map>
+
+1340817571 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.h
+	<map>
+	<vector>
+	"treinador.h"
+
+1341854157 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\treinador.h
+	"../corpus/corpus.h"
+	"../classificador/classificador.h"
+
+1341854135 c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador\classificador.h
+	"../corpus/corpus.h"
+
+1341319592 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1341854517 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.cpp
+	"regressaolinear.h"
+	"../outros/auxfunc.h"
+	<string>
+	<sstream>
+	<iostream>
+	<stdlib.h>
+
+1340817320 c:\users\duarte\documents\projetos\ipmachinelearning\fama\outros\auxfunc.h
+
+1341318602 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpus.cpp
+	"corpus.h"
+
+1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\treinador.cpp
+	"treinador.h"
+
+1322566618 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\outros\auxfunc.cpp
+	"auxfunc.h"
+	"math.h"
+
+1329838162 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador\classificador.cpp
+	"classificador.h"
+
