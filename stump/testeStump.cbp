@@ -33,14 +33,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="..\Avaliador.cpp" />
-		<Unit filename="..\avaliador_acuracia.cpp" />
-		<Unit filename="..\classificador.cpp" />
-		<Unit filename="..\corpus.cpp" />
-		<Unit filename="..\corpusmatriz.cpp" />
+		<Unit filename="..\avaliador\Avaliador.cpp" />
+		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\classificador\classificador.cpp" />
+		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpusmatriz.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="stump.cpp" />
-		<Unit filename="..\treinador.cpp" />
+		<Unit filename="..\treinador\treinador.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

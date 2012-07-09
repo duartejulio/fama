@@ -1,7 +1,7 @@
 #ifndef CLASSIFICADOR_H
 #define CLASSIFICADOR_H
 
-#include "corpus.h"
+#include "../corpus/corpus.h"
 
 class Classificador
 {
