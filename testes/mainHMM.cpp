@@ -22,7 +22,7 @@ int main()
 {
     vector<string> atributos;
     atributos.push_back("word");
-    atributos.push_back("pos");
+    atributos.push_back("tpos");
     atributos.push_back("np");
 
     CorpusMatriz objCorpus( atributos );

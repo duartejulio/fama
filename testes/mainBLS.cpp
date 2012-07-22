@@ -34,7 +34,6 @@ int main()
 
     CorpusMatriz objCorpusProva( atributos );
     objCorpusProva.carregarArquivo( "inputs/test.txt" );
-    objCorpusProva.criarAtributo( "pos", "N" );
 
     objClass->executarClassificacao( objCorpusProva, ATRBT_CLASSIFICADO );
     AvaliadorAcuracia objAvalAcur;

@@ -33,14 +33,16 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
     }
 
     ///Verificar depois até onde o double mantem a precisão
-    map< string, map< string, double > >::iterator linha;
-    map< string, double >:: iterator coluna, it;
+    map< string, map< string, double > >::iterator linha, linha_end;
+    map< string, double >:: iterator coluna, coluna_end;
     //faz conversão para matriz de probabilidades
-    for( linha = matrizTransicao.begin();  linha!= matrizTransicao.end(); linha++ )
+    linha_end = matrizTransicao.end();
+    for( linha = matrizTransicao.begin();  linha != linha_end; linha++ )
     {
-        for( coluna = linha->second.begin(); coluna != linha->second.end(); coluna++ )
+        coluna_end = linha->second.end();
+        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
             total += coluna->second;
-        for( coluna = linha->second.begin(); coluna != linha->second.end(); coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
             matrizTransicao[linha->first][coluna->first] = ( coluna->second )/total; //pode haver um erro carregado aqui
         total = 0.0;
     }
