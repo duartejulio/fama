@@ -36,7 +36,6 @@ using namespace std;
 //
 //    CorpusMatriz objCorpusProva( atributos );
 //    objCorpusProva.carregarArquivo( "inputs/test.txt" );
-//    objCorpusProva.criarAtributo( "pos", "N" );
 //
 //    objClass->executarClassificacao( objCorpusProva, ATRBT_CLASSIFICADO );
 //    AvaliadorAcuracia objAvalAcur;
@@ -54,7 +53,7 @@ using namespace std;
 //{
 //    vector<string> atributos;
 //    atributos.push_back("word");
-//    atributos.push_back("pos");
+//    atributos.push_back("tpos");
 //    atributos.push_back("np");
 //
 //    CorpusMatriz objCorpus( atributos );

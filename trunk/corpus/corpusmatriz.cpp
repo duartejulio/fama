@@ -7,7 +7,8 @@ CorpusMatriz::CorpusMatriz( vector<string> atributos)
     separador = '_';
 }
 
-void CorpusMatriz::ajustarSeparador(char separador){
+void CorpusMatriz::ajustarSeparador( char separador )
+{
     this->separador = separador;
 }
 
@@ -159,17 +160,17 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
         return false;
     }
 
-    int column;
+    int column, k;
 
     for( register int i = 0; i < qtd_sentencas; i++ )
     {
         column = frases[i].size();
         for( register int j = 0; j < column; j++ )
-            for( register int k = 0; k < qtd_atributos; k++ )
-            {
-                if( k == qtd_atributos - 1 ) arqout << simbolos[ frases[i][j][k] ] << endl;
-                else arqout << simbolos[ frases[i][j][k] ] << separador;
-            }
+        {
+            for( k = 0; k < qtd_atributos - 1; k++ )
+                arqout << simbolos[ frases[i][j][k] ] << separador;
+            arqout << simbolos[ frases[i][j][k] ] << endl;
+        }
         arqout << endl;
     }
 

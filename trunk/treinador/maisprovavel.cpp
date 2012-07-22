@@ -46,8 +46,8 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     /**
     *  Determina a classificação de maior frequência para cada palavra
     */
-    map< int, map< int, int > >::iterator linha;
-    map< int, int >::iterator coluna;
+    map< int, map< int, int > >::iterator linha, linha_end;
+    map< int, int >::iterator coluna, coluna_end;
 
     int maxOfRow, maxAtributo, NumUnknow;
     bool flag;
@@ -55,10 +55,12 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     //map< int, int > controlePalavras; // ASSOCIA palavra COM maxAtributo (utilizado caso o vetor seja esparso)
     map< int, int > listaUnknow;
 
-    for ( linha = tabelaFreq.begin(); linha != tabelaFreq.end(); linha++ )
+    linha_end = tabelaFreq.end();
+    for ( linha = tabelaFreq.begin(); linha != linha_end; linha++ )
     {
         maxOfRow = -1;
-        for ( coluna = linha->second.begin(); coluna != linha->second.end(); coluna++ )
+        coluna_end = linha->second.end();
+        for ( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
             if( coluna->second > maxOfRow )
             {
                 maxOfRow = coluna->second;
@@ -76,7 +78,8 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
 
     maxOfRow = -1;
     //procura maior classificação de desconhecido
-    for( coluna = listaUnknow.begin(); coluna != listaUnknow.end(); coluna++ )
+    coluna_end = listaUnknow.end();
+    for( coluna = listaUnknow.begin(); coluna != coluna_end; coluna++ )
         if( coluna->second > maxOfRow )
         {
             flag = true;  //indica que entrou aqui pelo menos uma vez

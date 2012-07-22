@@ -25,7 +25,7 @@ string Corpus::pegarSimbolo( int indice )
     if ( indice < 0 || indice >= ( int )simbolos.size() )
     {
         cout << "Erro: pegarSimbolo!\nBusca fora dos limites!" << endl;
-        return "erro!!";
+        return NULL;
     }
 
     return simbolos[ indice ];
@@ -163,6 +163,7 @@ int Corpus::pegarPosAtributo( string atributo )
     return it->second;
 }
 
-vector<string> Corpus::pegarAtributos(){
+vector< string > Corpus::pegarAtributos()
+{
     return atributos;
 }

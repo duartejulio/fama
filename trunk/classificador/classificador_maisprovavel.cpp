@@ -4,7 +4,7 @@ bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int 
 {
     corpusProva.criarAtributo( "pos", "N" );
     int tam_atributos = corpusProva.pegarQtdAtributos(), row = corpusProva.pegarQtdSentencas(), column;
-    map< string, string >::iterator it;
+    map< string, string >::iterator it, it_end;
     int valorUnknow = corpusProva.pegarIndice( unknown ); //otimização p/ corpus com mtos unknown
 
     ///complexidade m²log(n), m tamanho do corpus, n tamanho do conhecimento
@@ -21,26 +21,22 @@ bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int 
 
     ///Complexidade nlog(n) + m², com gasto de memória bem maior
     ///melhor p/ textos grandes ( teste pratico este foi melhor )
-    vector< int > vetorControlePal( corpusProva.pegarQtdSimbolos() );
+    vector< int > vetorControlePal( corpusProva.pegarQtdSimbolos(), valorUnknow );
     int aux;
 
-    for( it = controlePalavras.begin(); it != controlePalavras.end(); it++ )
+    it_end = controlePalavras.end();
+    for( it = controlePalavras.begin(); it != it_end; it++ )
     {
         aux = corpusProva.pegarIndice( it->first ); //utiliza aux pq o tamanho do dicionario pode mudar
-        vetorControlePal.resize( corpusProva.pegarQtdSimbolos() );
+        vetorControlePal.resize( corpusProva.pegarQtdSimbolos(), valorUnknow );
         vetorControlePal[ aux ] = corpusProva.pegarIndice( it->second );
     }
-    ///verificar se o valor do desconhecido no vector precisa ser colocado em -1 e se eh melhor
-    ///modifica-lo posteriormente para o valor de valorUnknow( com isso some o if-else dentro do 2º for )
 
     for ( register int i = 0; i < row; i++ )
     {
         column = corpusProva.pegarQtdTokens( i );
         for ( register int j = 0; j < column; j++ )
-            if( ( aux = vetorControlePal[ corpusProva.pegarValor( i, j, atributo ) ] ) != 0 )
-                corpusProva.ajustarValor( i, j, tam_atributos - 1, aux );
-            else
-                corpusProva.ajustarValor( i, j, tam_atributos - 1, valorUnknow );
+            corpusProva.ajustarValor( i, j, tam_atributos - 1, vetorControlePal[ corpusProva.pegarValor( i, j, atributo ) ] );
     }
 
     cout << "Classificacao MaisProvavel: executada" <<endl;
@@ -65,10 +61,11 @@ bool ClassificadorMaisProvavel::gravarConhecimento( string arquivo )
         cout << "Erro:gravarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
-    map< string, string >::iterator it;
+    map< string, string >::iterator it, it_end;
 
     arqout << unknown << endl;
-    for( it = controlePalavras.begin(); it != controlePalavras.end(); it++ )
+    it_end = controlePalavras.end();
+    for( it = controlePalavras.begin(); it != it_end; it++ )
     {
         arqout << it->first << endl;
         arqout << it->second << endl;
