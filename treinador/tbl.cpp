@@ -1,5 +1,28 @@
 #include "tbl.h"
 
+bool contemEstrutura( multimap< int, vector< int > > estrutura, multimap< int, vector< int > > bestEstrutura )
+{
+    bool encontrou;
+    multimap<int, vector< int > >::iterator linha, linha_end, bp, bp_end;
+    pair< multimap<int, vector< int > >::iterator, multimap<int, vector< int > >::iterator > bounds;
+
+    linha_end = bestEstrutura.end();
+    for( linha = bestEstrutura.begin(); linha != linha_end; linha++ )
+    {
+        encontrou = false;
+        bounds = estrutura.equal_range( linha->first );
+        bp_end = bounds.second;
+        for( bp = bounds.first; bp != bp_end; bp++ )
+            if( bp->second == linha->second )
+            {
+                encontrou = true;
+                break;
+            }
+        if( !encontrou ) return false;
+    }
+    return true;
+}
+
 TBL::TBL( Classificador* classInicial, string arqMoldeRegras, int toleranciaScore )
 {
     this->classInicial = classInicial;
@@ -17,38 +40,39 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
     ClassificadorTBL *objClassificador = new ClassificadorTBL( classInicial );
     int row = corpus.pegarQtdSentencas(), column, numMoldeRegras = this->moldeRegras.size(), numRegras, numRegrasOld, qtdAtributos, maxScore = toleranciaScore, maxIndice, aux, frases_ijReal, frases_ijAjuste;
     bool moldeInvalido, regraInvalida, utilizaPos;
-    map< int, map< int, int > > var;
+    multimap< int, vector< int > > var;
+    vector< int > vet(2);
+    vector< string > vetString(2);
     //iterators
-    int i,j,k,L;
-    map<int, map< int, int > >::iterator linha, linha_end;
-    map< int, int >::iterator it, it_end;
-    vector< map< int, map< int, int > > >::iterator it_regras;
-    vector< int >::iterator it_respRegras, it_good, it_bad;
-    multimap< map< int, map< int, int > >, int >:: iterator bp, bp_end;
-    pair< multimap< map< int, map< int, int > >, int >:: iterator, multimap< map< int, map< int, int > >, int >:: iterator > ret;
+    int i,j,k,L,M;
+    multimap<int, vector< int > >::iterator linha, linha_end;
+    multimap< int, int >::iterator itMolde, itMolde_end;
+    vector< Regra >::iterator it_regras;
+    multimap< multimap< int, vector< int > >, int >::iterator bp, bp_end;
+    pair< multimap< multimap< int, vector< int > >, int >::iterator, multimap< multimap< int, vector< int > >, int >::iterator > ret;
 
     //estrutura de multimap para busca otimizada de regras repetidas
-    multimap< map< int, map< int, int > >, int > regrasTemporarias;
-
-    set< map< int, map< int, int > > > regrasArmazenadas;
-    vector< map< int, map< int, int > > > regras;
-    vector< int > respRegras, good, bad;//se for feita mais de uma classificação simultanea respRegras tem que ser atualizado para map e respMolde tem que ser criado
-    vector< map< int, int> > moldeRegras( numMoldeRegras );
+    multimap< multimap< int, vector< int > >, int > regrasTemporarias;
+    vector< multimap< int, vector< int > > > regrasArmazenadas;
+    vector< Regra > regras;
+    vector< multimap< int, int> > moldeRegras( numMoldeRegras );
 
     //Classificação inicial do corpus
     classInicial->executarClassificacao( corpus, ATRBT_CLASSIFICADO );
 
     //converter molde de regras
     int tamMinMolde = 0, tamMaxMolde = 0;
-    map< int, string >::iterator itMolde, itMolde_end;
-    for( register int i = 0; i < numMoldeRegras; i++ )
-    {
-        itMolde_end = this->moldeRegras[i].end();
-        for( itMolde = this->moldeRegras[i].begin(); itMolde != itMolde_end; itMolde++ )
+    {   //validade local
+        multimap< int, string >::iterator itMolde, itMolde_end;
+        for( register int i = 0; i < numMoldeRegras; i++ )
         {
-            moldeRegras[i][itMolde->first] = corpus.pegarPosAtributo( itMolde->second );
-            if( itMolde->first < tamMinMolde ) tamMinMolde = itMolde->first;
-            if( itMolde->first > tamMaxMolde ) tamMaxMolde = itMolde->first;
+            itMolde_end = this->moldeRegras[i].end();
+            for( itMolde = this->moldeRegras[i].begin(); itMolde != itMolde_end; itMolde++ )
+            {
+                moldeRegras[i].insert( pair< int, int >( itMolde->first, corpus.pegarPosAtributo( itMolde->second ) ) );
+                if( itMolde->first < tamMinMolde ) tamMinMolde = itMolde->first;
+                if( itMolde->first > tamMaxMolde ) tamMaxMolde = itMolde->first;
+            }
         }
     }
 
@@ -65,15 +89,17 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                 {
                     moldeInvalido = false;
 
-                    it_end = moldeRegras[L].end();
-                    for( it = moldeRegras[L].begin(); it != it_end; it++ )
+                    itMolde_end = moldeRegras[L].end();
+                    for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; itMolde++ )
                     {
-                        if( ( aux = j + it->first ) >= column || aux < 0 )
+                        if( ( aux = j + itMolde->first ) >= column || aux < 0 )
                         {
                             moldeInvalido = true;
                             break;
                         }
-                        var[it->first][it->second] = corpus.pegarValor(i, aux, it->second);
+                        vet[0] = itMolde->second;
+                        vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                        var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                     }
                     if( !moldeInvalido )
                     {
@@ -87,9 +113,9 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                             }
                         if( !moldeInvalido )
                         {
-                            regrasTemporarias.insert( pair< map< int, map< int, int > >, int >( var, frases_ijReal ) );
-                            regras.push_back( var );
-                            respRegras.push_back( frases_ijReal );
+                            regrasTemporarias.insert( pair< multimap< int, vector< int > >, int >( var, frases_ijReal ) );
+                            Regra r( var, frases_ijReal );
+                            regras.push_back( r );
                         }
                     }
                     var.clear();
@@ -98,85 +124,75 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
     }
 
     numRegras = regras.size();
-    good.resize( numRegras );
-    bad.resize( numRegras );
     cout << "numRegras: " << numRegras << endl;
 
-    for( i = 0; i < row; i++ )
-    {
-        column = corpus.pegarQtdTokens( i );
-        for( j = 0; j < column; j++ )
-        {
-            frases_ijReal = corpus.pegarValor(i,j,atributo);
-            frases_ijAjuste = corpus.pegarValor(i,j,qtdAtributos-1);
-            for( L = 0; L < numRegras; L++ )
-            {
-                regraInvalida = false;
+//    for( i = 0; i < row; i++ )
+//    {
+//        column = corpus.pegarQtdTokens( i );
+//        for( j = 0; j < column; j++ )
+//        {
+//            frases_ijReal = corpus.pegarValor(i,j,atributo);
+//            frases_ijAjuste = corpus.pegarValor(i,j,qtdAtributos-1);
+//            for( L = 0; L < numRegras; L++ )
+//            {
+//                regraInvalida = false;
+//
+//                linha_end = regras[L].estrutura.end();
+//                for( linha = regras[L].estrutura.begin(); linha != linha_end; linha++ )
+//                {
+//                    //tirar esse if em um loop individual?
+//                    if( ( aux = j + linha->first ) >= column || aux < 0 )
+//                    {
+//                        regraInvalida = true;
+//                        break;
+//                    }
+//                    if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
+//                    {
+//                        regraInvalida = true;
+//                        break;
+//                    }
+//                }
+//                if( !regraInvalida )
+//                {
+//                    if( frases_ijReal == regras[L].resp && frases_ijReal != frases_ijAjuste )
+//                        regras[L].good++;
+//                    if( frases_ijReal != regras[L].resp && frases_ijReal == frases_ijAjuste )
+//                        regras[L].bad++;
+//                }
+//            }
+//        }
+//    }
 
-                linha_end = regras[L].end();
-                for( linha = regras[L].begin(); linha != linha_end; linha++ )
-                {
-                    //tirar esse if em um loop individual?
-                    if( ( aux = j + linha->first ) >= column || aux < 0 )
-                    {
-                        regraInvalida = true;
-                        break;
-                    }
-                    it_end = linha->second.end();
-                    for( it = linha->second.begin(); it != it_end; it++ )
-                        if( corpus.pegarValor(i,aux,it->first) != it->second )
-                        {
-                            regraInvalida = true;
-                            break;
-                        }
-                    if( regraInvalida ) break;
-                }
-                if( !regraInvalida )
-                {
-                    if( frases_ijReal == respRegras[L] && frases_ijReal != frases_ijAjuste )
-                        good[L]++;
-                    if( frases_ijReal != respRegras[L] && frases_ijReal == frases_ijAjuste )
-                        bad[L]++;
-                }
-            }
-        }
-    }
-
-    //salvarEstado("outputs/saveScore.txt",good,bad);
-    //carregarEstado("inputs/saveScore.txt",good,bad);
+    //salvarEstado("outputs/saveScore.txt",regras);
+    carregarEstado("inputs/saveScore.txt",regras);
 
     maxScore = -999999999;
     for( L = 0; L < numRegras; L++ )
-        if( ( aux = good[L] - bad[L] ) > maxScore )
+        if( ( aux = regras[L].good - regras[L].bad ) > maxScore )
         {
             maxScore = aux;
             maxIndice = L;
         }
     //impressão da melhor regra
     cout << "maxScore: " << maxScore << endl;
-    linha_end = regras[maxIndice].end();
-    for( linha = regras[maxIndice].begin(); linha != linha_end; linha++ )
-    {
-        it_end = linha->second.end();
-        for( it = linha->second.begin(); it != it_end; it++ )
-            cout << corpus.pegarAtributo(it->first) << ' ' << linha->first << ' ' << corpus.pegarSimbolo(it->second) << ' ';
-    }
-    cout << "=>" << ' ' << corpus.pegarSimbolo(respRegras[maxIndice]) << endl;
-
+    linha_end = regras[maxIndice].estrutura.end();
+    for( linha = regras[maxIndice].estrutura.begin(); linha != linha_end; linha++ )
+        cout << corpus.pegarAtributo(linha->second[0]) << ' ' << linha->first << ' ' << corpus.pegarSimbolo(linha->second[1]) << ' ';
+    cout << "=>" << ' ' << corpus.pegarSimbolo(regras[maxIndice].resp) << endl;
 
     while( maxScore >= toleranciaScore && regras.size() > 0 )
     {
         //armazenar regra
-        regrasArmazenadas.insert( regras[maxIndice] );
-        map< int, map< string, string > > rule;
-        linha_end = regras[maxIndice].end();
-        for( linha = regras[maxIndice].begin(); linha != linha_end; linha++ )
+        regrasArmazenadas.push_back( regras[maxIndice].estrutura );
+        multimap< int, vector< string > > rule;
+        linha_end = regras[maxIndice].estrutura.end();
+        for( linha = regras[maxIndice].estrutura.begin(); linha != linha_end; linha++ )
         {
-            it_end = linha->second.end();
-            for( it = linha->second.begin(); it != it_end; it++ )
-                rule[linha->first][corpus.pegarAtributo( it->first )] = corpus.pegarSimbolo( it->second );
+            vetString[0] = corpus.pegarAtributo( linha->second[0] );
+            vetString[1] = corpus.pegarSimbolo( linha->second[1] );
+            rule.insert( pair< int, vector< string > >( linha->first, vetString ) );
         }
-        objClassificador->inserirRegra( rule, corpus.pegarSimbolo( respRegras[maxIndice] ) );
+        objClassificador->inserirRegra( rule, corpus.pegarSimbolo( regras[maxIndice].resp ) );
 
 
         //atualizar Corpus com a nova regra
@@ -187,8 +203,8 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             {
                 regraInvalida = false;
 
-                linha_end = regras[maxIndice].end();
-                for( linha = regras[maxIndice].begin(); linha != linha_end; linha++ )
+                linha_end = regras[maxIndice].estrutura.end();
+                for( linha = regras[maxIndice].estrutura.begin(); linha != linha_end; linha++ )
                 {
                     //tirar esse if em um loop individual?
                     if( ( aux = j + linha->first ) >= column || aux < 0 )
@@ -196,16 +212,13 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                         regraInvalida = true;
                         break;
                     }
-                    it_end = linha->second.end();
-                    for( it = linha->second.begin(); it != it_end; it++ )
-                        if( corpus.pegarValor(i,aux,it->first) != it->second )
-                        {
-                            regraInvalida = true;
-                            break;
-                        }
-                    if( regraInvalida ) break; //break externo
+                    if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
+                    {
+                        regraInvalida = true;
+                        break;
+                    }
                 }
-                if( !regraInvalida && corpus.pegarValor(i,j,qtdAtributos-1) != respRegras[maxIndice] )
+                if( !regraInvalida && corpus.pegarValor(i,j,qtdAtributos-1) != regras[maxIndice].resp )
                 {
                     //decremento do bad e do good da vizinhança da palavra alterada
                     ///trocar k com L é melhor?
@@ -216,11 +229,11 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                         frases_ijAjuste = corpus.pegarValor(i,j-k, qtdAtributos - 1);
                         for( L = 0; L < numRegras; L++ )
                         {
-                            if( regras[L].begin()->first > k || regras[L].rbegin()->first < k ) continue;
+                            if( regras[L].estrutura.begin()->first > k || regras[L].estrutura.rbegin()->first < k ) continue;
                             utilizaPos = moldeInvalido = false;
 
-                            linha_end = regras[L].end();
-                            for( linha = regras[L].begin(); linha != linha_end; linha++ )
+                            linha_end = regras[L].estrutura.end();
+                            for( linha = regras[L].estrutura.begin(); linha != linha_end; linha++ )
                             {
                                 //tirar esse if em um loop individual?
                                 if( ( aux = j - k + linha->first ) >= column || aux < 0 )
@@ -228,28 +241,25 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                                     moldeInvalido = true;
                                     break;
                                 }
-                                it_end = linha->second.end();
-                                for( it = linha->second.begin(); it != it_end; it++ )
-                                    if( corpus.pegarValor(i,aux,it->first) != it->second )
-                                    {
-                                        moldeInvalido = true;
-                                        break;
-                                    }
-                                    else//verifica se regra realmente é influenciada pela nova classificação
-                                        if( aux == j ) utilizaPos = true;
-                                if( moldeInvalido ) break;
+                                if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
+                                {
+                                    moldeInvalido = true;
+                                    break;
+                                }
+                                else//verifica se regra realmente é influenciada pela nova classificação
+                                    if( aux == j ) utilizaPos = true;
                             }
                             if( !moldeInvalido && utilizaPos )
                             {
-                                if( frases_ijReal == respRegras[L] && frases_ijReal != frases_ijAjuste )
-                                    good[L]--;
-                                if( frases_ijReal != respRegras[L] && frases_ijReal == frases_ijReal )
-                                    bad[L]--;
+                                if( frases_ijReal == regras[L].resp && frases_ijReal != frases_ijAjuste )
+                                    regras[L].good--;
+                                if( frases_ijReal != regras[L].resp && frases_ijReal == frases_ijReal )
+                                    regras[L].bad--;
                             }
                         }
                     }
 
-                    corpus.ajustarValor(i,j,qtdAtributos - 1,respRegras[maxIndice]);
+                    corpus.ajustarValor(i,j,qtdAtributos - 1,regras[maxIndice].resp);
 
                     //criação das novas regras e incremento do good e do bad
                     ///trocar k com L é melhor?
@@ -265,20 +275,31 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                                 if( moldeRegras[L].begin()->first > k || moldeRegras[L].rbegin()->first < k ) continue;
                                 utilizaPos = moldeInvalido = false;
 
-                                it_end = moldeRegras[L].end();
-                                for( it = moldeRegras[L].begin(); it != it_end; it++ )
+                                itMolde_end = moldeRegras[L].end();
+                                for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; itMolde++ )
                                 {
-                                    if( ( aux = j - k + it->first ) >= column || aux < 0 )
+                                    if( ( aux = j - k + itMolde->first ) >= column || aux < 0 )
                                     {
                                         moldeInvalido = true;
                                         break;
                                     }
                                     if( aux == j ) utilizaPos = true;
-                                    var[it->first][it->second] = corpus.pegarValor(i, aux, it->second);
+                                    vet[0] = itMolde->second;
+                                    vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                    var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                                 }
                                 if( !moldeInvalido && utilizaPos )
                                 {
-                                    if( regrasArmazenadas.find( var ) == regrasArmazenadas.end() )
+                                    numRegrasOld = regrasArmazenadas.size();
+                                    for( M = 0; M < numRegrasOld; M++ )
+                                    {
+                                        if( contemEstrutura( var, regrasArmazenadas[M] ) )
+                                        {
+                                            moldeInvalido = true;
+                                            break;
+                                        }
+                                    }
+                                    if( !moldeInvalido )
                                     {
                                         ret = regrasTemporarias.equal_range( var );
                                         bp_end = ret.second;
@@ -290,9 +311,9 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                                             }
                                         if( !moldeInvalido )
                                         {
-                                            regrasTemporarias.insert( pair< map< int, map< int, int > >, int >( var, frases_ijReal ) );
-                                            regras.push_back( var );
-                                            respRegras.push_back( frases_ijReal );
+                                            regrasTemporarias.insert( pair< multimap< int, vector< int > >, int >( var, frases_ijReal ) );
+                                            Regra r( var, frases_ijReal );
+                                            regras.push_back( r );
                                         }
                                     }
                                 }
@@ -302,11 +323,11 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                         for( L = 0; L < numRegras; L++ )
                         {
                             //verifica se a regra realmente se encaixa na vizinhança
-                            if( regras[L].begin()->first > k || regras[L].rbegin()->first < k ) continue;
+                            if( regras[L].estrutura.begin()->first > k || regras[L].estrutura.rbegin()->first < k ) continue;
                             utilizaPos = moldeInvalido = false;
 
-                            linha_end = regras[L].end();
-                            for( linha = regras[L].begin(); linha != linha_end; linha++ )
+                            linha_end = regras[L].estrutura.end();
+                            for( linha = regras[L].estrutura.begin(); linha != linha_end; linha++ )
                             {
                                 //tirar esse if em um loop individual?
                                 if( ( aux = j - k + linha->first ) >= column || aux < 0 )
@@ -314,23 +335,20 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                                     moldeInvalido = true;
                                     break;
                                 }
-                                it_end = linha->second.end();
-                                for( it = linha->second.begin(); it != it_end; it++ )
-                                    if( corpus.pegarValor(i,aux,it->first) != it->second )
-                                    {
-                                        moldeInvalido = true;
-                                        break;
-                                    }
-                                    else//verifica se regra realmente é influenciada pela nova classificação
-                                        if( aux == j) utilizaPos = true;
-                                if( moldeInvalido ) break;
+                                if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
+                                {
+                                    moldeInvalido = true;
+                                    break;
+                                }
+                                else//verifica se regra realmente é influenciada pela nova classificação
+                                    if( aux == j) utilizaPos = true;
                             }
                             if( !moldeInvalido && utilizaPos )
                             {
-                                if( frases_ijReal == respRegras[L] && frases_ijReal != frases_ijAjuste )
-                                    good[L]++;
-                                if( frases_ijReal != respRegras[L] && frases_ijReal == frases_ijReal )
-                                    bad[L]++;
+                                if( frases_ijReal == regras[L].resp && frases_ijReal != frases_ijAjuste )
+                                    regras[L].good++;
+                                if( frases_ijReal != regras[L].resp && frases_ijReal == frases_ijReal )
+                                    regras[L].bad++;
                             }
                         }
                     }
@@ -340,8 +358,6 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
 
         numRegrasOld = numRegras;
         numRegras = regras.size();
-        good.resize( numRegras );
-        bad.resize( numRegras );
         cout << "numRegras: " << numRegras << endl;
 
         for( i = 0; i < row; i++ )
@@ -355,8 +371,8 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                 {
                     regraInvalida = false;
 
-                    linha_end = regras[L].end();
-                    for( linha = regras[L].begin(); linha != linha_end; linha++ )
+                    linha_end = regras[L].estrutura.end();
+                    for( linha = regras[L].estrutura.begin(); linha != linha_end; linha++ )
                     {
                         //tirar esse if em um loop individual?
                         if( ( aux = j + linha->first ) >= column || aux < 0 )
@@ -364,69 +380,54 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                             regraInvalida = true;
                             break;
                         }
-                        it_end = linha->second.end();
-                        for( it = linha->second.begin(); it != it_end; it++ )
-                            if( corpus.pegarValor(i,aux,it->first) != it->second )
-                            {
-                                regraInvalida = true;
-                                break;
-                            }
-                        if( regraInvalida ) break;
+                        if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
+                        {
+                            regraInvalida = true;
+                            break;
+                        }
                     }
                     if( !regraInvalida )
                     {
-                        if( frases_ijReal == respRegras[L] && frases_ijReal != frases_ijAjuste )
-                            good[L]++;
-                        if( frases_ijReal != respRegras[L] && frases_ijReal == frases_ijAjuste )
-                            bad[L]++;
+                        if( frases_ijReal == regras[L].resp && frases_ijReal != frases_ijAjuste )
+                            regras[L].good++;
+                        if( frases_ijReal != regras[L].resp && frases_ijReal == frases_ijAjuste )
+                            regras[L].bad++;
                     }
                 }
             }
         }
 
 
-        //remover regras cujo good virou zero e remover regras com molde igual a melhor regra
-        var = regras[maxIndice];
-        it_regras = regras.begin();
-        it_respRegras = respRegras.begin();
-        it_good = good.begin();
-        it_bad = bad.begin();
-        while( it_regras != regras.end() )
-            if( *it_good <= 0 || *it_regras == var  )
+
+        //remover regras cuja estrutura contem a estrutura da melhor regra
+        multimap< int, vector< int > > bestEstrutura  = regras[maxIndice].estrutura;
+        i = 0;
+        j = numRegras - 1;
+        while( i < j )
+            if( contemEstrutura( regras[i].estrutura, bestEstrutura ) )
             {
-                it_regras = regras.erase( it_regras );
-                it_respRegras = respRegras.erase( it_respRegras );
-                it_good = good.erase( it_good );
-                it_bad = bad.erase( it_bad );
+                swap( regras[i], regras[j] );
+                j--;
             }
-            else
-            {
-                it_regras++;
-                it_respRegras++;
-                it_good++;
-                it_bad++;
-            }
+            else i++;
+
+        regras.erase( regras.begin()+i+1, regras.end() );
+
         numRegras = regras.size();
 
-
-        //bad[maxIndice] = 999999999;
         maxScore = -999999999;
         for( L = 0; L < numRegras; L++ )
-            if( ( aux = good[L] - bad[L] ) > maxScore )
+            if( ( aux = regras[L].good - regras[L].bad ) > maxScore )
             {
                 maxScore = aux;
                 maxIndice = L;
             }
         //impressão da melhor regra
         cout << "maxScore: " << maxScore << endl;
-        linha_end = regras[maxIndice].end();
-        for( linha = regras[maxIndice].begin(); linha != linha_end; linha++ )
-        {
-            it_end = linha->second.end();
-            for( it = linha->second.begin(); it != it_end; it++ )
-                cout << corpus.pegarAtributo(it->first) << ' ' << linha->first << ' ' << corpus.pegarSimbolo(it->second) << ' ';
-        }
-        cout << "=>" << ' ' << corpus.pegarSimbolo(respRegras[maxIndice]) << endl;
+        linha_end = regras[maxIndice].estrutura.end();
+        for( linha = regras[maxIndice].estrutura.begin(); linha != linha_end; linha++ )
+            cout << corpus.pegarAtributo(linha->second[0]) << ' ' << linha->first << ' ' << corpus.pegarSimbolo(linha->second[1]) << ' ';
+        cout << "=>" << ' ' << corpus.pegarSimbolo(regras[maxIndice].resp) << endl;
     }
 
     return objClassificador;
@@ -444,7 +445,7 @@ bool TBL::carregarMolde( string arqMoldeRegras )
     string palavra1;
     int posicao;
     char ch ;
-    map< int, string > indiceAtributo;
+    multimap< int, string > indiceAtributo;
 
 
     while( arqin.good() )
@@ -453,10 +454,10 @@ bool TBL::carregarMolde( string arqMoldeRegras )
         palavra1.push_back( ch );
         while( ch != '\n' && arqin.good() )
         {
-            for( arqin.get( ch ); ch != ' '; arqin.get( ch ) )
+            for( arqin.get( ch ); ch != ' ' && ch != ':'; arqin.get( ch ) )
                 palavra1.push_back( ch );
             arqin >> posicao;
-            indiceAtributo[posicao] = palavra1;
+            indiceAtributo.insert( pair< int, string >( posicao, palavra1 ) );
             palavra1.clear();
             arqin.get( ch );
         }
@@ -477,54 +478,54 @@ bool TBL::carregarMolde( string arqMoldeRegras )
     return true;
 }
 
-//bool TBL::salvarEstado( string saveFile, vector<int> good, vector<int> bad )
-//{
-//    ofstream arqout( saveFile.c_str() );
-//    if( !arqout.is_open() ) //verifica se arquivo conseguiu ser aberto
-//    {
-//        cout << "Erro:salvarEstado!\nFalha na abertura do arquivo!" << endl;
-//        return false;
-//    }
-//
-//    int numRegras = good.size();
-//
-//    for( register int i = 0; i < numRegras; i++ )
-//    {
-//        arqout << good[i] << ' ' << bad[i] << endl;
-//    }
-//
-//    arqout.close();
-//    cout << "Estado <" << saveFile << "> salvo com sucesso!" << endl;
-//    return true;
-//}
-//
-//bool TBL::carregarEstado( string saveFile, vector<int> &good, vector<int> &bad )
-//{
-//    ifstream arqin( saveFile.c_str() );
-//    if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
-//    {
-//        cout << "Erro:carregarEstado!\nFalha na abertura do arquivo!" << endl;
-//        return false;
-//    }
-//
-//    int numRegras = good.size(), g, b;
-//
-//    for( register int i = 0; i < numRegras; i++ )
-//    {
-//        arqin >> g;
-//        good[i] = g;
-//        arqin >> b;
-//        bad[i] = b;
-//    }
-//
-//    if( arqin.bad() && !arqin.eof() )    //caso de erro na leitura do arquivo
-//    {
-//        cout << "Erro:carregarEstado!\nErro na leitura do arquivo!" << endl;
-//        arqin.close();
-//        return false;
-//    }
-//
-//    arqin.close();
-//    cout << "Estado <" << saveFile << "> carregado com sucesso!" << endl;
-//    return true;
-//}
+bool TBL::salvarEstado( string saveFile, vector< Regra > regras )
+{
+    ofstream arqout( saveFile.c_str() );
+    if( !arqout.is_open() ) //verifica se arquivo conseguiu ser aberto
+    {
+        cout << "Erro:salvarEstado!\nFalha na abertura do arquivo!" << endl;
+        return false;
+    }
+
+    int numRegras = regras.size();
+
+    for( register int i = 0; i < numRegras; i++ )
+    {
+        arqout << regras[i].good << ' ' << regras[i].bad << endl;
+    }
+
+    arqout.close();
+    cout << "Estado <" << saveFile << "> salvo com sucesso!" << endl;
+    return true;
+}
+
+bool TBL::carregarEstado( string saveFile, vector< Regra > &regras )
+{
+    ifstream arqin( saveFile.c_str() );
+    if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
+    {
+        cout << "Erro:carregarEstado!\nFalha na abertura do arquivo!" << endl;
+        return false;
+    }
+
+    int numRegras = regras.size(), g, b;
+
+    for( register int i = 0; i < numRegras; i++ )
+    {
+        arqin >> g;
+        regras[i].good = g;
+        arqin >> b;
+        regras[i].bad = b;
+    }
+
+    if( arqin.bad() && !arqin.eof() )    //caso de erro na leitura do arquivo
+    {
+        cout << "Erro:carregarEstado!\nErro na leitura do arquivo!" << endl;
+        arqin.close();
+        return false;
+    }
+
+    arqin.close();
+    cout << "Estado <" << saveFile << "> carregado com sucesso!" << endl;
+    return true;
+}
