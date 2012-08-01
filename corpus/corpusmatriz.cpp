@@ -1,6 +1,6 @@
 #include "corpusmatriz.h"
 
-CorpusMatriz::CorpusMatriz( vector<string> atributos)
+CorpusMatriz::CorpusMatriz( vector<string> atributos )
     :Corpus( atributos )
 {
     //ctor
@@ -35,7 +35,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
 
         //realoca membros em função de novos atributos do corpus
         qtd_atributos = atributos.size();
-        for( register int i = 0; i < qtd_atributos; i++ )
+        for( register int i = 0; i < qtd_atributos; ++i )
             posAtributos[atributos[i]] = i;
         frases[0][0].resize( qtd_atributos );
 
@@ -69,7 +69,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
         {
             if( ch != '\n' ) //considera frases com distancia maior que 1 espaço
             {
-                for( register int i = 0; i < qtd_atributos; i++ )
+                for( register int i = 0; i < qtd_atributos; ++i )
                 {
                     // lê a palavra que será colocada no vector símbolos
                     while( ( ch != separador || i == qtd_atributos - 1 ) && ch != '\n' && !arqin.eof() ) //torna programa mais
@@ -84,7 +84,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
                         simbolos.push_back( str );
                         //if( i == 1 ) cout << str << endl;
                     }
-                    count++;
+                    ++count;
                     frases[ row ][ column ][ i ] = dicionario[ str ];
                     str.clear();    // limpa str para armazenar a próxima string
                     arqin.get( ch );
@@ -162,12 +162,12 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
 
     int column, k;
 
-    for( register int i = 0; i < qtd_sentencas; i++ )
+    for( register int i = 0; i < qtd_sentencas; ++i )
     {
         column = frases[i].size();
-        for( register int j = 0; j < column; j++ )
+        for( register int j = 0; j < column; ++j )
         {
-            for( k = 0; k < qtd_atributos - 1; k++ )
+            for( k = 0; k < qtd_atributos - 1; ++k )
                 arqout << simbolos[ frases[i][j][k] ] << separador;
             arqout << simbolos[ frases[i][j][k] ] << endl;
         }

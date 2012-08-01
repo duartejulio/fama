@@ -33,11 +33,11 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     	return objClassificador;
     }
 
-    for ( register int i = 0; i < row; i++ )
+    for ( register int i = 0; i < row; ++i )
     {
         column = corpus.pegarQtdTokens( i );
 
-    	for ( register int j = 0; j < column; j++ )
+    	for ( register int j = 0; j < column; ++j )
             ++tabelaFreq[ corpus.pegarValor(i,j,0) ][ corpus.pegarValor(i,j,atributo) ];
     }
 
@@ -56,11 +56,11 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     map< int, int > listaUnknow;
 
     linha_end = tabelaFreq.end();
-    for ( linha = tabelaFreq.begin(); linha != linha_end; linha++ )
+    for ( linha = tabelaFreq.begin(); linha != linha_end; ++linha )
     {
         maxOfRow = -1;
         coluna_end = linha->second.end();
-        for ( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for ( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             if( coluna->second > maxOfRow )
             {
                 maxOfRow = coluna->second;
@@ -71,7 +71,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
             objClassificador->ajustarcontrolePalavras( corpus.pegarSimbolo( linha->first ), corpus.pegarSimbolo( maxAtributo ) );
         else
         {
-            listaUnknow[ maxAtributo ]++;
+            ++listaUnknow[ maxAtributo ];
             //controlePalavras[ linha->first ] = -1; //usado p/ indicar que esta palavra virou desconhecida
         }
     }
@@ -79,7 +79,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     maxOfRow = -1;
     //procura maior classificação de desconhecido
     coluna_end = listaUnknow.end();
-    for( coluna = listaUnknow.begin(); coluna != coluna_end; coluna++ )
+    for( coluna = listaUnknow.begin(); coluna != coluna_end; ++coluna )
         if( coluna->second > maxOfRow )
         {
             flag = true;  //indica que entrou aqui pelo menos uma vez

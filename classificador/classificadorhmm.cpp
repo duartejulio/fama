@@ -18,7 +18,7 @@ void ClassificadorHMM::ajustarVetInicial( string pos )
 bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo )
 {
     corpusProva.criarAtributo( "pos", "N" );
-    int tam_atributos = corpusProva.pegarQtdAtributos();
+    int tam_atributos = corpusProva.pegarQtdAtributos() - 1;
     int row = corpusProva.pegarQtdSentencas(), column, aux;
     vector< int > numPos; //vetor que contem valor dos POS
     map< string, map< string, double > >::iterator linha, linha_end;
@@ -32,11 +32,11 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////
     /// CONVERTER OS MAPS DE STRINGs PARA INTs
     linha_end = matrizTransicao.end();
-    for( linha = matrizTransicao.begin(); linha != linha_end; linha++ )
+    for( linha = matrizTransicao.begin(); linha != linha_end; ++linha )
     {
         aux = corpusProva.pegarIndice(linha->first);
         coluna_end = linha->second.end();
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             matrizTransicaoInt[ aux ][ corpusProva.pegarIndice(coluna->first) ] = coluna->second;
     }
 
@@ -56,12 +56,12 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 //    }
 
     linha_end = tabFreqObservacoes.end();
-    for( linha = tabFreqObservacoes.begin(); linha != linha_end; linha++ )
+    for( linha = tabFreqObservacoes.begin(); linha != linha_end; ++linha )
     {
         aux = corpusProva.pegarIndice(linha->first);
         numPos.push_back( aux );
         coluna_end = linha->second.end();
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             tabFreqObservacoesInt[ corpusProva.pegarIndice(coluna->first) ][ aux ] = coluna->second;
     }
 
@@ -78,7 +78,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 //        total = 0.0;
 //    }
     coluna_end = vetInicial.end();
-    for( coluna = vetInicial.begin(); coluna != coluna_end; coluna++ )
+    for( coluna = vetInicial.begin(); coluna != coluna_end; ++coluna )
         vetInicialInt[ corpusProva.pegarIndice(coluna->first) ] = coluna->second;
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,13 +87,13 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     double matrizViterbi[2][qtdPos], maiorValor, aux_double;
 
     //verifica o valor da coluna mais extensa de frases[][]
-    for( register int i = 0; i < row; i++ )
+    for( register int i = 0; i < row; ++i )
         if( ( aux = corpusProva.pegarQtdTokens( i ) ) > maiorIndice ) maiorIndice = aux;
     int caminho[maiorIndice][qtdPos];
 
 
     linhaInt_end = tabFreqObservacoesInt.end();
-    for ( register int i = 0; i < row; i++ )
+    for ( register int i = 0; i < row; ++i )
     {
         column = corpusProva.pegarQtdTokens( i );
         linhaViterbi = 0;
@@ -101,27 +101,27 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
         ///Verificar depois se transpor a matriz B nao afeta em nada o codigo
         //preenchimento do estado inicial
         if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,0,atributo) ) != linhaInt_end )
-            for( register int k = 0; k < qtdPos; k++ )
+            for( register int k = 0; k < qtdPos; ++k )
                 matrizViterbi[linhaViterbi][k] = log( vetInicialInt[ numPos[k] ] ) + log( tabFreqObservacoesInt[ aux ][ numPos[k] ] );
             //cout << corpusProva.pegarSimbolo( numPos[k] ) << ' ' << matrizViterbi[linhaViterbi][k] << ' ';
 
         else
-            for( register int k = 0; k < qtdPos; k++ )
+            for( register int k = 0; k < qtdPos; ++k )
                 matrizViterbi[linhaViterbi][k] = log( vetInicialInt[ numPos[k] ] ); // caso a frequencia seja zero para todos os estados
                      //cout << corpusProva.pegarSimbolo( numPos[k] ) << ' ' << matrizViterbi[linhaViterbi][k] << ' ';               /** PI x B */
 
         linhaVtbAnt = linhaViterbi; //criado para otimização
         linhaViterbi = 1;
         //varrer as observações
-        for( register int j = 1; j < column; j++ )
+        for( register int j = 1; j < column; ++j )
         {
             //varre os estados
             if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,j,atributo) ) != linhaInt_end )
-                for( register int k = 0; k < qtdPos; k++ )
+                for( register int k = 0; k < qtdPos; ++k )
                 {
                     maiorValor = 0.0;
                     //varre os estados na linha anterior
-                    for( register int l = 0; l < qtdPos; l++ )
+                    for( register int l = 0; l < qtdPos; ++l )
                         if( ( aux_double = matrizViterbi[ linhaVtbAnt ][l] + log( matrizTransicaoInt[numPos[l]][numPos[k]] )  ) >= maiorValor )
                         {
                             maiorValor = aux_double;
@@ -132,11 +132,11 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
                     caminho[j][k] = maiorIndice;
                 }
             else
-                for( register int k = 0; k < qtdPos; k++ )
+                for( register int k = 0; k < qtdPos; ++k )
                 {
                     maiorValor = 0.0;
                     //varre os estados na linha anterior
-                    for( register int l = 0; l < qtdPos; l++ )
+                    for( register int l = 0; l < qtdPos; ++l )
                         if( ( aux_double = matrizViterbi[ linhaVtbAnt ][l] + log( matrizTransicaoInt[numPos[l]][numPos[k]] ) ) >= maiorValor )
                         {
                             maiorValor = aux_double;
@@ -147,20 +147,20 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
                     caminho[j][k] = maiorIndice;
                 }
             linhaVtbAnt = linhaViterbi;
-            linhaViterbi = ( linhaViterbi + 1 )%2;
+            ++linhaViterbi %= 2;
         }
 
         maiorValor = 0.0;
-        for( register int m = 0; m < qtdPos; m++ )
+        for( register int m = 0; m < qtdPos; ++m )
             if( ( aux_double = matrizViterbi[linhaVtbAnt][m] ) >= maiorValor )
             {
                 maiorValor = aux_double;
                 maiorIndice = m;
             }
 
-        for( register int j = column - 1; j >= 0 ; j-- )
+        for( register int j = column - 1; j >= 0 ; --j )
         {
-            corpusProva.ajustarValor( i, j, tam_atributos - 1, numPos[ maiorIndice ] );
+            corpusProva.ajustarValor( i, j, tam_atributos, numPos[ maiorIndice ] );
             maiorIndice = caminho[j][ maiorIndice ];
         }
     }
@@ -181,29 +181,29 @@ bool ClassificadorHMM::gravarConhecimento( string arquivo )
     map< string, double >::iterator coluna, coluna_end;
 
     linha_end = matrizTransicao.end();
-    for( linha = matrizTransicao.begin(); linha != linha_end; linha++ )
+    for( linha = matrizTransicao.begin(); linha != linha_end; ++linha )
     {
         arqout << linha->first << ' ';
         coluna_end = linha->second.end();
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             arqout << coluna->first << ' ' << coluna->second << ' ';
         arqout << endl;
     }
     arqout << endl;
 
     linha_end = tabFreqObservacoes.end();
-    for( linha = tabFreqObservacoes.begin(); linha != linha_end; linha++ )
+    for( linha = tabFreqObservacoes.begin(); linha != linha_end; ++linha )
     {
         arqout << linha->first << ' ';
         coluna_end = linha->second.end();
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             arqout << coluna->first << ' ' << coluna->second << ' ';
         arqout << endl;
     }
     arqout << endl;
 
     coluna_end = vetInicial.end();
-    for( coluna = vetInicial.begin(); coluna != coluna_end; coluna++ )
+    for( coluna = vetInicial.begin(); coluna != coluna_end; ++coluna )
         arqout << coluna->first << endl << coluna->second << endl;
 
     arqout.close();

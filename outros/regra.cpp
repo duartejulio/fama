@@ -1,8 +1,8 @@
 #include "regra.h"
 
-Regra::Regra( multimap< int, vector< int > > estrutura, int resp )
+Regra::Regra( int resp, int good )
 {
-    this->estrutura = estrutura;
     this->resp = resp;
-    good = bad = 0;
+    this->good = good;
+    bad = 0;
 }
