@@ -14,8 +14,7 @@ class TBL : public Treinador
         int toleranciaScore;
         vector< multimap< int, string > > moldeRegras;
         bool carregarMolde( string arqMoldeRegras );
-        bool salvarEstado( string saveFile, vector< Regra > regras );
-        bool carregarEstado( string saveFile, vector< Regra > &regras );
+        bool contemEstrutura( multimap< int, vector< int > > estrutura, multimap< int, vector< int > > bestEstrutura );
     public:
         TBL( Classificador* classInicial, string arqMoldeRegras, int toleranciaScore );
         virtual ~TBL();

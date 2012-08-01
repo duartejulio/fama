@@ -79,10 +79,10 @@ bool Corpus::criarAtributo( string atributo, string valorAtributo )
     int column;
     int dicionario_valorAtributo = dicionario[ valorAtributo ];
 
-    for( register int i = 0; i < qtd_sentencas; i++ )
+    for( register int i = 0; i < qtd_sentencas; ++i )
     {
         column = frases[i].size();
-        for( register int j = 0; j < column; j++ )
+        for( register int j = 0; j < column; ++j )
             frases[i][j].push_back( dicionario_valorAtributo );
     }
 

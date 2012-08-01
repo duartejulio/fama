@@ -9,7 +9,7 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
 {
     ClassificadorHMM *objClassificador = new ClassificadorHMM();
     map< string, map< string, double > > matrizTransicao;
-    int row = corpus.pegarQtdSentencas(), column;
+    int row = corpus.pegarQtdSentencas(), column, i, j;
     double total = 0.0;
 
     if ( atributo <= 0 || atributo >= ( int )corpus.pegarQtdAtributos() )
@@ -18,18 +18,21 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
     	return objClassificador;
     }
 
-    for ( register int i = 0; i < row; i++ )
+    for ( i = 0; i < row; ++i )
     {
         column = corpus.pegarQtdTokens( i );
 
-    	for ( register int j = 0; j < column; j++ )
-    	{
-    	    objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,j,0)) );
-    	    if( j == 0 )
-                objClassificador->ajustarVetInicial( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)) );
-            if( j != column -1 )
+        objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,0,0)) );
+        objClassificador->ajustarVetInicial( corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo)) );
+        if( column != 1 )
+        {
+            for ( j = 1; j < (column - 1); ++j )
+            {
+                objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,j,0)) );
                 ++matrizTransicao[corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo))][corpus.pegarSimbolo(corpus.pegarValor(i,j+1,atributo))];
-    	}
+            }
+            objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,j,0)) );
+        }
     }
 
     ///Verificar depois até onde o double mantem a precisão
@@ -37,12 +40,12 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
     map< string, double >:: iterator coluna, coluna_end;
     //faz conversão para matriz de probabilidades
     linha_end = matrizTransicao.end();
-    for( linha = matrizTransicao.begin();  linha != linha_end; linha++ )
+    for( linha = matrizTransicao.begin();  linha != linha_end; ++linha )
     {
         coluna_end = linha->second.end();
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             total += coluna->second;
-        for( coluna = linha->second.begin(); coluna != coluna_end; coluna++ )
+        for( coluna = linha->second.begin(); coluna != coluna_end; ++coluna )
             matrizTransicao[linha->first][coluna->first] = ( coluna->second )/total; //pode haver um erro carregado aqui
         total = 0.0;
     }

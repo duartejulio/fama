@@ -3,7 +3,7 @@
 bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int atributo )
 {
     corpusProva.criarAtributo( "pos", "N" );
-    int tam_atributos = corpusProva.pegarQtdAtributos(), row = corpusProva.pegarQtdSentencas(), column;
+    int tam_atributos = corpusProva.pegarQtdAtributos() - 1, row = corpusProva.pegarQtdSentencas(), column;
     map< string, string >::iterator it, it_end;
     int valorUnknow = corpusProva.pegarIndice( unknown ); //otimização p/ corpus com mtos unknown
 
@@ -25,18 +25,18 @@ bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int 
     int aux;
 
     it_end = controlePalavras.end();
-    for( it = controlePalavras.begin(); it != it_end; it++ )
+    for( it = controlePalavras.begin(); it != it_end; ++it )
     {
         aux = corpusProva.pegarIndice( it->first ); //utiliza aux pq o tamanho do dicionario pode mudar
         vetorControlePal.resize( corpusProva.pegarQtdSimbolos(), valorUnknow );
         vetorControlePal[ aux ] = corpusProva.pegarIndice( it->second );
     }
 
-    for ( register int i = 0; i < row; i++ )
+    for ( register int i = 0; i < row; ++i )
     {
         column = corpusProva.pegarQtdTokens( i );
-        for ( register int j = 0; j < column; j++ )
-            corpusProva.ajustarValor( i, j, tam_atributos - 1, vetorControlePal[ corpusProva.pegarValor( i, j, atributo ) ] );
+        for ( register int j = 0; j < column; ++j )
+            corpusProva.ajustarValor( i, j, tam_atributos, vetorControlePal[ corpusProva.pegarValor( i, j, atributo ) ] );
     }
 
     cout << "Classificacao MaisProvavel: executada" <<endl;
@@ -65,7 +65,7 @@ bool ClassificadorMaisProvavel::gravarConhecimento( string arquivo )
 
     arqout << unknown << endl;
     it_end = controlePalavras.end();
-    for( it = controlePalavras.begin(); it != it_end; it++ )
+    for( it = controlePalavras.begin(); it != it_end; ++it )
     {
         arqout << it->first << endl;
         arqout << it->second << endl;
