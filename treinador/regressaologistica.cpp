@@ -120,7 +120,6 @@ Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atri
         }
         v = corpus.pegarValor(0, i, atributo);
 
-
         y[i] = classeMap[corpus.pegarSimbolo(v)];
     }
 
