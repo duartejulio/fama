@@ -4,8 +4,9 @@
 #include "treinador.h"
 #include "classificadortbl.h"
 #include "maisprovavel.h"
-#include "../outros/regra.h"
+#include "regra.h"
 #include <algorithm>
+#include <cmath>
 #define ATRBT_CLASSIFICADO 0
 
 class TBL : public Treinador
