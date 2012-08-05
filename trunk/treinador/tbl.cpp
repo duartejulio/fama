@@ -46,15 +46,20 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
     vector< string > vetString(2);
     //iterators
     int i,j,k,L,M;
-    multimap<int, vector< int > >::iterator linha, linha_end;
+    multimap<int, vector< int > >::iterator linha, linha_end, linha_inicio, best_begin;
+    multimap<int, vector< int > >::reverse_iterator linha_ultimo, best_rbegin;
     multimap< int, int >::iterator itMolde, itMolde_end;
+    vector< multimap< int, int >::iterator > itMoldes_begin( numMoldeRegras ), itMoldes_end( numMoldeRegras );
+    vector< multimap< int, int >::reverse_iterator > itMoldes_rbegin( numMoldeRegras );
     multimap< multimap< int, vector< int > >, Regra >::iterator bp, bp_end, maxIndice;
     pair< multimap< multimap< int, vector< int > >, Regra >::iterator, multimap< multimap< int, vector< int > >, Regra >::iterator > ret;
 
     //estrutura de multimap para busca otimizada de regras repetidas
     multimap< multimap< int, vector< int > >, Regra > regrasTemporarias, regrasTemporarias2;
+    vector< pair< multimap< int, vector< int > >, Regra > > rT2;
     vector< multimap< int, vector< int > > > regrasArmazenadas;
     vector< multimap< int, int> > moldeRegras( numMoldeRegras );
+
 
     //Classificação inicial do corpus
     classInicial->executarClassificacao( corpus, ATRBT_CLASSIFICADO );
@@ -75,6 +80,14 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
         }
     }
 
+    //inicialização dos iterators dos Moldes
+    for( L = 0; L < numMoldeRegras; ++L )
+    {
+        itMoldes_begin[L] = moldeRegras[L].begin();
+        itMoldes_end[L] = moldeRegras[L].end();
+        itMoldes_rbegin[L] = moldeRegras[L].rbegin();
+    }
+
     qtdAtributos = corpus.pegarQtdAtributos();
 
     //cria as regras temporárias e calcula o good de cada regra
@@ -85,34 +98,28 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j, qtdAtributos - 1) )
                 for( L = 0; L < numMoldeRegras; ++L )
                 {
-                    moldeInvalido = false;
+                    if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                    itMolde_end = moldeRegras[L].end();
-                    for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                    itMolde_end = itMoldes_end[L];
+                    for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                     {
-                        if( ( aux = j + itMolde->first ) >= column || aux < 0 )
+                        vet[0] = itMolde->second;
+                        vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
+                        var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
+                    }
+
+                    ret = regrasTemporarias.equal_range( var );
+                    moldeInvalido = false;
+                    bp_end = ret.second;
+                    for( bp = ret.first; bp != bp_end; ++bp )
+                        if( bp->second.resp == frases_ijReal )
                         {
+                            ++bp->second.good;
                             moldeInvalido = true;
                             break;
                         }
-                        vet[0] = itMolde->second;
-                        vet[1] = corpus.pegarValor(i, aux, vet[0]);
-                        var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
-                    }
                     if( !moldeInvalido )
-                    {
-                        ret = regrasTemporarias.equal_range( var );
-                        bp_end = ret.second;
-                        for( bp = ret.first; bp != bp_end; ++bp )
-                            if( bp->second.resp == frases_ijReal )
-                            {
-                                ++bp->second.good;
-                                moldeInvalido = true;
-                                break;
-                            }
-                        if( !moldeInvalido )
-                            regrasTemporarias.insert( pair< multimap< int, vector< int > >, Regra >( var, Regra( frases_ijReal, 1 ) ) );
-                    }
+                        regrasTemporarias.insert( pair< multimap< int, vector< int > >, Regra >( var, Regra( frases_ijReal, 1 ) ) );
                     var.clear();
                 }
     }
@@ -127,28 +134,20 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
                 for( L = 0; L < numMoldeRegras; ++L )
                 {
-                    moldeInvalido = false;
+                    if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                    itMolde_end = moldeRegras[L].end();
-                    for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                    itMolde_end = itMoldes_end[L];
+                    for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                     {
-                        if( ( aux = j + itMolde->first ) >= column || aux < 0 )
-                        {
-                            moldeInvalido = true;
-                            break;
-                        }
                         vet[0] = itMolde->second;
-                        vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                        vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                         var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                     }
-                    if( !moldeInvalido )
-                    {
-                        ret = regrasTemporarias.equal_range( var );
-                        bp_end = ret.second;
-                        for( bp = ret.first; bp != bp_end; ++bp )
-                            if( bp->second.resp != frases_ijReal )
-                                ++bp->second.bad;
-                    }
+                    ret = regrasTemporarias.equal_range( var );
+                    bp_end = ret.second;
+                    for( bp = ret.first; bp != bp_end; ++bp )
+                        if( bp->second.resp != frases_ijReal )
+                            ++bp->second.bad;
                     var.clear();
                 }
     }
@@ -176,14 +175,14 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
         multimap< int, vector< string > > rule;
         bestEstrutura = maxIndice->first;
         linha_end = bestEstrutura.end();
-        for( linha = bestEstrutura.begin(); linha != linha_end; ++linha )
+        for( best_begin = linha = bestEstrutura.begin(); linha != linha_end; ++linha )
         {
             vetString[0] = corpus.pegarAtributo( linha->second[0] );
             vetString[1] = corpus.pegarSimbolo( linha->second[1] );
             rule.insert( pair< int, vector< string > >( linha->first, vetString ) );
         }
         objClassificador->inserirRegra( rule, corpus.pegarSimbolo( maxIndice->second.resp ) );
-
+        best_rbegin = bestEstrutura.rbegin();
 
         //atualizar Corpus com a nova regra
         for( i = 0; i < row; ++i )
@@ -191,22 +190,15 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             column = corpus.pegarQtdTokens( i );
             for( j = 0; j < column; ++j )
             {
+                if( j + best_begin->first < 0 || j + best_rbegin->first >= column ) continue;
                 regraInvalida = false;
 
-                for( linha = bestEstrutura.begin(); linha != linha_end; ++linha )
-                {
-                    //tirar esse if em um loop individual?
-                    if( ( aux = j + linha->first ) >= column || aux < 0 )
+                for( linha = best_begin; linha != linha_end; ++linha )
+                    if( corpus.pegarValor(i,j+linha->first,linha->second[0]) != linha->second[1] )
                     {
                         regraInvalida = true;
                         break;
                     }
-                    if( corpus.pegarValor(i,aux,linha->second[0]) != linha->second[1] )
-                    {
-                        regraInvalida = true;
-                        break;
-                    }
-                }
                 if( !regraInvalida && corpus.pegarValor(i,j,qtdAtributos-1) != maxIndice->second.resp )
                     vetIndices.push_back( j );
             }
@@ -238,55 +230,41 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                     if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j + itMolde->first ) >= column || aux < 0 )
-                                {
-                                    moldeInvalido = true;
-                                    break;
-                                }
                                 vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                                 var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                             }
-                            if( !moldeInvalido )
-                            {
-                                ret = regrasTemporarias.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp != frases_ijReal )
-                                        --bp->second.bad;
-                            }
+
+                            ret = regrasTemporarias.equal_range( var );
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp != frases_ijReal )
+                                    --bp->second.bad;
                             var.clear();
                         }
                     else
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j - k + itMolde->first ) >= column || aux < 0 )
-                                {
-                                    moldeInvalido = true;
-                                    break;
-                                }
                                 vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                                 var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                             }
-                            if( !moldeInvalido )
-                            {
-                                ret = regrasTemporarias.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp == frases_ijReal )
-                                        --bp->second.good;
-                            }
+
+                            ret = regrasTemporarias.equal_range( var );
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp == frases_ijReal )
+                                    --bp->second.good;
                             var.clear();
                         }
             }
@@ -301,52 +279,49 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                     if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j,qtdAtributos-1) )
                         for( L = 0; L < numMoldeRegras; ++L ) //aplicar molde de regras na vizinhança da palavra alterada
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j + itMolde->first ) >= column || aux < 0 )
+                                vet[0] = itMolde->second;
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
+                                var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
+                            }
+
+                            ret = regrasTemporarias.equal_range( var );
+                            moldeInvalido = false;
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp == frases_ijReal )
                                 {
+                                    ++bp->second.good;
                                     moldeInvalido = true;
                                     break;
                                 }
-                                vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
-                                var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
-                            }
                             if( !moldeInvalido )
                             {
-                                ret = regrasTemporarias.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp == frases_ijReal )
+                                aux = regrasArmazenadas.size();
+                                for( M = 0; M < aux; ++M )
+                                    if( contemEstrutura( var, regrasArmazenadas[M] ) )
                                     {
-                                        ++bp->second.good;
                                         moldeInvalido = true;
                                         break;
                                     }
                                 if( !moldeInvalido )
                                 {
-                                    aux = regrasArmazenadas.size();
-                                    for( M = 0; M < aux; ++M )
-                                        if( contemEstrutura( var, regrasArmazenadas[M] ) )
+                                    ret = regrasTemporarias2.equal_range( var );
+                                    bp_end = ret.second;
+                                    for( bp = ret.first; bp != bp_end; ++bp )
+                                        if( bp->second.resp == frases_ijReal )
                                         {
                                             moldeInvalido = true;
                                             break;
                                         }
                                     if( !moldeInvalido )
                                     {
-                                        ret = regrasTemporarias2.equal_range( var );
-                                        bp_end = ret.second;
-                                        for( bp = ret.first; bp != bp_end; ++bp )
-                                            if( bp->second.resp == frases_ijReal )
-                                            {
-                                                moldeInvalido = true;
-                                                break;
-                                            }
-                                        if( !moldeInvalido )
-                                            regrasTemporarias2.insert( pair< multimap< int, vector< int > >, Regra >( var, Regra( frases_ijReal, 1 ) ) );
+                                        regrasTemporarias2.insert( pair< multimap< int, vector< int > >, Regra >( var, Regra( frases_ijReal, 1 ) ) );
+                                        rT2.push_back( pair< multimap< int, vector< int > >, Regra >( var, Regra( frases_ijReal, 1 ) ) );
                                     }
                                 }
                             }
@@ -355,28 +330,21 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                     else
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j + itMolde->first ) >= column || aux < 0 )
-                                {
-                                    moldeInvalido = true;
-                                    break;
-                                }
                                 vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                                 var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                             }
-                            if( !moldeInvalido )
-                            {
-                                ret = regrasTemporarias.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp != frases_ijReal )
-                                        ++bp->second.bad;
-                            }
+
+                            ret = regrasTemporarias.equal_range( var );
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp != frases_ijReal )
+                                    ++bp->second.bad;
                             var.clear();
                         }
             }
@@ -384,7 +352,8 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             fronteira.clear();
         }
 
-        if( regrasTemporarias2.size() != 0 )
+        tam_fronteira = regrasTemporarias2.size();
+        if( tam_fronteira > numMoldeRegras*2*log( tam_fronteira ) )
         {
             for( i = 0; i < row; ++i )
             {
@@ -393,62 +362,96 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                     if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j + itMolde->first ) >= column || aux < 0 )
-                                {
-                                    moldeInvalido = true;
-                                    break;
-                                }
                                 vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                                 var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                             }
-                            if( !moldeInvalido )
-                            {
-                                ret = regrasTemporarias2.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp != frases_ijReal )
-                                        ++bp->second.bad;
-                            }
+
+                            ret = regrasTemporarias2.equal_range( var );
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp != frases_ijReal )
+                                    ++bp->second.bad;
                             var.clear();
                         }
                     else
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
-                            moldeInvalido = false;
+                            if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
 
-                            itMolde_end = moldeRegras[L].end();
-                            for( itMolde = moldeRegras[L].begin(); itMolde != itMolde_end; ++itMolde )
+                            itMolde_end = itMoldes_end[L];
+                            for( itMolde = itMoldes_begin[L]; itMolde != itMolde_end; ++itMolde )
                             {
-                                if( ( aux = j + itMolde->first ) >= column || aux < 0 )
-                                {
-                                    moldeInvalido = true;
-                                    break;
-                                }
                                 vet[0] = itMolde->second;
-                                vet[1] = corpus.pegarValor(i, aux, vet[0]);
+                                vet[1] = corpus.pegarValor(i, j + itMolde->first, vet[0]);
                                 var.insert( pair< int, vector< int > >( itMolde->first, vet ) );
                             }
-                            if( !moldeInvalido )
-                            {
-                                ret = regrasTemporarias2.equal_range( var );
-                                bp_end = ret.second;
-                                for( bp = ret.first; bp != bp_end; ++bp )
-                                    if( bp->second.resp == frases_ijReal )
-                                        ++bp->second.good;
-                            }
+
+                            ret = regrasTemporarias2.equal_range( var );
+                            bp_end = ret.second;
+                            for( bp = ret.first; bp != bp_end; ++bp )
+                                if( bp->second.resp == frases_ijReal )
+                                    ++bp->second.good;
                             var.clear();
                         }
             }
-
             regrasTemporarias.insert( regrasTemporarias2.begin(), regrasTemporarias2.end() );
-            regrasTemporarias2.clear();
         }
+        else //mais rápido para poucas novas regras candidatas
+        {
+            for( L = 0; L < tam_fronteira; ++L )
+            {
+                linha_end = rT2[L].first.end();
+                linha_inicio = rT2[L].first.begin();
+                linha_ultimo = rT2[L].first.rbegin();
+                M = rT2[L].second.resp;
+                for( i = 0; i < row; ++i )
+                {
+                    column = corpus.pegarQtdTokens( i );
+                    for( j = 0; j < column; ++j )
+                    {
+                        if( j + linha_inicio->first < 0 || j + linha_ultimo->first >= column ) continue;
+                        if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
+                        {
+                            if( M == frases_ijReal ) continue;
+                            regraInvalida = false;
+
+                            for( linha = linha_inicio; linha != linha_end; ++linha )
+                                if( corpus.pegarValor(i,j+linha->first,linha->second[0]) != linha->second[1] )
+                                {
+                                    regraInvalida = true;
+                                    break;
+                                }
+                            if( !regraInvalida )
+                                rT2[L].second.bad++;
+                        }
+                        else
+                        {
+                            if( M != frases_ijReal ) continue;
+                            regraInvalida = false;
+
+                            for( linha = linha_inicio; linha != linha_end; ++linha )
+                                if( corpus.pegarValor(i,j+linha->first,linha->second[0]) != linha->second[1] )
+                                {
+                                    regraInvalida = true;
+                                    break;
+                                }
+                            if( !regraInvalida )
+                                rT2[L].second.good++;
+                        }
+                    }
+                }
+            }
+            regrasTemporarias.insert( rT2.begin(), rT2.end() );
+        }
+
+        regrasTemporarias2.clear();
+        rT2.clear();
 
         cout << "numRegras: " << regrasTemporarias.size() << endl;
 
