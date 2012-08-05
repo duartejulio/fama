@@ -14,24 +14,80 @@ void CorpusMatriz::ajustarSeparador( char separador )
 
 bool CorpusMatriz::carregarArquivo( string arquivo )
 {
+    ifstream arqin( arquivo.c_str() ); // Abre arquivo para leitura em modo texto
+    if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
+    {
+        cout << "Erro:carregarArquivo!\nFalha na abertura do arquivo!" << endl;
+        return false;
+    }
+    string str;
+    char ch;
+
     //verifica se atributos foram passados
-    if (!atributos.size()){
+    if (!atributos.size())
+    {
         string at;
         ifstream arqat( (arquivo + ".names").c_str() ); // Abre arquivo para leitura em modo texto
         if( !arqat.is_open() ) //verifica se arquivo conseguiu ser aberto
         {
-            cout << "Aviso:carregarArquivo!\nNão foi possível carregar atributos!" << endl;
-            return false;
-        }
+            at = "";
+            arqin.get( ch );
+            if( ch == '[' )
+            {
+                char s[1000];
+                arqin.get( s, 1000, '\n' );
+                string str(s);
+                int i = 0;
+                //apaga espaços em branco da string
+                for( string::iterator it = str.begin(); it != str.end(); )
+                    if( *it == ' ' ) it = str.erase( it );
+                    else ++it;
 
-        //varre linha a linha por atributos
-        while(arqat.good()){
-            arqat >> at;
-            if (arqat.eof())
-                break;
-            atributos.push_back(at);
+                while( str[i] != '=' )
+                    at += str[i++];
+                if( at == "features" )
+                {
+                    while( str[i] != ']' )
+                    {
+                        at = "";
+                        while( str[++i] != ',' && str[i] != ']' )
+                            at += str[i];
+                        atributos.push_back( at );
+                    }
+                    if( str[++i] == '[' )
+                    {
+                        at = "";
+                        while( str[++i] != '=' && str[i] != ']' )
+                            at += str[i];
+                        if( at == "separator" )
+                            separador = str[++i];
+                    }
+                    arqin.seekg( 0, ios::beg );
+                }
+                else
+                {
+                    cout << "Aviso:carregarArquivo!\nNão foi possível carregar atributos!" << endl;
+                    return false;
+                }
+            }
+            else
+            {
+                cout << "Aviso:carregarArquivo!\nNão foi possível carregar atributos!" << endl;
+                return false;
+            }
         }
-        arqat.close();
+        else
+        {
+            //varre linha a linha por atributos
+            while(arqat.good())
+            {
+                arqat >> at;
+                if (arqat.eof())
+                    break;
+                atributos.push_back(at);
+            }
+            arqat.close();
+        }
 
         //realoca membros em função de novos atributos do corpus
         qtd_atributos = atributos.size();
@@ -49,16 +105,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
             cout << qtd_atributos << " atributos carregados com sucesso." << endl;
     }
 
-    ifstream arqin( arquivo.c_str() ); // Abre arquivo para leitura em modo texto
-    if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
-    {
-        cout << "Erro:carregarArquivo!\nFalha na abertura do arquivo!" << endl;
-        return false;
-    }
-
-    string str;
     int row = 0, column = 0, contador = -1,count = 0;
-    char ch;
 
     // lê um caracter inicial do arquivo
     arqin.get( ch );
