@@ -3,16 +3,12 @@
 Corpus::Corpus( vector<string> atributos )
     : atributos( atributos )
 {
-    qtd_sentencas = 1;
+    qtd_sentencas = 0;
     qtd_simbolos = 0;
 
-    frases.resize(1);
-    frases[0].resize(1);
-
     qtd_atributos = atributos.size();
-    for( register int i = 0; i < qtd_atributos; i++ )
+    for( register int i = 0; i < qtd_atributos; ++i )
         posAtributos[atributos[i]] = i;
-    frases[0][0].resize( qtd_atributos );
 }
 
 Corpus::~Corpus()
@@ -166,4 +162,74 @@ int Corpus::pegarPosAtributo( string atributo )
 vector< string > Corpus::pegarAtributos()
 {
     return atributos;
+}
+
+vector< Corpus* > Corpus::splitCorpus( float percTotal )
+{
+    vector< Corpus* > vetCorpus( 2 );
+    vector< bool > vetIndices( qtd_sentencas, false );
+    float contador;
+    int aux;
+
+    srand( time( NULL ) );
+    for( contador = .0; contador/qtd_sentencas < percTotal; ++contador )
+        if( !vetIndices[aux = rand()%qtd_sentencas] )
+            vetIndices[aux] = true;
+        else
+        {
+            while( !vetIndices[++aux%=qtd_sentencas] );
+            vetIndices[aux] = true;
+        }
+    //não esquecer de dar delete nestas variáveis
+    vetCorpus[0] = this->clone();
+    vetCorpus[0]->frases.clear();
+    vetCorpus[1] = this->clone();
+    vetCorpus[1]->frases.clear();
+
+    for( register int i = 0; i < qtd_sentencas; i++ )
+        if( vetIndices[i] )
+            vetCorpus[1]->frases.push_back( frases[i] );
+        else
+            vetCorpus[0]->frases.push_back( frases[i] );
+
+    vetCorpus[0]->qtd_sentencas = vetCorpus[0]->frases.size();
+    vetCorpus[1]->qtd_sentencas = vetCorpus[1]->frases.size();
+
+    return vetCorpus;
+}
+
+vector< Corpus* > Corpus::splitCorpus( int dobras )
+{
+    vector< Corpus* > vetCorpus( dobras );
+    int aux, i;
+    for( i = 0; i < dobras; ++i )
+    {
+        vetCorpus[i] = this->clone();
+        vetCorpus[i]->frases.clear();
+    }
+
+    for( i = 0; i < dobras; ++i )
+    {
+        aux = (i + 1)*qtd_sentencas/dobras;
+        for( register int j = i*qtd_sentencas/dobras; j < aux; ++j )
+            vetCorpus[i]->frases.push_back( frases[j] );
+    }
+
+    for( i = 0; i < dobras; ++i )
+        vetCorpus[i]->qtd_sentencas = vetCorpus[i]->frases.size();
+
+    return vetCorpus;
+}
+
+void Corpus::operator += ( Corpus &lde )
+{
+    for( register int i = 0; i < lde.qtd_sentencas; ++i )
+        frases.push_back( lde.frases[i] );
+    qtd_sentencas += lde.qtd_sentencas;
+}
+
+void Corpus::limpaFrases()
+{
+    frases.clear();
+    qtd_sentencas = 0;
 }

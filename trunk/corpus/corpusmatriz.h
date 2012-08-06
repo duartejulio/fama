@@ -12,9 +12,10 @@ class CorpusMatriz : public Corpus
         char separador;
     public:
         void ajustarSeparador(char);
-        CorpusMatriz( vector<string> atributos = vector<string>());
+        CorpusMatriz( vector<string> atributos = vector<string>() );
         virtual bool carregarArquivo( string arquivo );
         virtual bool gravarArquivo( string arquivo );
+        virtual Corpus* clone();
 };
 
 #endif // CORPUSMATRIZ_H
