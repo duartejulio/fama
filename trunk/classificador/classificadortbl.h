@@ -2,7 +2,7 @@
 #define CLASSIFICADORTBL_H
 
 #include "classificador.h"
-#include "maisprovavel.h"
+#include "../treinador/maisprovavel.h"
 #include <fstream>
 #define LIM_FREQ_UNKNOWN 3
 #define ATRBT_ANALISADO 1
