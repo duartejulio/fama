@@ -93,7 +93,6 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
         qtd_atributos = atributos.size();
         for( register int i = 0; i < qtd_atributos; ++i )
             posAtributos[atributos[i]] = i;
-        frases[0][0].resize( qtd_atributos );
 
         //verifica se os atributos foram carregados
         if( !qtd_atributos )
@@ -104,6 +103,11 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
         else
             cout << qtd_atributos << " atributos carregados com sucesso." << endl;
     }
+
+    qtd_sentencas = 1;
+    frases.resize(1);
+    frases[0].resize(1);
+    frases[0][0].resize( qtd_atributos );
 
     int row = 0, column = 0, contador = -1,count = 0;
 
@@ -226,4 +230,9 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
     cout << "Arquivo <" << arquivo << "> gravado com sucesso!" << endl;
 
     return true;
+}
+
+Corpus* CorpusMatriz::clone()
+{
+    return new CorpusMatriz( atributos );
 }

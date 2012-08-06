@@ -4,16 +4,19 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 class Corpus
 {
     public:
-        Corpus( vector<string> atributos = vector<string>());
+        Corpus( vector<string> atributos = vector<string>() );
         virtual ~Corpus();
         virtual bool carregarArquivo( string arquivo ) = 0;
         virtual bool gravarArquivo( string arquivo ) = 0;
+        virtual Corpus* clone() = 0;
         string pegarSimbolo( int indice );
         int pegarIndice( string simbolo );
         bool criarAtributo( string atributo, string valorAtributo );
@@ -28,6 +31,10 @@ class Corpus
         string pegarAtributo( int indice );
         int pegarPosAtributo( string atributo );
         vector<string> pegarAtributos();
+        vector< Corpus* > splitCorpus( float percTotal );
+        vector< Corpus* > splitCorpus( int dobras );
+        void operator += ( Corpus &lde );
+        void limpaFrases();
     protected:
         map<string,int> posAtributos;
         vector<string> atributos;
