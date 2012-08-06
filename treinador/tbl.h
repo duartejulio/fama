@@ -2,10 +2,9 @@
 #define TBL_H
 
 #include "treinador.h"
-#include "classificadortbl.h"
+#include "../classificador/classificadortbl.h"
 #include "maisprovavel.h"
-#include "regra.h"
-#include <algorithm>
+#include "../outros/regra.h"
 #include <cmath>
 #define ATRBT_CLASSIFICADO 0
 

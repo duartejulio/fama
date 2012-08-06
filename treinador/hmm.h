@@ -2,7 +2,7 @@
 #define HMM_H
 
 #include "treinador.h"
-#include "classificadorhmm.h"
+#include "../classificador/classificadorhmm.h"
 
 class HMM : public Treinador
 {

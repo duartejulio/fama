@@ -2,7 +2,7 @@
 #define MAISPROVAVEL_H
 
 #include "treinador.h"
-#include "classificador_maisprovavel.h"
+#include "../classificador/classificador_maisprovavel.h"
 
 
 class MaisProvavel : public Treinador
