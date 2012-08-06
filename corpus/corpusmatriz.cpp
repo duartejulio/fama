@@ -234,5 +234,5 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
 
 Corpus* CorpusMatriz::clone()
 {
-    return new CorpusMatriz( atributos );
+    return new CorpusMatriz( *this );
 }
