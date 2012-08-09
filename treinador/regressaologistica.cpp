@@ -1,6 +1,6 @@
 #include "regressaologistica.h"
 
-#include "auxfunc.h"
+#include "../outros/auxfunc.h"
 
 #include <string>
 #include <sstream>
@@ -14,20 +14,20 @@ bool ClassificadorRegressaoLogistica::executarClassificacao(Corpus &corpus, int 
     float total, val;
     string c;
 
-    m = corpus.pegarQtdTokens(0);//numero de exemplos
+    m = corpus.pegarQtdConjExemplos();//numero de exemplos
     n = theta.size();//numero de atributos + 1
 
     for (i=0; i<m; i++){
         total = 1.0*theta[0];
         for (j=0; j < n-1; j++){
-            v = corpus.pegarValor(0, i, j);
+            v = corpus.pegarValor(i, 0, j);
 
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
             total += theta[j + 1]*val;
         }
 
         c = classes[(sigmoid(total) >= 0.5)?1:0];
-        corpus.ajustarValor(0, i, atributo, corpus.pegarIndice(c));
+        corpus.ajustarValor(i, 0, atributo, corpus.pegarIndice(c));
     }
     return true;
 }
@@ -92,7 +92,6 @@ void gradientDescentLog(float **X, int *y, float *theta, int m, int n, float alp
     delete[] sum;
 }
 
-
 Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atributo )
 {
     ClassificadorRegressaoLogistica *objClassificador = new ClassificadorRegressaoLogistica;
@@ -104,7 +103,7 @@ Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atri
     classeMap[classes[1]] = 1;
 
     n = atributo + 1;
-    m = corpus.pegarQtdTokens(0);
+    m = corpus.pegarQtdConjExemplos();
     X = new float*[m];
     y = new int[m];
 
@@ -113,12 +112,12 @@ Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atri
         X[i] = new float[n];
         X[i][0] = 1.0;
         for (j=0; j<atributo;j++){
-            v = corpus.pegarValor(0, i, j);
+            v = corpus.pegarValor(i, 0, j);
 
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
             X[i][j + 1] = val;
         }
-        v = corpus.pegarValor(0, i, atributo);
+        v = corpus.pegarValor(i, 0, atributo);
 
         y[i] = classeMap[corpus.pegarSimbolo(v)];
     }
