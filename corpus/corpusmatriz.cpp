@@ -1,10 +1,11 @@
 #include "corpusmatriz.h"
 
-CorpusMatriz::CorpusMatriz( vector<string> atributos )
+CorpusMatriz::CorpusMatriz( vector<string> atributos, char separador, bool dividirExemplos)
     :Corpus( atributos )
 {
     //ctor
-    separador = '_';
+    this->separador = separador;
+    this->dividirExemplos = dividirExemplos;
 }
 
 void CorpusMatriz::ajustarSeparador( char separador )
@@ -167,9 +168,17 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
             }
             else
             {
-            frases[row].resize( ++column + 1 ); //desloca p/ o proximo elemento da matriz na mesma linha
-            frases[row][column].resize( qtd_atributos );
-        }
+                if (dividirExemplos){
+                    frases.resize( ++row + 1 ); //desloca para a proxima linha na matriz ( proxima frase no texto )
+                    frases[row].resize(1);
+                    frases[row][0].resize( qtd_atributos );
+                    column = 0;
+                }
+                else{
+                    frases[row].resize( ++column + 1 ); //desloca p/ o proximo elemento da matriz na mesma linha
+                    frases[row][column].resize( qtd_atributos );
+                }
+            }
         }
         else
         {
