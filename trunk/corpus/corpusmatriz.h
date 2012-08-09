@@ -10,9 +10,11 @@ class CorpusMatriz : public Corpus
 {
     private:
         char separador;
+        bool dividirExemplos;
     public:
         void ajustarSeparador(char);
-        CorpusMatriz( vector<string> atributos = vector<string>() );
+        CorpusMatriz( vector<string> atributos = vector<string>(),
+                      char separador = '_', bool dividirExemplos = false);
         virtual bool carregarArquivo( string arquivo );
         virtual bool gravarArquivo( string arquivo );
         virtual Corpus* clone();
