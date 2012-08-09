@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FamaTeste" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\FamaTeste" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\FamaTeste" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="..\avaliador\Avaliador.cpp" />
+		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\classificador\classificador.cpp" />
+		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpusmatriz.cpp" />
+		<Unit filename="..\outros\auxfunc.cpp" />
+		<Unit filename="avaliador.h" />
+		<Unit filename="avaliador_acuracia.h" />
+		<Unit filename="classificador.h" />
+		<Unit filename="classificador_maisprovavel.h" />
+		<Unit filename="classificadorhmm.h" />
+		<Unit filename="classificadortbl.h" />
+		<Unit filename="corpus.h" />
+		<Unit filename="corpusmatriz.h" />
+		<Unit filename="hmm.h" />
+		<Unit filename="mainRL.cpp" />
+		<Unit filename="maisprovavel.h" />
+		<Unit filename="tbl.h" />
+		<Unit filename="treinador.h" />
+		<Unit filename="..\treinador\regressaolinear.cpp" />
+		<Unit filename="..\treinador\treinador.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
