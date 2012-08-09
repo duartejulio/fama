@@ -73,19 +73,21 @@
 	"stump.h"
 	<cmath>
 
-1329838161 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_acuracia.cpp
+1343915365 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_acuracia.cpp
 	"avaliador_acuracia.h"
 
 1329838154 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_acuracia.h
 	"avaliador.h"
 
-1341854126 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador.h
+1341854668 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador.h
 	"../corpus/corpus.h"
 
-1341319206 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpus.h
+1344524529 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpus.h
 	<iostream>
 	<vector>
 	<map>
+	<cstdlib>
+	<ctime>
 
 1329838162 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\classificador\classificador.cpp
 	"classificador.h"
@@ -96,10 +98,10 @@
 1341318602 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpus.cpp
 	"corpus.h"
 
-1341319592 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.cpp
+1344524529 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.cpp
 	"corpusmatriz.h"
 
-1341319244 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.h
+1344524529 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.h
 	<fstream>
 	"corpus.h"
 
