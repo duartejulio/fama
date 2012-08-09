@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 
+
 #include <stdlib.h>
 
 bool ClassificadorRegressaoLinear::executarClassificacao(Corpus &corpus, int atributo){
@@ -13,20 +14,20 @@ bool ClassificadorRegressaoLinear::executarClassificacao(Corpus &corpus, int atr
     float total, val;
     string c;
 
-    m = corpus.pegarQtdTokens(0);//numero de exemplos
+    m = corpus.pegarQtdConjExemplos();//numero de exemplos
     n = theta.size();//numero de atributos + 1
 
     for (i=0; i<m; i++){
         total = 1.0*theta[0];
         for (j=0; j < n-1; j++){
-            v = corpus.pegarValor(0, i, j);
+            v = corpus.pegarValor(i, 0, j);
 
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
             total += theta[j + 1]*val;
         }
 
         c = total;
-        corpus.ajustarValor(0, i, atributo, corpus.pegarIndice(c));
+        corpus.ajustarValor(i, 0, atributo, corpus.pegarIndice(c));
     }
     return true;
 }
@@ -97,8 +98,9 @@ Classificador* RegressaoLinear::executarTreinamento( Corpus &corpus, int atribut
     float **X, *y, *theta, val;
     int i, j, m, v, n;
 
+
     n = atributo + 1;
-    m = corpus.pegarQtdTokens(0);
+    m = corpus.pegarQtdConjExemplos();
     X = new float*[m];
     y = new float[m];
 
@@ -107,12 +109,12 @@ Classificador* RegressaoLinear::executarTreinamento( Corpus &corpus, int atribut
         X[i] = new float[n];
         X[i][0] = 1.0;
         for (j=0; j<atributo;j++){
-            v = corpus.pegarValor(0, i, j);
+            v = corpus.pegarValor(i, 0, j);
 
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
             X[i][j + 1] = val;
         }
-        v = corpus.pegarValor(0, i, atributo);
+        v = corpus.pegarValor(i, 0, atributo);
 
         (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
         y[i] = val;
