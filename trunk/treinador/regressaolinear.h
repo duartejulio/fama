@@ -8,9 +8,7 @@
 using namespace std;
 
 class ClassificadorRegressaoLinear:public Classificador{
-    private:
         vector<float> theta;
-
     public:
         ClassificadorRegressaoLinear(){
         }
@@ -29,8 +27,9 @@ class ClassificadorRegressaoLinear:public Classificador{
 
 class RegressaoLinear : public Treinador
 {
+        float alpha, regularizacao;
     public:
-        RegressaoLinear();
+        RegressaoLinear(float alpha = 0.01, float regularizacao = 0.0);
         virtual ~RegressaoLinear();
         virtual Classificador* executarTreinamento( Corpus &corpus, int atributo );
 };
