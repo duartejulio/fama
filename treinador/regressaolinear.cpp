@@ -12,7 +12,7 @@
 bool ClassificadorRegressaoLinear::executarClassificacao(Corpus &corpus, int atributo){
     int m, i, j, v, n;
     float total, val;
-    string c;
+
 
     m = corpus.pegarQtdConjExemplos();//numero de exemplos
     n = theta.size();//numero de atributos + 1
@@ -26,15 +26,17 @@ bool ClassificadorRegressaoLinear::executarClassificacao(Corpus &corpus, int atr
             total += theta[j + 1]*val;
         }
 
-        c = total;
-        corpus.ajustarValor(i, 0, atributo, corpus.pegarIndice(c));
+        //c = (string)total;
+        std::ostringstream c;
+        c << total << std::dec;
+        corpus.ajustarValor(i, 0, atributo, corpus.pegarIndice(c.str()));
     }
     return true;
 }
 
-RegressaoLinear::RegressaoLinear()
+RegressaoLinear::RegressaoLinear(float alpha, float regularizacao):
+ alpha(alpha), regularizacao(regularizacao)
 {
-
 }
 
 RegressaoLinear::~RegressaoLinear()
@@ -61,7 +63,9 @@ float calculaCustoLin(float **X, float *y, float *theta, int m, int n){
     //
 }
 
-void gradientDescentLin(float **X, float *y, float *theta, int m, int n, float alpha = 0.01, int num_iters = 1500){
+void gradientDescentLin(float **X, float *y, float *theta, int m, int n,
+                        float alpha = 0.01, float regularizacao = 0,
+                        int num_iters = 1500){
     int iter, i, j;
     float *HO, *sum, A;
 
@@ -83,9 +87,9 @@ void gradientDescentLin(float **X, float *y, float *theta, int m, int n, float a
             for (j=0; j<n;j++)
                 sum[j] += A*X[i][j];
         }
-
-        for (j=0; j<n;j++)
-            theta[j] -= alpha*sum[j]/m;
+        theta[0] -= alpha*sum[0]/m;
+        for (j=1; j<n;j++)
+            theta[j] = theta[j]*(1 - alpha*regularizacao/m) - alpha*sum[j]/m;
     }
 
     delete[] HO;
@@ -120,11 +124,10 @@ Classificador* RegressaoLinear::executarTreinamento( Corpus &corpus, int atribut
         y[i] = val;
     }
 
-    gradientDescentLin(X, y, theta, m, n);
-
+    gradientDescentLin(X, y, theta, m, n, alpha, regularizacao);
 
     objClassificador->ajustarTheta(theta, n);
-    cout << "\n" << m << " " << calculaCustoLin(X, y, theta, m, n) << "\n" << theta[0] << ", " << theta[1] << endl;
+    //cout << "\n" << m << " " << calculaCustoLin(X, y, theta, m, n) << "\n" << theta[0] << ", " << theta[1] << endl;
     delete[] theta;
     delete[] y;
     for (i=0; i<m; i++)

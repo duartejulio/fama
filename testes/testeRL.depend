@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1344529117 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\testes\mainrl.cpp
+1344962829 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\testes\mainrl.cpp
 	<iostream>
 	<vector>
 	<cstdio>
 	<cstdlib>
 	"../corpus/corpusmatriz.h"
 	"../treinador/regressaolinear.h"
+	"../avaliador/avaliador_diferenca.h"
 
 1344529079 c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.h
 	<fstream>
@@ -18,7 +19,7 @@
 	<cstdlib>
 	<ctime>
 
-1340817571 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.h
+1344948928 c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.h
 	<map>
 	<vector>
 	"treinador.h"
@@ -33,7 +34,7 @@
 1344529419 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\corpus\corpusmatriz.cpp
 	"corpusmatriz.h"
 
-1341854517 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.cpp
+1344961221 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\treinador\regressaolinear.cpp
 	"regressaolinear.h"
 	"../outros/auxfunc.h"
 	<string>
@@ -66,5 +67,14 @@
 	"avaliador_acuracia.h"
 
 1329838154 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_acuracia.h
+	"avaliador.h"
+
+1344963041 source:c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_diferenca.cpp
+	"avaliador_diferenca.h"
+	<cmath>
+	<sstream>
+	<iostream>
+
+1344962310 c:\users\duarte\documents\projetos\ipmachinelearning\fama\avaliador\avaliador_diferenca.h
 	"avaliador.h"
 

@@ -32,7 +32,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="..\avaliador\Avaliador.cpp" />
-		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\avaliador\avaliador_diferenca.cpp" />
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
