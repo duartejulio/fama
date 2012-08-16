@@ -1,8 +1,9 @@
 #include "validador.h"
 
-Validador::Validador()
+Validador::Validador( Avaliador &avaliador, int numeroIteracoes )
 {
-    //ctor
+    this->avaliador = &avaliador;
+    this->numeroIteracoes = numeroIteracoes;
 }
 
 Validador::~Validador()
@@ -18,5 +19,12 @@ bool Validador::ajustarAvaliador( Avaliador &avaliador )
         return false;
     }
     this->avaliador = &avaliador;
+    return true;
+}
+
+bool Validador::ajustarNumeroIteracoes( int numeroIteracoes )
+{
+    if( numeroIteracoes <= 0 ) return false;
+    this->numeroIteracoes = numeroIteracoes;
     return true;
 }

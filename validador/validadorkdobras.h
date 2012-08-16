@@ -2,15 +2,15 @@
 #define VALIDADORKDOBRAS_H
 
 #include "validador.h"
-
+#include <cstdlib>
+#include <ctime>
 
 class ValidadorKDobras : public Validador
 {
-        int dobras;
     public:
-        ValidadorKDobras( int dobras );
+        ValidadorKDobras( Avaliador &avaliador, int dobras );
         virtual ~ValidadorKDobras();
-        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus );
+        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
 
 };
 

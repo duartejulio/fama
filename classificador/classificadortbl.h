@@ -13,7 +13,7 @@ class ClassificadorTBL : public Classificador
         vector< multimap< int, vector< string > > > regras;
         vector< string > respRegras;
     public:
-        ClassificadorTBL( Classificador* classInicial );
+        ClassificadorTBL( Classificador* classInicial, string atributoChute = NULL );
         virtual ~ClassificadorTBL();
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo );
         void inserirRegra( multimap< int, vector< string > > rule, string resp );

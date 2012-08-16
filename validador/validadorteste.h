@@ -6,11 +6,11 @@
 
 class ValidadorTeste : public Validador
 {
-        Corpus *corpusTreino;
+        Corpus *corpusTeste;
     public:
-        ValidadorTeste( Corpus &corpusTreino );
+        ValidadorTeste( Avaliador &avaliador, Corpus &corpusTeste );
         virtual ~ValidadorTeste();
-        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus );
+        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
 };
 
 #endif // VALIDADORTESTE_H

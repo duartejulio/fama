@@ -1,8 +1,9 @@
 #include "validadorteste.h"
 
-ValidadorTeste::ValidadorTeste( Corpus &corpusTreino )
+ValidadorTeste::ValidadorTeste( Avaliador &avaliador, Corpus &corpusTeste ) :
+Validador( avaliador, 1 )
 {
-    this->corpusTreino = &corpusTreino;
+    this->corpusTeste = &corpusTeste;
 }
 
 ValidadorTeste::~ValidadorTeste()
@@ -10,10 +11,10 @@ ValidadorTeste::~ValidadorTeste()
     //dtor
 }
 
-vector< vector< float > > ValidadorTeste::executarExperimento( Treinador &treinador, Corpus &corpus )
+vector< vector< float > > ValidadorTeste::executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste )
 {
     vector< vector< float > > resultado;
-    treinador.executarTreinamento( *corpusTreino, ATRBT_ANALISADO )->executarClassificacao( corpus, ATRBT_CLASSIFICADO );
-    resultado.push_back( avaliador->calcularDesempenho( corpus, ATRBT_ANALISADO, corpus.pegarQtdAtributos() - 1 ) );
+    treinador.executarTreinamento( corpus, atributoTreino )->executarClassificacao( *corpusTeste, atributoTeste );
+    resultado.push_back( avaliador->calcularDesempenho( corpus, atributoTreino, atributoTeste ) );
     return resultado;
 }

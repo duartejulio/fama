@@ -1,9 +1,22 @@
 #include "classificador_maisprovavel.h"
 
+ClassificadorMaisProvavel::ClassificadorMaisProvavel( string atributoBase ) :
+Classificador( atributoBase )
+{
+
+}
+
 bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int atributo )
 {
-    corpusProva.criarAtributo( "pos", "N" );
-    int tam_atributos = corpusProva.pegarQtdAtributos() - 1, row = corpusProva.pegarQtdSentencas(), column;
+    //corpusProva.criarAtributo( "pos", "N" );
+    int atributo_base;
+    if( ( atributo_base = corpusProva.pegarPosAtributo( atributoBase ) ) == -1 )
+    {
+        cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
+        return false;
+    }
+
+    int row = corpusProva.pegarQtdSentencas(), column;
     map< string, string >::iterator it, it_end;
     int valorUnknow = corpusProva.pegarIndice( unknown ); //otimização p/ corpus com mtos unknown
 
@@ -36,7 +49,7 @@ bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int 
     {
         column = corpusProva.pegarQtdTokens( i );
         for ( register int j = 0; j < column; ++j )
-            corpusProva.ajustarValor( i, j, tam_atributos, vetorControlePal[ corpusProva.pegarValor( i, j, atributo ) ] );
+            corpusProva.ajustarValor( i, j, atributo, vetorControlePal[ corpusProva.pegarValor( i, j, atributo_base ) ] );
     }
 
     cout << "Classificacao MaisProvavel: executada" <<endl;
@@ -63,6 +76,7 @@ bool ClassificadorMaisProvavel::gravarConhecimento( string arquivo )
     }
     map< string, string >::iterator it, it_end;
 
+    arqout << atributoBase << endl;
     arqout << unknown << endl;
     it_end = controlePalavras.end();
     for( it = controlePalavras.begin(); it != it_end; ++it )
@@ -88,6 +102,7 @@ bool ClassificadorMaisProvavel::carregarConhecimento( string arquivo )
     }
     string aux;
 
+    arqin >> atributoBase;
     arqin >> unknown;
     while( arqin >> aux && arqin.good() )
         arqin >> controlePalavras[ aux ];

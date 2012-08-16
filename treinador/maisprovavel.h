@@ -9,7 +9,7 @@ class MaisProvavel : public Treinador
 {
         int toleranciaUnknow;
     public:
-        MaisProvavel( int toleranciaUnknow );
+        MaisProvavel( string atributoBase, int toleranciaUnknow );
         virtual ~MaisProvavel();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo );
 };

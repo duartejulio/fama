@@ -2,16 +2,16 @@
 #define VALIDADORDIVISAO_H
 
 #include "validador.h"
-
+#include <cstdlib>
+#include <ctime>
 
 class ValidadorDivisao : public Validador
 {
         float percTeste;
-        int numeroIteracoes;
     public:
-        ValidadorDivisao( float percTeste, int numeroIteracoes );
+        ValidadorDivisao( Avaliador &avaliador, int numeroIteracoes, float percTeste );
         virtual ~ValidadorDivisao();
-        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus );
+        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
 };
 
 #endif // VALIDADORDIVISAO_H

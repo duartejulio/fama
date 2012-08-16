@@ -11,6 +11,7 @@ class ClassificadorHMM : public Classificador
         map< string, map< string, double > > tabFreqObservacoes;
         map< string, double > vetInicial;
     public:
+        ClassificadorHMM( string atributoBase = NULL );
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo );
         void definirMatrizTransicao( map< string, map< string, double > > matrizTransicao );
         void ajustarTabFreqObservacoes( string pos, string palavra );

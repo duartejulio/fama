@@ -1,6 +1,7 @@
 #include "tbl.h"
 
-TBL::TBL( Classificador* classInicial, string arqMoldeRegras, int toleranciaScore )
+TBL::TBL( Classificador* classInicial, string arqMoldeRegras, string atributoChute, int toleranciaScore ) :
+Treinador( atributoChute ) //aqui o atributo base será pos
 {
     this->classInicial = classInicial;
     this->toleranciaScore = toleranciaScore;
@@ -18,11 +19,11 @@ bool TBL::contemEstrutura( multimap< int, vector< int > > estrutura, multimap< i
     multimap<int, vector< int > >::iterator linha, linha_end, bp, bp_end;
     pair< multimap<int, vector< int > >::iterator, multimap<int, vector< int > >::iterator > bounds;
 
-    linha_end = bestEstrutura.end();
-    for( linha = bestEstrutura.begin(); linha != linha_end; ++linha )
+    linha_end = estrutura.end();
+    for( linha = estrutura.begin(); linha != linha_end; ++linha )
     {
         encontrou = false;
-        bounds = estrutura.equal_range( linha->first );
+        bounds = bestEstrutura.equal_range( linha->first );
         bp_end = bounds.second;
         for( bp = bounds.first; bp != bp_end; ++bp )
             if( bp->second == linha->second )
@@ -37,8 +38,22 @@ bool TBL::contemEstrutura( multimap< int, vector< int > > estrutura, multimap< i
 
 Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
 {
-    ClassificadorTBL *objClassificador = new ClassificadorTBL( classInicial );
-    int row = corpus.pegarQtdSentencas(), column, numMoldeRegras = this->moldeRegras.size(), qtdAtributos, maxScore = toleranciaScore, aux, frases_ijReal, tam_fronteira, lim_fronteira, tam_indices;
+    int atributo_chute;
+    if( ( atributo_chute = corpus.pegarPosAtributo( atributoBase ) ) == -1 )
+    {
+        cout << "Erro: executarTreinamento!\nAtributo inexistente!" << endl;
+        return NULL;
+    }
+
+    //Classificação inicial do corpus
+    if( !classInicial->executarClassificacao( corpus, atributo_chute ) )
+    {
+        cout << "Erro: executarTreinamento!\nClassificacao BLS nao executada!" << endl;
+        return NULL;
+    }
+
+    ClassificadorTBL *objClassificador = new ClassificadorTBL( classInicial, atributoBase );
+    int row = corpus.pegarQtdSentencas(), column, numMoldeRegras = this->moldeRegras.size(), maxScore = toleranciaScore, aux, frases_ijReal, tam_fronteira, lim_fronteira, tam_indices;
     bool moldeInvalido, regraInvalida;
     multimap< int, vector< int > > var, bestEstrutura;
     vector< int > vet(2), vetIndices;
@@ -60,9 +75,6 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
     vector< multimap< int, vector< int > > > regrasArmazenadas;
     vector< multimap< int, int> > moldeRegras( numMoldeRegras );
 
-
-    //Classificação inicial do corpus
-    classInicial->executarClassificacao( corpus, ATRBT_CLASSIFICADO );
 
     //converter molde de regras
     int tamMinMolde = 999999999, tamMaxMolde = -999999999;
@@ -88,14 +100,12 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
         itMoldes_rbegin[L] = moldeRegras[L].rbegin();
     }
 
-    qtdAtributos = corpus.pegarQtdAtributos();
-
     //cria as regras temporárias e calcula o good de cada regra
     for( i = 0; i < row; ++i )
     {
         column = corpus.pegarQtdTokens( i );
         for( j = 0; j < column; ++j )
-            if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j, qtdAtributos - 1) )
+            if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j, atributo_chute) )
                 for( L = 0; L < numMoldeRegras; ++L )
                 {
                     if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
@@ -131,7 +141,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
         column = corpus.pegarQtdTokens( i );
         //cout << (double)i/row << endl;
         for( j = 0; j < column; ++j )
-            if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
+            if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,atributo_chute) )
                 for( L = 0; L < numMoldeRegras; ++L )
                 {
                     if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
@@ -199,7 +209,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                         regraInvalida = true;
                         break;
                     }
-                if( !regraInvalida && corpus.pegarValor(i,j,qtdAtributos-1) != maxIndice->second.resp )
+                if( !regraInvalida && corpus.pegarValor(i,j,atributo_chute) != maxIndice->second.resp )
                     vetIndices.push_back( j );
             }
 
@@ -227,7 +237,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             {
                 lim_fronteira = fronteira[k][1];
                 for( j = fronteira[k][0]; j <= lim_fronteira; ++j )
-                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
+                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,atributo_chute) )
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
                             if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;;
@@ -270,13 +280,13 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             }
 
             for( j = 0; j < tam_indices; ++j )
-                corpus.ajustarValor(i,vetIndices[j],qtdAtributos - 1,maxIndice->second.resp);
+                corpus.ajustarValor(i,vetIndices[j],atributo_chute,maxIndice->second.resp);
 
             for( k = 0; k < tam_fronteira; ++k )
             {
                 lim_fronteira = fronteira[k][1];
                 for( j = fronteira[k][0]; j <= lim_fronteira; ++j )
-                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j,qtdAtributos-1) )
+                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) != corpus.pegarValor(i,j,atributo_chute) )
                         for( L = 0; L < numMoldeRegras; ++L ) //aplicar molde de regras na vizinhança da palavra alterada
                         {
                             if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
@@ -359,7 +369,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
             {
                 column = corpus.pegarQtdTokens( i );
                 for( j = 0; j < column; ++j )
-                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
+                    if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,atributo_chute) )
                         for( L = 0; L < numMoldeRegras; ++L )
                         {
                             if( j + itMoldes_begin[L]->first < 0 || j + itMoldes_rbegin[L]->first >= column ) continue;
@@ -416,7 +426,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
                     for( j = 0; j < column; ++j )
                     {
                         if( j + linha_inicio->first < 0 || j + linha_ultimo->first >= column ) continue;
-                        if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,qtdAtributos-1) )
+                        if( ( frases_ijReal = corpus.pegarValor(i,j,atributo) ) == corpus.pegarValor(i,j,atributo_chute) )
                         {
                             if( M == frases_ijReal ) continue;
                             regraInvalida = false;

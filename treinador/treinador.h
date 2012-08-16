@@ -6,8 +6,10 @@
 
 class Treinador
 {
+    protected:
+        string atributoBase;
     public:
-        Treinador();
+        Treinador( string atributoBase );
         virtual ~Treinador();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo ) = 0;
 };
