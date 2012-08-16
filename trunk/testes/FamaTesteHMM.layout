@@ -58,8 +58,8 @@
 	<File name="hmm.h" open="0" top="0" tabpos="6">
 		<Cursor position="243" topLine="0" />
 	</File>
-	<File name="mainRL.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="240" topLine="0" />
+	<File name="mainRL.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="550" topLine="0" />
 	</File>
 	<File name="maisprovavel.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="188" topLine="3" />
@@ -67,7 +67,7 @@
 	<File name="maisprovavel.h" open="0" top="0" tabpos="5">
 		<Cursor position="315" topLine="0" />
 	</File>
-	<File name="regressaolinear.cpp" open="1" top="1" tabpos="14">
+	<File name="regressaolinear.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="141" topLine="0" />
 	</File>
 	<File name="regressaologistica.cpp" open="1" top="0" tabpos="12">
