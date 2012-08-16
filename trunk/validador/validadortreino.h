@@ -6,9 +6,9 @@
 class ValidadorTreino : public Validador
 {
     public:
-        ValidadorTreino();
+        ValidadorTreino( Avaliador &avaliador );
         virtual ~ValidadorTreino();
-        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus );
+        vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
 };
 
 #endif // VALIDADORTREINO_H

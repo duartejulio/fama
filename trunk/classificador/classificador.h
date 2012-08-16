@@ -5,8 +5,10 @@
 
 class Classificador
 {
+    protected:
+        string atributoBase;
     public:
-        Classificador();
+        Classificador( string atributoBase );
         virtual ~Classificador();
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo ) = 0;
         virtual bool gravarConhecimento( string arquivo ) = 0;

@@ -1,6 +1,7 @@
 #include "maisprovavel.h"
 
-MaisProvavel::MaisProvavel( int toleranciaUnknow )
+MaisProvavel::MaisProvavel( string atributoBase, int toleranciaUnknow ) :
+Treinador( atributoBase )
 {
     this->toleranciaUnknow = toleranciaUnknow;
 }
@@ -22,7 +23,14 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     *  que será classificado. Ex: Se quisermos classificar segundo "pos" fazemos (atributo = 1).
     *
     */
-    ClassificadorMaisProvavel *objClassificador = new ClassificadorMaisProvavel();
+    int atributo_base;
+    if( ( atributo_base = corpus.pegarPosAtributo( atributoBase ) ) == -1 )
+    {
+        cout << "Erro: executarTreinamento!\nAtributo inexistente!" << endl;
+        return NULL;
+    }
+
+    ClassificadorMaisProvavel *objClassificador = new ClassificadorMaisProvavel( atributoBase );
     map< int, map< int, int > > tabelaFreq;
     int row = corpus.pegarQtdSentencas(), column;
 
@@ -38,7 +46,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
         column = corpus.pegarQtdTokens( i );
 
     	for ( register int j = 0; j < column; ++j )
-            ++tabelaFreq[ corpus.pegarValor(i,j,0) ][ corpus.pegarValor(i,j,atributo) ];
+            ++tabelaFreq[ corpus.pegarValor(i,j,atributo_base) ][ corpus.pegarValor(i,j,atributo) ];
     }
 
     cout << "Tabela de Frequencias gerada" << endl;
@@ -91,7 +99,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     if( flag )
         objClassificador->ajustarUnknown( corpus.pegarSimbolo( NumUnknow ) );
     else
-        objClassificador->ajustarUnknown( "NPROP" );
+        objClassificador->ajustarUnknown( corpus.pegarSimbolo( corpus.pegarValor( 0,0,atributo ) ) );
 
     cout << "Vetor de Frequencias gerado" << endl;
     return objClassificador;

@@ -7,6 +7,7 @@
 class HMM : public Treinador
 {
     public:
+        HMM( string atributoBase );
         virtual ~HMM();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo );
 };

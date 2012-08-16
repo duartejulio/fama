@@ -1,8 +1,9 @@
 #include "validadorkdobras.h"
 
-ValidadorKDobras::ValidadorKDobras( int dobras )
+ValidadorKDobras::ValidadorKDobras( Avaliador &avaliador, int dobras ) :
+Validador( avaliador, dobras )
 {
-    this->dobras = dobras;
+
 }
 
 ValidadorKDobras::~ValidadorKDobras()
@@ -10,22 +11,31 @@ ValidadorKDobras::~ValidadorKDobras()
     //dtor
 }
 
-vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &treinador, Corpus &corpus )
+vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste )
 {
+    double contador;
+    int qtd_sentencas, aux;
     vector< vector< float > > resultado;
     vector< Corpus* > vetCorpus;
-    Corpus *acumulador = corpus.clone();
-    acumulador->limpaFrases();
+    vector< int > vetMascara( qtd_sentencas = corpus.pegarQtdSentencas() );
 
-    vetCorpus = corpus.splitCorpus( dobras );
-    for( int i = 0; i < dobras; ++i )
+    srand( time( NULL ) );
+    for( int i = 0; i < numeroIteracoes; ++i )
     {
-        for( register int j = 0; j < dobras; ++j )
-            if( j != i ) *acumulador += *vetCorpus[j];
-        treinador.executarTreinamento( *acumulador, ATRBT_ANALISADO )->executarClassificacao( *vetCorpus[i], ATRBT_CLASSIFICADO );
-        resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[i], ATRBT_ANALISADO, corpus.pegarQtdAtributos() - 1 ) );
-        acumulador->limpaFrases();
+        //ineficiente qdo i grande
+        for( contador = .0; contador*numeroIteracoes <= qtd_sentencas; ++contador )
+            if( !vetMascara[aux = rand()%qtd_sentencas] )
+                vetMascara[aux] = 1;
+            else
+            {
+                while( !vetMascara[++aux%=qtd_sentencas] );
+                vetMascara[aux] = 1;
+            }
+
+        vetCorpus = corpus.splitCorpus( vetMascara );
+        treinador.executarTreinamento( *vetCorpus[0], atributoTreino )->executarClassificacao( *vetCorpus[1], atributoTeste );
+        resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[1], atributoTreino, atributoTeste ) );
+        vetCorpus.clear(); ///mesmo problema do validadorDivisao
     }
-    vetCorpus.clear();
     return resultado;
 }

@@ -1,5 +1,11 @@
 #include "classificadorhmm.h"
 
+ClassificadorHMM::ClassificadorHMM( string atributoBase ) :
+Classificador( atributoBase )
+{
+
+}
+
 void ClassificadorHMM::definirMatrizTransicao( map< string, map< string, double > > matrizTransicao )
 {
     this->matrizTransicao = matrizTransicao;
@@ -17,8 +23,14 @@ void ClassificadorHMM::ajustarVetInicial( string pos )
 
 bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo )
 {
-    corpusProva.criarAtributo( "pos", "N" );
-    int tam_atributos = corpusProva.pegarQtdAtributos() - 1;
+    //corpusProva.criarAtributo( "pos", "N" );
+    int atributo_base;
+    if( ( atributo_base = corpusProva.pegarPosAtributo( atributoBase ) ) == -1 )
+    {
+        cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
+        return false;
+    }
+
     int row = corpusProva.pegarQtdSentencas(), column, aux;
     vector< int > numPos; //vetor que contem valor dos POS
     map< string, map< string, double > >::iterator linha, linha_end;
@@ -100,7 +112,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 
         ///Verificar depois se transpor a matriz B nao afeta em nada o codigo
         //preenchimento do estado inicial
-        if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,0,atributo) ) != linhaInt_end )
+        if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,0,atributo_base) ) != linhaInt_end )
             for( register int k = 0; k < qtdPos; ++k )
                 matrizViterbi[linhaViterbi][k] = log( vetInicialInt[ numPos[k] ] ) + log( tabFreqObservacoesInt[ aux ][ numPos[k] ] );
             //cout << corpusProva.pegarSimbolo( numPos[k] ) << ' ' << matrizViterbi[linhaViterbi][k] << ' ';
@@ -116,7 +128,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
         for( register int j = 1; j < column; ++j )
         {
             //varre os estados
-            if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,j,atributo) ) != linhaInt_end )
+            if ( tabFreqObservacoesInt.find( aux = corpusProva.pegarValor(i,j,atributo_base) ) != linhaInt_end )
                 for( register int k = 0; k < qtdPos; ++k )
                 {
                     maiorValor = 0.0;
@@ -160,7 +172,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 
         for( register int j = column - 1; j >= 0 ; --j )
         {
-            corpusProva.ajustarValor( i, j, tam_atributos, numPos[ maiorIndice ] );
+            corpusProva.ajustarValor( i, j, atributo, numPos[ maiorIndice ] );
             maiorIndice = caminho[j][ maiorIndice ];
         }
     }
@@ -176,6 +188,7 @@ bool ClassificadorHMM::gravarConhecimento( string arquivo )
         cout << "Erro:gravarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
+    arqout << atributoBase << endl;
 
     map< string, map< string, double > >::iterator linha, linha_end;
     map< string, double >::iterator coluna, coluna_end;
@@ -223,7 +236,7 @@ bool ClassificadorHMM::carregarConhecimento( string arquivo )
     char ch;
     double acumulador;
 
-
+    arqin >> atributoBase;
     arqin >> palavra1;
     while( arqin.good() )
     {

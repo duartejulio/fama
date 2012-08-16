@@ -1,8 +1,8 @@
 #include "classificador.h"
 
-Classificador::Classificador()
+Classificador::Classificador( string atributoBase )
 {
-    //ctor
+    this->atributoBase = atributoBase;
 }
 
 Classificador::~Classificador()

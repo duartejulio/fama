@@ -1,6 +1,7 @@
 #include "classificadortbl.h"
 
-ClassificadorTBL::ClassificadorTBL( Classificador* classInicial )
+ClassificadorTBL::ClassificadorTBL( Classificador* classInicial, string atributoChute ) :
+Classificador( atributoChute )
 {
     this->classInicial = classInicial;
 }
@@ -18,10 +19,19 @@ void ClassificadorTBL::inserirRegra( multimap< int, vector< string > > rule, str
 
 bool ClassificadorTBL::executarClassificacao( Corpus &corpusProva, int atributo )
 {
+    int atributo_chute;
+    if( ( atributo_chute = corpusProva.pegarPosAtributo( atributoBase ) ) == -1 )
+    {
+        cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
+        return NULL;
+    }
     //Classificação inicial
-    classInicial->executarClassificacao( corpusProva, atributo );
+    if( !classInicial->executarClassificacao( corpusProva, atributo_chute ) )
+    {
+        cout << "Erro: executarClassificacao!\nClassificacao BLS nao executada!" << endl;
+        return NULL;
+    }
 
-    int qtdAtributos = corpusProva.pegarQtdAtributos() - 1;
     int row = corpusProva.pegarQtdSentencas(), column, numRegras = regras.size(), resp;
     int i, j, L;
     bool regraInvalida;
@@ -70,7 +80,7 @@ bool ClassificadorTBL::executarClassificacao( Corpus &corpusProva, int atributo 
                         break;
                     }
                 if( !regraInvalida )
-                    corpusProva.ajustarValor(i,j,qtdAtributos,resp);
+                    corpusProva.ajustarValor(i,j,atributo,resp);
             }
         }
     }
@@ -87,6 +97,7 @@ bool ClassificadorTBL::gravarConhecimento( string arquivo )
         cout << "Erro:gravarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
+    arqout << atributoBase;
 
     int numRegras = regras.size();
     multimap< int, vector< string > >::iterator linha, linha_end;
@@ -112,6 +123,7 @@ bool ClassificadorTBL::carregarConhecimento( string arquivo )
         cout << "Erro:carregarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
+    arqin >> atributoBase;
 
     string palavra1, palavra2;
     int posicao;
