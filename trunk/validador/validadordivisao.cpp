@@ -4,6 +4,7 @@ ValidadorDivisao::ValidadorDivisao( Avaliador &avaliador, int numeroIteracoes, f
 Validador( avaliador, numeroIteracoes )
 {
     this->percTeste = percTeste;
+    srand( time( NULL ) );
 }
 
 ValidadorDivisao::~ValidadorDivisao()
@@ -13,28 +14,20 @@ ValidadorDivisao::~ValidadorDivisao()
 
 vector< vector< float > > ValidadorDivisao::executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste )
 {
-    double contador;
-    int qtd_sentencas = corpus.pegarQtdSentencas(), aux;
+    int qtd_sentencas = corpus.pegarQtdSentencas();
     vector< vector< float > > resultado;
     vector< Corpus* > vetCorpus;
+    vector< bool > vetMascara( ( int )percTeste*qtd_sentencas, true );
+    vetMascara.resize( qtd_sentencas );
 
-    srand( time( NULL ) );
     for( int i = 0; i < numeroIteracoes; ++i )
     {
-        vector< int > vetMascara( qtd_sentencas );
-        for( contador = .0; contador <= percTeste*qtd_sentencas; ++contador )
-            if( !vetMascara[aux = rand()%qtd_sentencas] )
-                vetMascara[aux] = 1;
-            else
-            {
-                while( !vetMascara[++aux%=qtd_sentencas] );
-                vetMascara[aux] = 1;
-            }
-
+        random_shuffle( vetMascara.begin(), vetMascara.end() );
         vetCorpus = corpus.splitCorpus( vetMascara );
         treinador.executarTreinamento( *vetCorpus[0], atributoTreino )->executarClassificacao( *vetCorpus[1], atributoTeste );
         resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[1], atributoTreino, atributoTeste ) );
-        vetCorpus.clear(); ///se o clear não der delete no conteudo esta ocorrendo memory leak
+        delete vetCorpus[0];
+        delete vetCorpus[1];
     }
     return resultado;
 }

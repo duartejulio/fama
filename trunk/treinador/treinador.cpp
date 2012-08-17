@@ -1,8 +1,8 @@
 #include "treinador.h"
 
-Treinador::Treinador( string atributoBase )
+Treinador::Treinador()
 {
-    this->atributoBase = atributoBase;
+
 }
 
 Treinador::~Treinador()

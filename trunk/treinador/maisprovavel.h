@@ -8,6 +8,7 @@
 class MaisProvavel : public Treinador
 {
         int toleranciaUnknow;
+        string atributoBase;
     public:
         MaisProvavel( string atributoBase, int toleranciaUnknow );
         virtual ~MaisProvavel();

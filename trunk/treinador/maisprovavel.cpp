@@ -1,9 +1,9 @@
 #include "maisprovavel.h"
 
-MaisProvavel::MaisProvavel( string atributoBase, int toleranciaUnknow ) :
-Treinador( atributoBase )
+MaisProvavel::MaisProvavel( string atributoBase, int toleranciaUnknow )
 {
     this->toleranciaUnknow = toleranciaUnknow;
+    this->atributoBase = atributoBase;
 }
 
 MaisProvavel::~MaisProvavel()
@@ -30,7 +30,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
         return NULL;
     }
 
-    ClassificadorMaisProvavel *objClassificador = new ClassificadorMaisProvavel( atributoBase );
+    map< string, string > controlePalavras;
     map< int, map< int, int > > tabelaFreq;
     int row = corpus.pegarQtdSentencas(), column;
 
@@ -38,7 +38,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     if ( atributo <= 0 || atributo >= ( int )corpus.pegarQtdAtributos() )
     {
         cout << "Erro:executarTreinamento!\nAtributo inexistente!" << endl;
-    	return objClassificador;
+    	return NULL;
     }
 
     for ( register int i = 0; i < row; ++i )
@@ -58,6 +58,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
     map< int, int >::iterator coluna, coluna_end;
 
     int maxOfRow, maxAtributo, NumUnknow;
+    string unknown;
     bool flag;
     //controlePalavras.resize( corpus.pegarQtdSimbolos() ); // ASSOCIA palavra COM maxAtributo
     //map< int, int > controlePalavras; // ASSOCIA palavra COM maxAtributo (utilizado caso o vetor seja esparso)
@@ -76,7 +77,7 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
             }
 
         if( maxOfRow > toleranciaUnknow )
-            objClassificador->ajustarcontrolePalavras( corpus.pegarSimbolo( linha->first ), corpus.pegarSimbolo( maxAtributo ) );
+            controlePalavras[corpus.pegarSimbolo( linha->first )] = corpus.pegarSimbolo( maxAtributo );
         else
         {
             ++listaUnknow[ maxAtributo ];
@@ -97,12 +98,12 @@ Classificador *MaisProvavel::executarTreinamento( Corpus &corpus, int atributo )
 
     //tratamento para o caso do corpus não conter nenhuma palavra que seja unknown
     if( flag )
-        objClassificador->ajustarUnknown( corpus.pegarSimbolo( NumUnknow ) );
+        unknown = corpus.pegarSimbolo( NumUnknow );
     else
-        objClassificador->ajustarUnknown( corpus.pegarSimbolo( corpus.pegarValor( 0,0,atributo ) ) );
+        unknown = corpus.pegarSimbolo( corpus.pegarValor( 0,0,atributo ) );
 
     cout << "Vetor de Frequencias gerado" << endl;
-    return objClassificador;
+    return new ClassificadorMaisProvavel( atributoBase, controlePalavras, unknown );
 
     /**
     *  Cria um novo atributo "teste" e usa o map controlePalavras

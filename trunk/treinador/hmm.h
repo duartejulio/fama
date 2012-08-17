@@ -6,6 +6,7 @@
 
 class HMM : public Treinador
 {
+        string atributoBase;
     public:
         HMM( string atributoBase );
         virtual ~HMM();

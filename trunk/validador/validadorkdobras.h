@@ -4,6 +4,7 @@
 #include "validador.h"
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 class ValidadorKDobras : public Validador
 {
