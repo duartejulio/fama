@@ -3,7 +3,7 @@
 ValidadorKDobras::ValidadorKDobras( Avaliador &avaliador, int dobras ) :
 Validador( avaliador, dobras )
 {
-
+    srand( time( NULL ) );
 }
 
 ValidadorKDobras::~ValidadorKDobras()
@@ -13,29 +13,29 @@ ValidadorKDobras::~ValidadorKDobras()
 
 vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste )
 {
-    double contador;
-    int qtd_sentencas, aux;
+    int qtd_sentencas = corpus.pegarQtdSentencas();
+    vector< int> vetDobras;
     vector< vector< float > > resultado;
     vector< Corpus* > vetCorpus;
-    vector< int > vetMascara( qtd_sentencas = corpus.pegarQtdSentencas() );
+    vector< bool > vetMascara(qtd_sentencas);
 
-    srand( time( NULL ) );
+    for( int i = 0; i < numeroIteracoes; ++i )
+        vetDobras.assign(qtd_sentencas/numeroIteracoes, i);
+
+    vetDobras.resize(qtd_sentencas, -1);
+    random_shuffle( vetDobras.begin(), vetDobras.end() );
+
     for( int i = 0; i < numeroIteracoes; ++i )
     {
-        //ineficiente qdo i grande
-        for( contador = .0; contador*numeroIteracoes <= qtd_sentencas; ++contador )
-            if( !vetMascara[aux = rand()%qtd_sentencas] )
-                vetMascara[aux] = 1;
-            else
-            {
-                while( !vetMascara[++aux%=qtd_sentencas] );
-                vetMascara[aux] = 1;
-            }
+        for( int j = 0; j < qtd_sentencas; ++j )
+            if( vetDobras[j] == i ) vetMascara[j] = true;
+            else vetMascara[j] = false;
 
         vetCorpus = corpus.splitCorpus( vetMascara );
         treinador.executarTreinamento( *vetCorpus[0], atributoTreino )->executarClassificacao( *vetCorpus[1], atributoTeste );
         resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[1], atributoTreino, atributoTeste ) );
-        vetCorpus.clear(); ///mesmo problema do validadorDivisao
+        delete vetCorpus[0];
+        delete vetCorpus[1];
     }
     return resultado;
 }

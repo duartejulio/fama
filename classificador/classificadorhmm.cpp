@@ -1,24 +1,16 @@
 #include "classificadorhmm.h"
 
-ClassificadorHMM::ClassificadorHMM( string atributoBase ) :
-Classificador( atributoBase )
+ClassificadorHMM::ClassificadorHMM( string atributoBase, map< string, double > vetInicial, map< string, map< string, double > > matrizTransicao, map< string, map< string, double > > tabFreqObservacoes )
 {
-
-}
-
-void ClassificadorHMM::definirMatrizTransicao( map< string, map< string, double > > matrizTransicao )
-{
+    this->atributoBase = atributoBase;
+    this->vetInicial = vetInicial;
     this->matrizTransicao = matrizTransicao;
+    this->tabFreqObservacoes = tabFreqObservacoes;
 }
 
-void ClassificadorHMM::ajustarTabFreqObservacoes( string pos, string palavra )
+ClassificadorHMM::ClassificadorHMM( string arquivo )
 {
-    ++tabFreqObservacoes[ pos ][ palavra ];
-}
-
-void ClassificadorHMM::ajustarVetInicial( string pos )
-{
-    ++vetInicial[ pos ];
+    carregarConhecimento( arquivo );
 }
 
 bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo )

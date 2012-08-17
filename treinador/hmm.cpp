@@ -1,8 +1,8 @@
 #include "hmm.h"
 
-HMM::HMM( string atributoBase ) : Treinador( atributoBase )
+HMM::HMM( string atributoBase )
 {
-
+    this->atributoBase = atributoBase;
 }
 
 HMM::~HMM()
@@ -19,31 +19,32 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
         return NULL;
     }
 
-    ClassificadorHMM *objClassificador = new ClassificadorHMM( atributoBase );
+    map< string, double > vetInicial;
     map< string, map< string, double > > matrizTransicao;
+    map< string, map< string, double > > tabFreqObservacoes;
     int row = corpus.pegarQtdSentencas(), column, i, j;
     double total = 0.0;
 
     if ( atributo <= 0 || atributo >= ( int )corpus.pegarQtdAtributos() )
     {
         cout << "Erro:executarTreinamento!\nAtributo inexistente!" << endl;
-    	return objClassificador;
+    	return NULL;
     }
 
     for ( i = 0; i < row; ++i )
     {
         column = corpus.pegarQtdTokens( i );
 
-        objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo_base)) );
-        objClassificador->ajustarVetInicial( corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo)) );
+        ++tabFreqObservacoes[corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo))][corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo_base))];
+        ++vetInicial[corpus.pegarSimbolo(corpus.pegarValor(i,0,atributo))];
         if( column != 1 )
         {
             for ( j = 1; j < (column - 1); ++j )
             {
-                objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo_base)) );
+                ++tabFreqObservacoes[corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo))][corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo_base))];
                 ++matrizTransicao[corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo))][corpus.pegarSimbolo(corpus.pegarValor(i,j+1,atributo))];
             }
-            objClassificador->ajustarTabFreqObservacoes( corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo)), corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo_base)) );
+            ++tabFreqObservacoes[corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo))][corpus.pegarSimbolo(corpus.pegarValor(i,j,atributo_base))];
         }
     }
 
@@ -62,9 +63,7 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
         total = 0.0;
     }
 
-    objClassificador->definirMatrizTransicao( matrizTransicao );
-
     //A principio não precisa de Unknown, sera utilizado a melhor sequencia de estados
     cout << "A, B e Pi criados" << endl;
-    return objClassificador;
+    return new ClassificadorHMM( atributoBase, vetInicial, matrizTransicao, tabFreqObservacoes );
 }

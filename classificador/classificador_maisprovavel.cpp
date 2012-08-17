@@ -1,9 +1,15 @@
 #include "classificador_maisprovavel.h"
 
-ClassificadorMaisProvavel::ClassificadorMaisProvavel( string atributoBase ) :
-Classificador( atributoBase )
+ClassificadorMaisProvavel::ClassificadorMaisProvavel( string atributoBase, map< string, string > controlePalavras, string unknown )
 {
+    this->atributoBase = atributoBase;
+    this->unknown = unknown;
+    this->controlePalavras = controlePalavras;
+}
 
+ClassificadorMaisProvavel::ClassificadorMaisProvavel( string arquivo )
+{
+    carregarConhecimento( arquivo );
 }
 
 bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int atributo )
@@ -54,16 +60,6 @@ bool ClassificadorMaisProvavel::executarClassificacao( Corpus &corpusProva, int 
 
     cout << "Classificacao MaisProvavel: executada" <<endl;
     return true;
-}
-
-void ClassificadorMaisProvavel::ajustarcontrolePalavras( string indice, string valor )
-{
-    controlePalavras[ indice ] = valor;
-}
-
-void ClassificadorMaisProvavel::ajustarUnknown( string val )
-{
-    unknown = val;
 }
 
 bool ClassificadorMaisProvavel::gravarConhecimento( string arquivo )

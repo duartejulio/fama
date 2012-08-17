@@ -164,7 +164,7 @@ vector< string > Corpus::pegarAtributos()
     return atributos;
 }
 
-vector< Corpus* > Corpus::splitCorpus( vector< int > &vetMascara )
+vector< Corpus* > Corpus::splitCorpus( vector< bool > vetMascara )
 {
     vector< Corpus* > vetCorpus( 2 );
     if( vetMascara.size() != ( unsigned )qtd_sentencas )
@@ -180,13 +180,8 @@ vector< Corpus* > Corpus::splitCorpus( vector< int > &vetMascara )
     vetCorpus[1]->frases.clear();
 
     for( register int i = 0; i < qtd_sentencas; ++i )
-        if( vetMascara[i] == 1 )
-        {
-            vetCorpus[1]->frases.push_back( frases[i] );
-            vetMascara[i] = 2;
-        }
-        else
-            vetCorpus[0]->frases.push_back( frases[i] );
+        if( vetMascara[i] ) vetCorpus[1]->frases.push_back( frases[i] );
+        else vetCorpus[0]->frases.push_back( frases[i] );
 
     vetCorpus[0]->qtd_sentencas = vetCorpus[0]->frases.size();
     vetCorpus[1]->qtd_sentencas = vetCorpus[1]->frases.size();

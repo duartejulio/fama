@@ -12,11 +12,13 @@ class ClassificadorTBL : public Classificador
         Classificador* classInicial;
         vector< multimap< int, vector< string > > > regras;
         vector< string > respRegras;
+        string atributoChute;
     public:
-        ClassificadorTBL( Classificador* classInicial, string atributoChute = NULL );
+        ClassificadorTBL( Classificador* classInicial, string atributoChute, vector< multimap< int, vector< string > > > regras, vector< string > respRegras );
+        ClassificadorTBL( Classificador* classInicial, string arquivo );
+        ClassificadorTBL( Classificador* classInicial );
         virtual ~ClassificadorTBL();
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo );
-        void inserirRegra( multimap< int, vector< string > > rule, string resp );
         virtual bool gravarConhecimento( string arquivo );
         virtual bool carregarConhecimento( string arquivo );
 };

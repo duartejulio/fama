@@ -1,7 +1,20 @@
 #include "classificadortbl.h"
 
-ClassificadorTBL::ClassificadorTBL( Classificador* classInicial, string atributoChute ) :
-Classificador( atributoChute )
+ClassificadorTBL::ClassificadorTBL( Classificador* classInicial, string atributoChute, vector< multimap< int, vector< string > > > regras, vector< string > respRegras )
+{
+    this->classInicial = classInicial;
+    this->atributoChute = atributoChute;
+    this->regras = regras;
+    this->respRegras = respRegras;
+}
+
+ClassificadorTBL::ClassificadorTBL( Classificador* classInicial, string arquivo )
+{
+    this->classInicial = classInicial;
+    carregarConhecimento( arquivo );
+}
+
+ClassificadorTBL::ClassificadorTBL( Classificador* classInicial )
 {
     this->classInicial = classInicial;
 }
@@ -11,16 +24,10 @@ ClassificadorTBL::~ClassificadorTBL()
     //dtor
 }
 
-void ClassificadorTBL::inserirRegra( multimap< int, vector< string > > rule, string resp )
-{
-    regras.push_back( rule );
-    respRegras.push_back( resp );
-}
-
 bool ClassificadorTBL::executarClassificacao( Corpus &corpusProva, int atributo )
 {
     int atributo_chute;
-    if( ( atributo_chute = corpusProva.pegarPosAtributo( atributoBase ) ) == -1 )
+    if( ( atributo_chute = corpusProva.pegarPosAtributo( atributoChute ) ) == -1 )
     {
         cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
         return NULL;
@@ -97,7 +104,7 @@ bool ClassificadorTBL::gravarConhecimento( string arquivo )
         cout << "Erro:gravarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
-    arqout << atributoBase;
+    arqout << atributoChute;
 
     int numRegras = regras.size();
     multimap< int, vector< string > >::iterator linha, linha_end;
@@ -123,7 +130,7 @@ bool ClassificadorTBL::carregarConhecimento( string arquivo )
         cout << "Erro:carregarConhecimento!\nFalha na abertura do arquivo!" << endl;
         return false;
     }
-    arqin >> atributoBase;
+    arqin >> atributoChute;
 
     string palavra1, palavra2;
     int posicao;
