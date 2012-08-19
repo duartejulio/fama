@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'janela.h'
 **
-** Created: Sun 5. Aug 00:27:16 2012
+** Created: Sun 19. Aug 17:14:20 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_Janela[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,12 +32,17 @@ static const uint qt_meta_data_Janela[] = {
 
  // slots: signature, parameters, type, tag, flags
        8,    7,    7,    7, 0x0a,
+      29,   23,    7,    7, 0x0a,
+      60,   49,    7,    7, 0x0a,
+      89,    7,    7,    7, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Janela[] = {
-    "Janela\0\0abrirArquivo()\0"
+    "Janela\0\0abrirArquivo()\0index\0"
+    "habilitarBotao(int)\0row,column\0"
+    "atributoSelecionado(int,int)\0close()\0"
 };
 
 void Janela::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -47,10 +52,12 @@ void Janela::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         Janela *_t = static_cast<Janela *>(_o);
         switch (_id) {
         case 0: _t->abrirArquivo(); break;
+        case 1: _t->habilitarBotao((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 2: _t->atributoSelecionado((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 3: _t->close(); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObjectExtraData Janela::staticMetaObjectExtraData = {
@@ -85,9 +92,9 @@ int Janela::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 4;
     }
     return _id;
 }
