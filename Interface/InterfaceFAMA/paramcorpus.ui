@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ParamCorpus</class>
+ <widget class="QDialog" name="ParamCorpus">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>236</width>
+    <height>324</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>8</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Parâmetros do CorpusMatriz</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_separador">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Separador:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_separador">
+       <property name="maximumSize">
+        <size>
+         <width>41</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>_</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QFormLayout" name="formLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_exemplos">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Dividir Exemplos:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_exemplos">
+       <property name="maximumSize">
+        <size>
+         <width>54</width>
+         <height>20</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>false</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>true</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="checkBox_atributos">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Atributos automáticos</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_numAtributos">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Nº atributos:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="spinBox_numAtributos">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>46</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::UpDownArrows</enum>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <widget class="QTableWidget" name="tableWidget_atributos">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::AllEditTriggers</set>
+     </property>
+     <property name="columnCount">
+      <number>1</number>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <column/>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox_ok">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox_ok</sender>
+   <signal>accepted()</signal>
+   <receiver>ParamCorpus</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox_ok</sender>
+   <signal>rejected()</signal>
+   <receiver>ParamCorpus</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>300</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_atributos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>ParamCorpus</receiver>
+   <slot>escolherAtributos(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>47</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>23</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_numAtributos</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ParamCorpus</receiver>
+   <slot>redimensionarTabela(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>ajustarSeparador(QString)</slot>
+  <slot>ajustarDivisor(int)</slot>
+  <slot>escolherAtributos(bool)</slot>
+  <slot>redimensionarTabela(int)</slot>
+ </slots>
+</ui>
