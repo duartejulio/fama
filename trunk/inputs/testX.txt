@@ -1,4 +1,4 @@
-[features = word, pos, adpos] [separator=_] [taggingTime=00:00:00]
+[features = word, pos, adpos] [separator=_] [taggingTime=00:00:01]
 #0
 ## MASK:False - REVS:0 - DOC:ag94fe1.train.txt - SGN:0
 Centro_NPROP_O

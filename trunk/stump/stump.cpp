@@ -98,7 +98,7 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
                 mValor = it->first;
                 mClasse = (qualidade<0)?classes[0]:classes[1];
                 melhorQualidade = (int)fabs(qualidade);
-                cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
+                //cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
             }
             //cout << i << " - " << a << " - " << atributos[a] << " - " << it->first << " - " << ((qualidade<0)?classes[0]:classes[1]) << " - " << qualidade << endl;
         }

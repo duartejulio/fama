@@ -3,8 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "corpusmatriz.h"
-#include "avaliador_acuracia.h"
+#include "../corpus/corpusmatriz.h"
+#include "../avaliador/avaliador_acuracia.h"
 #include "stump.h"
 
 using namespace std;
