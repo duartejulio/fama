@@ -1,5 +1,5 @@
-#include "treinador.h"
-#include "classificador.h"
+#include "../treinador/treinador.h"
+#include "../classificador/classificador.h"
 
 //prototipo do classificador
 class ClassificadorStump:public Classificador{
