@@ -19,7 +19,7 @@ class Corpus
         virtual Corpus* clone() = 0;
         string pegarSimbolo( int indice );
         int pegarIndice( string simbolo );
-        int criarAtributo( string atributo, string valorAtributo );
+        int criarAtributo( string atributo, string valorAtributo = "O");
         int pegarValor( int sentenca, int token, int atributo );
         int pegarQtdSentencas();
         int pegarQtdConjExemplos(){return pegarQtdSentencas();}
