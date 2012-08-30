@@ -1,4 +1,5 @@
 #include "corpus.h"
+#include <sstream>
 
 Corpus::Corpus( vector<string> atributos )
     : atributos( atributos )
@@ -20,10 +21,11 @@ string Corpus::pegarSimbolo( int indice )
 {
     if ( indice < 0 || indice >= ( int )simbolos.size() )
     {
-        cout << "Erro: pegarSimbolo!\nBusca fora dos limites!" << endl;
-        return NULL;
+        ostringstream erro;
+        erro << "Erro: pegarSimbolo!\nBusca fora dos limites ( "
+         << indice << " / " << (int)simbolos.size() << " )!";
+        throw erro.str();
     }
-
     return simbolos[ indice ];
 }
 
@@ -42,7 +44,7 @@ int Corpus::pegarIndice( string simbolo )
     return it->second;
 }
 
-bool Corpus::criarAtributo( string atributo, string valorAtributo )
+int Corpus::criarAtributo( string atributo, string valorAtributo )
 {
     /**
     *   Verifica se o atributo já existe.
@@ -50,8 +52,10 @@ bool Corpus::criarAtributo( string atributo, string valorAtributo )
     */
     if( posAtributos.find( atributo ) != posAtributos.end() )
     {
-        cout << "Erro:criarAtributo!\nAtributo ja existe!" << endl;
-        return false;
+        ostringstream erro;
+        erro << "Erro: criarAtributo!\nAtributo ja existe ( "
+         << atributo << " / " << pegarPosAtributo(atributo) << " )!";
+        throw erro.str();
     }
 
     atributos.push_back( atributo );
@@ -83,7 +87,7 @@ bool Corpus::criarAtributo( string atributo, string valorAtributo )
     }
 
     //cout << "Atributo <\"" << atributo << "\" -> " << "\"" << valorAtributo << "\"" << "> criado com sucesso!" << endl;
-    return true;
+    return pegarPosAtributo( atributo );
 }
 
 int Corpus::pegarValor( int sentenca, int token, int atributo )
@@ -92,8 +96,12 @@ int Corpus::pegarValor( int sentenca, int token, int atributo )
          token < 0 || token >= ( int )frases[sentenca].size() ||
          atributo < 0 || atributo >= ( int )qtd_atributos )
     {
-        cout << "Erro: pegarValor!\nBusca fora dos limites!" << endl;
-        return -1;
+        ostringstream erro;
+        erro << "Erro: pegarValor!\nBusca fora dos limites ( "
+         << sentenca << " / " << (int)qtd_sentencas << " ) ( "
+         << token << " / " << (int)frases[sentenca].size() << " ) ( "
+         << atributo << " / " << (int)qtd_atributos << " )!";
+        throw erro.str();
     }
 
     return frases[sentenca][token][atributo];
@@ -113,8 +121,10 @@ int Corpus::pegarQtdTokens( int i )
 {
     if( i < 0 || i >= ( int )qtd_sentencas )
     {
-        cout << "Erro: pegarQtdTokens!\nBusca fora dos limites!" << endl;
-        return -1;
+        ostringstream erro;
+        erro << "Erro: pegarQtdTokens!\nBusca fora dos limites ( "
+         << i << " / " << (int)qtd_sentencas << " )!";
+        throw erro.str();
     }
     return frases[i].size();
 }
@@ -130,8 +140,12 @@ bool Corpus::ajustarValor( int sentenca, int token, int atributo, int valor )
          token < 0 || token >= ( int )frases[sentenca].size() ||
          atributo < 0 || atributo >= ( int )qtd_atributos )
     {
-        cout << "Erro: ajustarValor!\nInsercao cancelada: posicao inexistente!" << endl;
-        return false;
+        ostringstream erro;
+        erro << "Erro: ajustarValor!\nInsercao cancelada: posicao inexistente ( "
+         << sentenca << " / " << (int)qtd_sentencas << " ) ( "
+         << token << " / " << (int)frases[sentenca].size() << " ) ( "
+         << atributo << " / " << (int)qtd_atributos << " )!";
+        throw erro.str();
     }
     frases[ sentenca ][ token ][ atributo ] = valor;
     return true;
@@ -141,8 +155,10 @@ string Corpus::pegarAtributo( int indice )
 {
     if( indice < 0 || indice >= qtd_atributos )
     {
-        cout << "Erro: pegarAtributo!\nBusca fora dos limites!" << endl;
-        return NULL;
+        ostringstream erro;
+        erro << "Erro: pegarAtributo!\nAtributo Inexistente! ( "
+         << indice << " / " << qtd_atributos << " )";
+        throw erro.str();
     }
     return atributos[indice];
 }
@@ -153,8 +169,10 @@ int Corpus::pegarPosAtributo( string atributo )
 
     if( ( it = posAtributos.find( atributo ) ) == posAtributos.end() )
     {
-        //cout << "Erro: pegarPosAtributo!\nAtributo inexistente!" << endl;
-        return -1;
+        ostringstream erro;
+        erro << "Erro: pegarAtributo!\nAtributo Inexistente! ( "
+         << atributo << " )";
+        throw erro.str();
     }
     return it->second;
 }
@@ -169,11 +187,15 @@ vector< Corpus* > Corpus::splitCorpus( vector< bool > vetMascara )
     vector< Corpus* > vetCorpus( 2 );
     if( vetMascara.size() != ( unsigned )qtd_sentencas )
     {
-        cout << "Erro: splitCorpus!\nMascara invalida!" << endl;
+        ostringstream erro;
+        erro << "Erro: splitCorpus!\nMascara invalida! ( "
+         << (int)vetMascara.size() << " / " << qtd_sentencas << " )";
+        throw erro.str();
         return vetCorpus;
     }
 
-    //não esquecer de dar delete nestas variáveis
+    //a responsabilidade de liberar essa memória é passado a quem
+    //chamou o método
     vetCorpus[0] = this->clone();
     vetCorpus[0]->frases.clear();
     vetCorpus[1] = this->clone();
