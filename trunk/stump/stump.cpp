@@ -12,10 +12,10 @@ ClassificadorStump::ClassificadorStump(vector<string> clas, string atr, string v
 
 bool ClassificadorStump::executarClassificacao( Corpus &corpus, int atributo ){
     int iAtr, iCla, iVal, iOutra;
-    int a, nAmostras;
+    int a, c, nAmostras, nConjAmostras;
 
     //determina tamanho do conjunto
-    nAmostras = corpus.pegarQtdExemplos(0);
+    nConjAmostras = corpus.pegarQtdConjExemplos();
 
     //mapeia atributo
     iAtr = corpus.pegarPosAtributo(this->atributo);
@@ -30,13 +30,14 @@ bool ClassificadorStump::executarClassificacao( Corpus &corpus, int atributo ){
     iOutra = corpus.pegarIndice((classe==classes[0])?classes[1]:classes[0]);
 
     //varre os exemplos
-    for (a = 0; a < nAmostras; a++)
-        //criterio de decisao
-        if (iVal == corpus.pegarValor(0, a, iAtr))
-            corpus.ajustarValor(0, a, atributo, iCla);
-        else
-            corpus.ajustarValor(0, a, atributo, iOutra);
-
+    for (c=0; c < nConjAmostras; c++){
+        nAmostras = corpus.pegarQtdExemplos(c);
+        for (a = 0; a < nAmostras; a++)
+            if (iVal == corpus.pegarValor(c, a, iAtr))//criterio de decisao
+                corpus.ajustarValor(c, a, atributo, iCla);
+            else
+                corpus.ajustarValor(c, a, atributo, iOutra);
+    }
     return true;
 }
 
@@ -47,8 +48,8 @@ DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador()
 }
 
 Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo ){
-    int indicePos, indiceNeg, nExemplos, nAtributos, i, a, e, melhorQualidade, qualidade,
-     iValor;
+    int indicePos, indiceNeg, nExemplos, nConjExemplos, nAtributos,
+     i, a, e, c, melhorQualidade, qualidade, iValor;
     string mAtributo, mValor, mClasse;
     map <string, bool> mapaValores;
     map <string, bool>::iterator it;
@@ -57,8 +58,8 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
     indicePos = corpus.pegarIndice(classes[1]);
     indiceNeg = corpus.pegarIndice(classes[0]);
 
-    //determina números de exemplos e atributos
-    nExemplos = corpus.pegarQtdExemplos(0);
+    //determina números de conjuntos de exemplos e atributos
+    nConjExemplos = corpus.pegarQtdConjExemplos();
     nAtributos = atributos.size();
 
 
@@ -68,8 +69,11 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
         //determina quais são os valores possíveis para o atributo
         mapaValores.clear();
         i = corpus.pegarPosAtributo(atributos[a]);
-        for (e=0; e < nExemplos; e++)
-            mapaValores[corpus.pegarSimbolo(corpus.pegarValor(0, e, i))] = true;
+        for (c=0; c < nConjExemplos; c++){
+            nExemplos = corpus.pegarQtdExemplos(c);
+            for (e=0; e < nExemplos; e++)
+                mapaValores[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))] = true;
+        }
 
         //varre todos os valores possiveis
         for (it = mapaValores.begin(); it!=mapaValores.end(); it++){
@@ -77,18 +81,21 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
 
             //calcula a qualidade desse atributo,valor diferenciando as classes
             qualidade = 0;
-            for (e=0; e < nExemplos; e++){
-                if (iValor == corpus.pegarValor(0, e, i)){
-                    if (corpus.pegarValor(0, e, atributo)==indicePos)
-                        qualidade++;
-                    else
-                        qualidade--;
-                }
-                else{
-                    if (corpus.pegarValor(0, e, atributo)==indiceNeg)
-                        qualidade++;
-                    else
-                        qualidade--;
+            for (c=0; c < nConjExemplos; c++){
+                nExemplos = corpus.pegarQtdExemplos(c);
+                for (e=0; e < nExemplos; e++){
+                    if (iValor == corpus.pegarValor(c, e, i)){
+                        if (corpus.pegarValor(c, e, atributo)==indicePos)
+                            qualidade++;
+                        else
+                            qualidade--;
+                    }
+                    else{
+                        if (corpus.pegarValor(c, e, atributo)==indiceNeg)
+                            qualidade++;
+                        else
+                            qualidade--;
+                    }
                 }
             }
 
@@ -100,7 +107,8 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
                 melhorQualidade = (int)fabs(qualidade);
                 //cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
             }
-            //cout << i << " - " << a << " - " << atributos[a] << " - " << it->first << " - " << ((qualidade<0)?classes[0]:classes[1]) << " - " << qualidade << endl;
+            //cout << i << " - " << a << " - " << atributos[a] << " - " << it->first << " - " << ((qualidade<0)?classes[0]:classes[1])
+            // << " - " << qualidade << " - " << melhorQualidade << endl;
         }
     }
 
