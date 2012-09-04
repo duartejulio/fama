@@ -243,7 +243,7 @@ vector< Corpus* > Corpus::splitCorpus( vector< int > vetMascara, int nCorpus )
     }
 
     for ( c = 0; c < nCorpus; ++c )
-        vetCorpus[c]->qtd_sentencas = vetCorpus[0]->frases.size();
+        vetCorpus[c]->qtd_sentencas = vetCorpus[c]->frases.size();
 
     return vetCorpus;
 }
