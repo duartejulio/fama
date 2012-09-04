@@ -32,6 +32,7 @@ class Corpus
         int pegarPosAtributo( string atributo );
         vector<string> pegarAtributos();
         vector< Corpus* > splitCorpus( vector< bool > vetMascara );
+        vector< Corpus* > splitCorpus( vector< int > vetMascara, int nCorpus );
     protected:
         map<string,int> posAtributos;
         vector<string> atributos;

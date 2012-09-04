@@ -194,7 +194,7 @@ vector< Corpus* > Corpus::splitCorpus( vector< bool > vetMascara )
         return vetCorpus;
     }
 
-    //a responsabilidade de liberar essa memória é passado a quem
+    //a responsabilidade de liberar essa memória é passada a quem
     //chamou o método
     vetCorpus[0] = this->clone();
     vetCorpus[0]->frases.clear();
@@ -207,6 +207,43 @@ vector< Corpus* > Corpus::splitCorpus( vector< bool > vetMascara )
 
     vetCorpus[0]->qtd_sentencas = vetCorpus[0]->frases.size();
     vetCorpus[1]->qtd_sentencas = vetCorpus[1]->frases.size();
+
+    return vetCorpus;
+}
+
+vector< Corpus* > Corpus::splitCorpus( vector< int > vetMascara, int nCorpus )
+{
+    register int i, c;
+
+    vector< Corpus* > vetCorpus( nCorpus );
+    if( vetMascara.size() != ( unsigned )qtd_sentencas )
+    {
+        ostringstream erro;
+        erro << "Erro: splitCorpus!\nMascara invalida! ( "
+         << (int)vetMascara.size() << " / " << qtd_sentencas << " )";
+        throw erro.str();
+    }
+
+    //a responsabilidade de liberar essa memória é passada a quem
+    //chamou o método
+    for ( c = 0; c < nCorpus; ++c ){
+        vetCorpus[c] = this->clone();
+        vetCorpus[c]->frases.clear();
+    }
+
+    for( i = 0; i < qtd_sentencas; ++i ){
+        c = vetMascara[i];
+        if (c < 0 || c > nCorpus){
+            ostringstream erro;
+            erro << "Erro: splitCorpus!\nValor de Mascara invalida! ( "
+             << (int)c << " / " << nCorpus << " )";
+            throw erro.str();
+        }
+        vetCorpus[c]->frases.push_back( frases[i] );
+    }
+
+    for ( c = 0; c < nCorpus; ++c )
+        vetCorpus[c]->qtd_sentencas = vetCorpus[0]->frases.size();
 
     return vetCorpus;
 }
