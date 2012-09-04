@@ -5,6 +5,7 @@
 
 #include "../corpus/corpusmatriz.h"
 #include "../avaliador/avaliador_acuracia.h"
+#include "../validador/validadorkdobras.h"
 #include "stump.h"
 
 using namespace std;
@@ -48,15 +49,24 @@ int main()
             atributosTreino.push_back(atributos[i]);
 
     DecisionStump objStump(atributosTreino, classes);
-    Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
-
-    iSaida = objCorpus.criarAtributo("saida", "O");
-    objClass->executarClassificacao(objCorpus, iSaida);
-
     AvaliadorAcuracia objAvalAcur;
+    ValidadorKDobras objValidador(objAvalAcur, 10);
+    iSaida = objCorpus.criarAtributo("saida", "O");
+    vector< vector< float > > v = objValidador.executarExperimento(objStump, objCorpus, iResposta, iSaida);
+    float media = 0;
+    for (c=0;c<10;c++){
+        cout << c << " - " << v[c][0] << endl;
+        media +=v[c][0];
+    }
+    cout << "*" << media/10 << endl;
+
+/*
+    Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
+    objClass->executarClassificacao(objCorpus, iSaida);
     printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iSaida)[0]);
 
     delete objClass;
+*/
     return 0;
 }
