@@ -8,6 +8,8 @@
 #include "../validador/validadorkdobras.h"
 #include "stump.h"
 
+
+
 using namespace std;
 
 int main()
@@ -52,6 +54,9 @@ int main()
     AvaliadorAcuracia objAvalAcur;
     ValidadorKDobras objValidador(objAvalAcur, 10);
     iSaida = objCorpus.criarAtributo("saida", "O");
+
+
+/*
     vector< vector< float > > v = objValidador.executarExperimento(objStump, objCorpus, iResposta, iSaida);
     float media = 0;
     for (c=0;c<10;c++){
@@ -59,14 +64,14 @@ int main()
         media +=v[c][0];
     }
     cout << "*" << media/10 << endl;
+*/
 
-/*
     Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
+    cout << objClass->descricaoConhecimento();
     printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iSaida)[0]);
 
     delete objClass;
-*/
     return 0;
 }

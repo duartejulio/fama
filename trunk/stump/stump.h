@@ -11,6 +11,7 @@ class ClassificadorStump:public Classificador{
         bool executarClassificacao( Corpus &corpusProva, int atributo );
         bool gravarConhecimento( string arquivo ){return true;}
         bool carregarConhecimento( string arquivo ){return true;}
+        string descricaoConhecimento();
 };
 
 //prototipo do treinador

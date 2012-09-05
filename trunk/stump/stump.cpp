@@ -1,6 +1,7 @@
 #include "stump.h"
 
 #include <cmath>
+#include <sstream>
 
 ClassificadorStump::ClassificadorStump(vector<string> clas, string atr, string val, string cla):Classificador(){
     //guarda parametros
@@ -40,6 +41,15 @@ bool ClassificadorStump::executarClassificacao( Corpus &corpus, int atributo ){
     }
     return true;
 }
+
+string ClassificadorStump::descricaoConhecimento(){
+    ostringstream ret;
+
+    ret << "Se " << atributo << " = " << valor << " então " << classe << endl;
+    ret << "Caso contrário então " << ((classe==classes[0])?classes[1]:classes[0]) << endl;
+    return ret.str();
+}
+
 
 DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador(){
     //guarda parametros
@@ -105,7 +115,7 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
                 mValor = it->first;
                 mClasse = (qualidade<0)?classes[0]:classes[1];
                 melhorQualidade = (int)fabs(qualidade);
-                cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
+//                cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
             }
             //cout << i << " - " << a << " - " << atributos[a] << " - " << it->first << " - " << ((qualidade<0)?classes[0]:classes[1])
             // << " - " << qualidade << " - " << melhorQualidade << endl;
