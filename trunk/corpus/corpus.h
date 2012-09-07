@@ -20,6 +20,8 @@ class Corpus
         string pegarSimbolo( int indice );
         int pegarIndice( string simbolo );
         int criarAtributo( string atributo, string valorAtributo = "O");
+        bool removerAtributo( string atributo );
+        bool removerAtributo( int indice );
         int pegarValor( int sentenca, int token, int atributo );
         int pegarQtdSentencas();
         int pegarQtdConjExemplos(){return pegarQtdSentencas();}
