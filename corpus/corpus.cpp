@@ -90,6 +90,45 @@ int Corpus::criarAtributo( string atributo, string valorAtributo )
     return pegarPosAtributo( atributo );
 }
 
+bool Corpus::removerAtributo( string atributo )
+{
+    map< string, int >::iterator it;
+    if( ( it = posAtributos.find( atributo ) ) == posAtributos.end() ) return false;
+
+    int column;
+    for( register int i = 0; i < qtd_sentencas; ++i )
+    {
+        column = frases[i].size();
+        for( register int j = 0; j < column; ++j )
+            frases[i][j].erase( frases[i][j].begin() + it->second );
+    }
+
+    atributos.erase( atributos.begin() + it->second );
+    posAtributos.erase( it );
+    --qtd_atributos;
+
+    return true;
+}
+
+bool Corpus::removerAtributo( int indice )
+{
+    if( indice >= qtd_atributos || indice < 0 ) return false;
+
+    int column;
+    for( register int i = 0; i < qtd_sentencas; ++i )
+    {
+        column = frases[i].size();
+        for( register int j = 0; j < column; ++j )
+            frases[i][j].erase( frases[i][j].begin() + indice );
+    }
+
+    posAtributos.erase( posAtributos.find( atributos[indice] ) );
+    atributos.erase( atributos.begin() + indice );
+    --qtd_atributos;
+
+    return true;
+}
+
 int Corpus::pegarValor( int sentenca, int token, int atributo )
 {
     if ( sentenca < 0 || sentenca >= ( int )qtd_sentencas ||
