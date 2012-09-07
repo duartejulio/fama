@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'janela.h'
 **
-** Created: Sun 19. Aug 17:14:20 2012
+** Created: Fri 7. Sep 17:26:56 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -42,7 +42,8 @@ static const uint qt_meta_data_Janela[] = {
 static const char qt_meta_stringdata_Janela[] = {
     "Janela\0\0abrirArquivo()\0index\0"
     "habilitarBotao(int)\0row,column\0"
-    "atributoSelecionado(int,int)\0close()\0"
+    "atributoSelecionado(int,int)\0"
+    "definirParametros()\0"
 };
 
 void Janela::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -54,7 +55,7 @@ void Janela::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 0: _t->abrirArquivo(); break;
         case 1: _t->habilitarBotao((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: _t->atributoSelecionado((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 3: _t->close(); break;
+        case 3: _t->definirParametros(); break;
         default: ;
         }
     }

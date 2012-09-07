@@ -14,14 +14,14 @@ SOURCES += main.cpp\
         janela.cpp \
     ../../corpus/corpusmatriz.cpp \
     ../../corpus/corpus.cpp \
-    botao.cpp \
-    paramcorpus.cpp
+    param.cpp \
+    modeloparam.cpp
 
 HEADERS  += janela.h \
     ../../corpus/corpusmatriz.h \
     ../../corpus/corpus.h \
-    botao.h \
-    paramcorpus.h
+    param.h \
+    modeloparam.h
 
 FORMS    += janela.ui \
-    paramcorpus.ui
+    param.ui

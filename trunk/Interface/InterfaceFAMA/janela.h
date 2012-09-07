@@ -4,8 +4,12 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QTableWidgetItem>
+#include <QStandardItem>
+#include <QSpinBox>
 #include <sstream>
-#include "paramcorpus.h"
+#include <cstdlib>
+#include "param.h"
+#include "modeloparam.h"
 #include "../../corpus/corpusmatriz.h"
 
 namespace Ui {
@@ -23,15 +27,15 @@ public:
 private:
     Ui::Janela *ui;
     Corpus *corpus;
+    int indexCorpus;
+    QString s;
+    Param popUp;
 
 public slots:
     void abrirArquivo();
     void habilitarBotao( int index );
     void atributoSelecionado( int row, int column );
-    void close()
-    {
-        QWidget::close();
-    }
+    void definirParametros();
 };
 
 #endif // JANELA_H
