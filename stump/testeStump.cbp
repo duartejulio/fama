@@ -40,9 +40,12 @@
 		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpus.h" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
+		<Unit filename="..\corpus\corpusmatriz.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="stump.cpp" />
+		<Unit filename="stump.h" />
 		<Unit filename="..\treinador\treinador.cpp" />
 		<Unit filename="..\validador\validador.cpp" />
 		<Unit filename="..\validador\validadorkdobras.cpp" />
