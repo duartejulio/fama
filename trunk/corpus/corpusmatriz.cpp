@@ -1,11 +1,21 @@
 #include "corpusmatriz.h"
+#include <sstream>
 
-CorpusMatriz::CorpusMatriz( vector<string> atributos, char separador, bool dividirExemplos)
+void aparar(string &str){
+    stringstream trimmer;
+    trimmer << str;
+    str.clear();
+    trimmer >> str;
+}
+
+CorpusMatriz::CorpusMatriz(vector<string> atributos, char separador,
+                           bool dividirExemplos, bool apararValores)
     :Corpus( atributos )
 {
     //ctor
     this->separador = separador;
     this->dividirExemplos = dividirExemplos;
+    this->apararValores = apararValores;
 }
 
 void CorpusMatriz::ajustarSeparador( char separador )
@@ -46,7 +56,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
 
                 while( str[i] != '=' )
                     at += str[i++];
-                if( at == "features" )
+                if( at == "features" || at == "atributos")
                 {
                     while( str[i] != ']' )
                     {
@@ -60,7 +70,8 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
                         at = "";
                         while( str[++i] != '=' && str[i] != ']' )
                             at += str[i];
-                        if( at == "separator" )
+                        cout << "*" << at << "*";
+                        if( at == "separator" || at == "separador")
                             separador = str[++i];
                     }
                     arqin.seekg( 0, ios::beg );
@@ -129,6 +140,10 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
                         str.push_back( ch );
                         arqin.get( ch );
                     }
+
+                    if (apararValores)
+                        aparar(str);
+
                     if ( dicionario.find( str ) == dicionario.end() )
                     {
                         dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),

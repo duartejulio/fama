@@ -18,7 +18,7 @@ int main()
     int nConjExemplos, e, c0, c1, c, iResposta, iSaida, total;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(atributos, ',', true);
+    CorpusMatriz objCorpus(atributos, ',', true, true);
     objCorpus.carregarArquivo( "../inputs/adult.data" );
 
     //indice do atributo a aprender
@@ -28,12 +28,12 @@ int main()
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";
 
     //indica classes alvo
-    classes.push_back(" <=50K");
-    classes.push_back(" >50K");
+    classes.push_back("<=50K");
+    classes.push_back(">50K");
 
     //calcula priori das classes
     c0 = c1 = total = 0;
-    for (c = 0; c < nConjExemplos; c++){
+    for (c = 0; c < nConjExemplos; c++)
         for (e = 0; e < objCorpus.pegarQtdExemplos(c); e++){
             if (objCorpus.pegarIndice(classes[0]) == objCorpus.pegarValor(c, e, iResposta))
                 c0++;
@@ -41,7 +41,7 @@ int main()
                 c1++;
             total++;
         }
-    }
+
     cout << 100.*c0/total << " / " << 100.*c1/total << endl;
     atributos = objCorpus.pegarAtributos();
 
