@@ -107,6 +107,9 @@ bool Corpus::removerAtributo( string atributo )
     posAtributos.erase( it );
     --qtd_atributos;
 
+    for( register int i = 0; i < qtd_atributos; i++ )
+        posAtributos[atributos[i]] = i;
+
     return true;
 }
 
@@ -125,6 +128,9 @@ bool Corpus::removerAtributo( int indice )
     posAtributos.erase( posAtributos.find( atributos[indice] ) );
     atributos.erase( atributos.begin() + indice );
     --qtd_atributos;
+
+    for( register int i = 0; i < qtd_atributos; i++ )
+        posAtributos[atributos[i]] = i;
 
     return true;
 }
