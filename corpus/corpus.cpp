@@ -292,3 +292,18 @@ vector< Corpus* > Corpus::splitCorpus( vector< int > vetMascara, int nCorpus )
 
     return vetCorpus;
 }
+
+void Corpus::redimensionarSentenca(int sentenca, int tamanho) {
+       frases[sentenca].resize( tamanho );
+}
+
+int Corpus::pegarQtdTotalExemplos(){
+    register int c, nExemplosTotal = 0, nConjExemplos = pegarQtdConjExemplos();
+
+    for (c=0; c < nConjExemplos; c++)
+        nExemplosTotal += pegarQtdExemplos(c);
+
+    return nExemplosTotal;
+
+
+}
