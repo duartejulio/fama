@@ -12,6 +12,7 @@ using namespace std;
 class Corpus
 {
     public:
+        void redimensionarSentenca(int, int);
         Corpus( vector<string> atributos = vector<string>() );
         virtual ~Corpus();
         virtual bool carregarArquivo( string arquivo ) = 0;
@@ -25,6 +26,7 @@ class Corpus
         int pegarValor( int sentenca, int token, int atributo );
         int pegarQtdSentencas();
         int pegarQtdConjExemplos(){return pegarQtdSentencas();}
+        int pegarQtdTotalExemplos();
         int pegarQtdAtributos();
         int pegarQtdTokens( int i );
         int pegarQtdExemplos(int i){return pegarQtdTokens(i);}
