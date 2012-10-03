@@ -19,8 +19,6 @@ int main()
     objCorpus.carregarArquivo( "../inputs/data.data" );
     iResposta = objCorpus.pegarPosAtributo("Purchase");
 
-
-
     cout << "atributo alvo: " << iResposta << endl;
     cout << (nTotalExemplos = objCorpus.pegarQtdTotalExemplos()) << " exemplos\n";
 
