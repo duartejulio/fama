@@ -2,7 +2,6 @@
 #include <sstream>
 
 void aparar(string &str){
-    cout  << "**" << str << "-";
     string::size_type pos = str.find_last_not_of(' ');
     if (pos != string::npos){
         str.erase(pos + 1);
@@ -12,7 +11,6 @@ void aparar(string &str){
     }
     else
         str.erase(str.begin(), str.end());
-    cout  << str << endl;
 }
 
 CorpusMatriz::CorpusMatriz(vector<string> atributos, char separador,
