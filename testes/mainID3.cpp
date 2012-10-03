@@ -12,12 +12,14 @@ using namespace std;
 int main()
 {
     vector<string> atributos, classes, atributosTreino;
-    int nExemplos, c, nConjExemplos, e, c0, c1, iResposta, nTotalExemplos;
+    int nExemplos, i, c, nConjExemplos, e, c0, c1, iResposta, nTotalExemplos;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(vector<string>(), ',', false, true);
+    CorpusMatriz objCorpus(vector<string>(), ',', true, true);
     objCorpus.carregarArquivo( "../inputs/data.data" );
     iResposta = objCorpus.pegarPosAtributo("Purchase");
+
+
 
     cout << "atributo alvo: " << iResposta << endl;
     cout << (nTotalExemplos = objCorpus.pegarQtdTotalExemplos()) << " exemplos\n";
@@ -31,7 +33,7 @@ int main()
     for (c=0; c<nConjExemplos; c++){
         nExemplos = objCorpus.pegarQtdExemplos(c);
         for (e=0; e < nExemplos; e++){
-            if (objCorpus.pegarIndice(classes[0]) == objCorpus.pegarValor(0, e, iResposta))
+            if (objCorpus.pegarIndice(classes[0]) == objCorpus.pegarValor(c, e, iResposta))
                 c0++;
             else
                 c1++;
@@ -42,9 +44,36 @@ int main()
 
     cout << 100.*c0/nTotalExemplos << " / " << 100.*c1/nTotalExemplos << endl;
 
+    /* Teste generateSubCorpus
+    vector < vector <bool> > mask;
+    bool sim = true;
+    mask.resize(nConjExemplos);
+    for (c=0; c<nConjExemplos; c++){
+        mask[c].resize(objCorpus.pegarQtdExemplos(c));
+        for (e=0; e < nExemplos; e++, sim = !sim)
+            mask[c][e] = true;
+    }
+    Corpus *sub = objCorpus.gerarSubCorpus(mask);
+    cout << nTotalExemplos << " - " << sub->pegarQtdTotalExemplos() << endl;
+    cout << nConjExemplos << " - " << sub->pegarQtdConjExemplos() << endl;
+
+
+    for (c=0; c<nConjExemplos; c++){
+        nExemplos = objCorpus.pegarQtdExemplos(c);
+        for (e=0; e < nExemplos; e++){
+            for (i = 0; i < 5; i++)
+                cout << objCorpus.pegarSimbolo(objCorpus.pegarValor(c, e, i))
+                    << "-"<< sub->pegarSimbolo(objCorpus.pegarValor(c, e, i)) << endl;
+        }
+    }
+
+    */
+    //return 0;
+
+
     atributos = objCorpus.pegarAtributos();
 
-    for (unsigned int i=0; i < atributos.size(); i++) {
+    for (i=0; i < (int)atributos.size(); i++) {
         cout << "\n Atributo " << i << ":  " << atributos[i];
         // (atributos[i]!="Purchase")
             atributosTreino.push_back(atributos[i]);

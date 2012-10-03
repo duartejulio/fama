@@ -15,13 +15,12 @@ void TreeNo::adicionarNo(string nome) {
         cout << "\nCriar no: " << nomeNo;
 }
 
-
 void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         map <string, int>::iterator it;
         map <string, TreeNo*>::iterator ite;
 
         vector<string> atributosNo;
-        int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq, column;
+        int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq;
         string melhorAttrNo;
         Corpus *subcorpusNo;
 
@@ -64,52 +63,42 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++)
              nExemplos += it->second;
 
-        for (it =mapaValoresNo.begin(), ite = mapaValoresEndNo.begin(); it!=mapaValoresNo.end(); it++, ite++) {
-             cout << "\n-----------------------------------------------------------------------------\n";
-             cout << "\n Criar subcorpus com o valor: " << it->first;
-             iValor = corpus.pegarIndice(it->first);
-             freq = it->second;
+        for (it = mapaValoresNo.begin(), ite = mapaValoresEndNo.begin(); it!=mapaValoresNo.end(); it++, ite++) {
+            cout << "\n-----------------------------------------------------------------------------\n";
+            cout << "\n Criar subcorpus com o valor: " << it->first;
+            iValor = corpus.pegarIndice(it->first);
+            freq = it->second;
 
-             subcorpusNo = corpus.clone();
+            vector < vector <bool> > mascara;
+            mascara.resize(corpus.pegarQtdConjExemplos());
+            for (c=0; c<corpus.pegarQtdConjExemplos(); c++){
+                mascara[c].resize(corpus.pegarQtdExemplos(c));
+                for (e=0; e < corpus.pegarQtdExemplos(c); e++)
+                    mascara[c][e] = (iValor ==  corpus.pegarValor(c, e, atributo));
+            }
+            subcorpusNo = corpus.gerarSubCorpus(mascara);
 
-             for( register int s = 0 ; s < corpus.pegarQtdConjExemplos(); s++ ) {
-                 subcorpusNo->redimensionarSentenca(s, freq);
-                 for( register int j = 0, z = 0; z < freq; j++ ) {
-                     if (iValor ==  corpus.pegarValor(s, j, atributo)) {
-                        column = subcorpusNo->pegarQtdAtributos();
-                        cout << "\n";
-                        for (register int cont=0; cont < column; cont++) {
-                            subcorpusNo->ajustarValor(s, z, cont, corpus.pegarValor(s, j, cont));
-                            cout << subcorpusNo->pegarSimbolo(subcorpusNo->pegarValor(s, z, cont)) << ", ";
-                        }
-                        z++;
-                     }
-                 }
-             }
-
-//                 string atraux = subcorpusNo.pegarAtributo(iRespostaNo);
-
-             subcorpusNo->removerAtributo(atributo);
+            subcorpusNo->removerAtributo(atributo);
 //                 subcorpusNo.removerAtributo(subcorpusNo.pegarAtributo(atributo));
 
-             iRespostaNo = subcorpusNo->pegarPosAtributo("Purchase");
+            iRespostaNo = subcorpusNo->pegarPosAtributo("Purchase");
 
 //                 iRespostaNo = subcorpusNo.pegarPosAtributo(atraux);
-             cout << endl << "iRespostaNo: " << iRespostaNo << endl;
+            cout << endl << "iRespostaNo: " << iRespostaNo << endl;
 
-             melhorAttrNo=" ";
-             atributosNo = subcorpusNo->pegarAtributos();
-             melhorAttrNo = pegarValorMaiorFreq(*subcorpusNo, iRespostaNo);
-             int freqResposta=pegarValorFreq(*subcorpusNo, iRespostaNo);
+            melhorAttrNo=" ";
+            atributosNo = subcorpusNo->pegarAtributos();
+            melhorAttrNo = pegarValorMaiorFreq(*subcorpusNo, iRespostaNo);
+            int freqResposta=pegarValorFreq(*subcorpusNo, iRespostaNo);
 
-             if ((subcorpusNo->pegarQtdTotalExemplos()<=1) || ((subcorpusNo->pegarQtdAtributos()-1)<=0)) {
+            if ((subcorpusNo->pegarQtdTotalExemplos()<=1) || ((subcorpusNo->pegarQtdAtributos()-1)<=0)) {
                 ite->second = new TreeNo (melhorAttrNo);
                 //cout << "\n End No: " << ite->second;
                 //cout << endl << "Press any key to quit..." << endl;
                 //getch();
                 continue;
-             }
-             if (freqResposta==subcorpusNo->pegarQtdTotalExemplos()) {
+            }
+            if (freqResposta==subcorpusNo->pegarQtdTotalExemplos()) {
                 cout << "\n freqResposta: " << freqResposta;
                 cout << "\n qtd exemplos: " << subcorpusNo->pegarQtdTotalExemplos();
                 ite->second = new TreeNo (melhorAttrNo);
@@ -117,16 +106,16 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
                 //cout << endl << "Press any key to quit..." << endl;
                 //getch();
                 continue;
-             }
+            }
 //                 melhorAttr=objNo.escolherAtributoNo(subcorpusNo, atributosNo, iRespostaNo);
 
-           melhorAttrNo=escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
-           ite->second = new TreeNo (melhorAttrNo);
-           //cout << "\n End No: " << ite->second;
-           //cout << endl << "Press any key to quit..." << endl;
-           //getch();
+            melhorAttrNo=escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
+            ite->second = new TreeNo (melhorAttrNo);
+            //cout << "\n End No: " << ite->second;
+            //cout << endl << "Press any key to quit..." << endl;
+            //getch();
 
-           (*ite->second).pegarValoresNo(*subcorpusNo, subcorpusNo->pegarPosAtributo(melhorAttrNo), iRespostaNo);
+            (*ite->second).pegarValoresNo(*subcorpusNo, subcorpusNo->pegarPosAtributo(melhorAttrNo), iRespostaNo);
             delete subcorpusNo;
         }
 
@@ -175,7 +164,6 @@ string TreeNo::pegarValorMaiorFreq (Corpus &corpus, int atributo) {
              }
          return valorMaior;
 }
-
 
 // retorna a maior frequencia
 int TreeNo::pegarValorFreq (Corpus &corpus, int atributo) {
@@ -357,30 +345,23 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
          for (it = mapaValores.begin(); it!=mapaValores.end(); it++)
              nExemplos += it->second;
 
-         for (it =mapaValores.begin(); it!=mapaValores.end(); it++) {
+         for (it = mapaValores.begin(); it!=mapaValores.end(); it++) {
 //                 cout << "\n-----------------------------------------------------------------------------\n";
 //                 cout << "\n Criar subcorpus com o valor: " << it->first;
-             iValor = corpus.pegarIndice(it->first);
-             freq = it->second;
-             prob = (float) freq/nExemplos;
-             subcorpusganho = corpus.clone();
+            iValor = corpus.pegarIndice(it->first);
+            freq = it->second;
+            prob = (float) freq/nExemplos;
 
-             cout << endl;
-             for( register int s = 0 ; s < corpus.pegarQtdConjExemplos(); s++ ) {
-                 subcorpusganho->redimensionarSentenca(s, freq);
-                 for( register int j = 0, z = 0; z < freq; j++ ) {
-                     if (iValor ==  corpus.pegarValor(s, j, atributo)) {
-                        cout << "\n";
-                        for (register int cont=0; cont < subcorpusganho->pegarQtdAtributos(); cont++) {
-                             subcorpusganho->ajustarValor(s, z, cont, corpus.pegarValor(s, j, cont));
-                             cout << subcorpusganho->pegarSimbolo(subcorpusganho->pegarValor(s, z, cont)) << ", ";
-                        }
-                        z++;
-                     }
-                 }
-             }
-             subentropia += (prob * entropia(*subcorpusganho, atributoAlvo));
-             delete subcorpusganho;
+            vector < vector <bool> > mascara;
+            mascara.resize(corpus.pegarQtdConjExemplos());
+            for (c=0; c<corpus.pegarQtdConjExemplos(); c++){
+                mascara[c].resize(corpus.pegarQtdExemplos(c));
+                for (e=0; e < corpus.pegarQtdExemplos(c); e++)
+                    mascara[c][e] = (iValor ==  corpus.pegarValor(c, e, atributo));
+            }
+            subcorpusganho = corpus.gerarSubCorpus(mascara);
+            subentropia += (prob * entropia(*subcorpusganho, atributoAlvo));
+            delete subcorpusganho;
          }
          valor_entropia = entropia(corpus, atributoAlvo);
          valor_ganho = valor_entropia - subentropia;

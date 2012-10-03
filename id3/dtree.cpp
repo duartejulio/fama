@@ -27,7 +27,7 @@ bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
 
                 while ((Endteste->nomeNo!=classes[0]) && (Endteste->nomeNo!=classes[1])) {
                     i=corpus.pegarPosAtributo(Endteste->nomeNo);
-                    Endteste = (*Endteste).mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(0, e, i))];
+                    Endteste = (*Endteste).mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
                 }
                 if (Endteste->nomeNo==classes[0])
                     corpus.ajustarValor(c, e, atributo, corpus.pegarIndice(classes[0]));
