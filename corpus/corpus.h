@@ -12,7 +12,6 @@ using namespace std;
 class Corpus
 {
     public:
-        void redimensionarSentenca(int, int);
         Corpus( vector<string> atributos = vector<string>() );
         virtual ~Corpus();
         virtual bool carregarArquivo( string arquivo ) = 0;
@@ -37,6 +36,7 @@ class Corpus
         vector<string> pegarAtributos();
         vector< Corpus* > splitCorpus( vector< bool > vetMascara );
         vector< Corpus* > splitCorpus( vector< int > vetMascara, int nCorpus );
+        Corpus* gerarSubCorpus( vector< vector< bool > > vetMascara );
     protected:
         map<string,int> posAtributos;
         vector<string> atributos;

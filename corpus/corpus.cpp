@@ -293,10 +293,6 @@ vector< Corpus* > Corpus::splitCorpus( vector< int > vetMascara, int nCorpus )
     return vetCorpus;
 }
 
-void Corpus::redimensionarSentenca(int sentenca, int tamanho) {
-       frases[sentenca].resize( tamanho );
-}
-
 int Corpus::pegarQtdTotalExemplos(){
     register int c, nExemplosTotal = 0, nConjExemplos = pegarQtdConjExemplos();
 
@@ -306,4 +302,53 @@ int Corpus::pegarQtdTotalExemplos(){
     return nExemplosTotal;
 
 
+}
+
+Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
+{
+    Corpus *subCorpus;
+    vector< vector<int> > frase;
+    register int j, qtd_tokens;
+
+    if( vetMascara.size() != ( unsigned )qtd_sentencas )
+    {
+        ostringstream erro;
+        erro << "Erro: gerarSubCorpus!\nMascara invalida! ( "
+         << (int)vetMascara.size() << " / " << qtd_sentencas << " )";
+        throw erro.str();
+        return NULL;
+    }
+
+    //a responsabilidade de liberar essa memória é passada a quem
+    //chamou o método
+    subCorpus = this->clone();
+    subCorpus->frases.clear();
+
+    for( register int i = 0; i < qtd_sentencas; ++i ){
+        qtd_tokens = pegarQtdExemplos(i);
+        if( vetMascara[i].size() != ( unsigned )qtd_tokens )
+        {
+            ostringstream erro;
+            erro << "Erro: gerarSubCorpus!\nMascara invalida! ( " << i << " - "
+             << (int)vetMascara[i].size() << " / " << qtd_tokens << " )";
+            throw erro.str();
+            return NULL;
+        }
+
+        for( j = 0; j < qtd_tokens; ++j )
+            if( vetMascara[i][j] )
+                break;
+
+        if (j < qtd_tokens){
+            vector< vector<int> > frase;
+            for(; j < qtd_tokens; ++j )
+                if( vetMascara[i][j] )
+                    frase.push_back(frases[i][j]);
+            subCorpus->frases.push_back( frase);
+        }
+    }
+
+    subCorpus->qtd_sentencas = subCorpus->frases.size();
+
+    return subCorpus;
 }
