@@ -2,10 +2,17 @@
 #include <sstream>
 
 void aparar(string &str){
-    stringstream trimmer;
-    trimmer << str;
-    str.clear();
-    trimmer >> str;
+    cout  << "**" << str << "-";
+    string::size_type pos = str.find_last_not_of(' ');
+    if (pos != string::npos){
+        str.erase(pos + 1);
+        pos = str.find_first_not_of(' ');
+        if(pos != string::npos)
+            str.erase(0, pos);
+    }
+    else
+        str.erase(str.begin(), str.end());
+    cout  << str << endl;
 }
 
 CorpusMatriz::CorpusMatriz(vector<string> atributos, char separador,
