@@ -4,11 +4,11 @@
 ClassificadorTree::ClassificadorTree(vector<string> clas, TreeNo &EndNoRaiz):Classificador(){
     //guarda parametros
     classes = clas;
-    Raiz=EndNoRaiz;
+    Raiz = EndNoRaiz;
 }
 
 bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
-    int i, nAmostras, nConjAmostras;
+    int i, nAmostras, nConjAmostras, cont;
     //determina tamanho do conjunto
     nConjAmostras = corpus.pegarQtdConjExemplos();
 
@@ -21,21 +21,30 @@ bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
     for (register int c=0; c < nConjAmostras; c++){
         nAmostras = corpus.pegarQtdExemplos(c);
         for (register int e=0; e < nAmostras; e++) {
-                cout << "\n";
+                //cout << "\n";
                 i = corpus.pegarPosAtributo(Raiz.nomeNo);
-                TreeNo* Endteste=Raiz.mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
+                TreeNo* Endteste = Raiz.mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
 
                 while ((Endteste->nomeNo!=classes[0]) && (Endteste->nomeNo!=classes[1])) {
-                    i=corpus.pegarPosAtributo(Endteste->nomeNo);
-                    Endteste = (*Endteste).mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
+                    try{
+                        i = corpus.pegarPosAtributo(Endteste->nomeNo);
+                    }
+                    catch(string str){//o atributo não existe no corpus saia
+                        break;
+                    }
+                    Endteste = Endteste->mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
                 }
+
                 if (Endteste->nomeNo==classes[0])
                     corpus.ajustarValor(c, e, atributo, corpus.pegarIndice(classes[0]));
+                else
                 if (Endteste->nomeNo==classes[1])
                     corpus.ajustarValor(c, e, atributo, corpus.pegarIndice(classes[1]));
+                else
+                    corpus.ajustarValor(c, e, atributo, corpus.pegarIndice("?"));
 
-                for (int cont=0; cont < (atributo+1); cont++)
-                     cout << corpus.pegarSimbolo(corpus.pegarValor(c, e, cont)) << ", ";
+                //for (cont=0; cont < (atributo+1); cont++)
+                //     cout << corpus.pegarSimbolo(corpus.pegarValor(c, e, cont)) << ", ";
         }
     }
     return true;
