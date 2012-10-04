@@ -21,8 +21,10 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
 
         vector<string> atributosNo;
         int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq;
-        string melhorAttrNo;
+        string melhorAttrNo, nomeAtributoAlvo;
         Corpus *subcorpusNo;
+
+        nomeAtributoAlvo = corpus.pegarAtributo(iRespostaNo);
 
         nConjExemplos = corpus.pegarQtdConjExemplos();
         //determina quais são os valores possíveis para o atributo
@@ -81,7 +83,7 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
             subcorpusNo->removerAtributo(atributo);
 //                 subcorpusNo.removerAtributo(subcorpusNo.pegarAtributo(atributo));
 
-            iRespostaNo = subcorpusNo->pegarPosAtributo("Purchase");
+            iRespostaNo = subcorpusNo->pegarPosAtributo(nomeAtributoAlvo);
 
 //                 iRespostaNo = subcorpusNo.pegarPosAtributo(atraux);
             cout << endl << "iRespostaNo: " << iRespostaNo << endl;
