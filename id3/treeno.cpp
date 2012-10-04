@@ -35,13 +35,12 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         for (c=0; c < nConjExemplos; c++){
             nExemplos = corpus.pegarQtdExemplos(c);
             for (e=0; e < nExemplos; e++){
-                mapaValoresNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))] = 0;
+                mapaValoresNo   [corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))] = 0;
                 mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))];
             }
         }
 
-        //vale a pena melhorar isso, passar uma vez pelo corpus, atualizando todo mundo
-        for (it = mapaValoresNo.begin(), ite = mapaValoresEndNo.begin(); it!=mapaValoresNo.end(); it++, ite++){
+        for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++){
             iValor = corpus.pegarIndice(it->first);
             //calcula a frequencia de valores nesse atributo
             qualidade = 0;

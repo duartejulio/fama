@@ -73,7 +73,7 @@ int main()
 
     for (i=0; i < (int)atributos.size(); i++) {
         cout << "\n Atributo " << i << ":  " << atributos[i];
-        // (atributos[i]!="Purchase")
+        // if(atributos[i]!="Purchase")
             atributosTreino.push_back(atributos[i]);
     }
 
