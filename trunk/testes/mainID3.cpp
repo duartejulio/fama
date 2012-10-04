@@ -78,9 +78,11 @@ int main()
     }
 
     DecisionTree objTree(atributosTreino, classes);
-
-    Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
-
+    DecisionTree objTree2(vector<string>(), classes);
+    RandomForest objForest(&objTree2, atributosTreino, 5, 4);
+    //Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
+    Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
+    cout << "OK";
     objCorpus.criarAtributo("algoritmo", "O");
     objClass->executarClassificacao(objCorpus, iResposta+1);
 
