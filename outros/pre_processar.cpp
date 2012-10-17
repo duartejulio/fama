@@ -7,7 +7,7 @@
 
 using namespace std;
 
-bool pre_processar::gerarCorpusProcessado(CorpusMatriz &objCorpus, int janela)
+bool pre_processar::gerarCorpusProcessado(Corpus &objCorpus, int janela)
 {
 
     int totlinhas = objCorpus.pegarQtdTokens(0);
