@@ -79,19 +79,18 @@ int main()
 
     DecisionTree objTree(atributosTreino, classes);
     DecisionTree objTree2(vector<string>(), classes);
-    RandomForest objForest(&objTree2, atributosTreino, 5, 4);
+    RandomForest objForest(&objTree2, atributosTreino, 101, 2);
     //Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
     Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
     cout << "OK";
     objCorpus.criarAtributo("algoritmo", "O");
-    objClass->executarClassificacao(objCorpus, iResposta+1);
+    objClass->executarClassificacao(objCorpus, iResposta + 1);
 
     AvaliadorAcuracia objAvalAcur;
     printf( "\nAcuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iResposta + 1)[0] );
 
-    //objCorpus.gravarArquivo( "../inputs/data.gravar" );
-
+    objCorpus.gravarArquivo( "../inputs/#data.gravar" );
     delete objClass;
 
     return 0;
