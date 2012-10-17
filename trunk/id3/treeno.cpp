@@ -16,12 +16,10 @@ void TreeNo::adicionarNo(string nome) {
 }
 
 void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
-        map <string, int>::iterator it;
-        map <string, TreeNo*>::iterator ite;
-
+        map <string, freqEnd>::iterator it;
         vector<string> atributosNo;
         int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq;
-        string melhorAttrNo, nomeAtributoAlvo;
+        string nomeAtributoAlvo;
         Corpus *subcorpusNo;
 
         nomeAtributoAlvo = corpus.pegarAtributo(iRespostaNo);
@@ -30,13 +28,11 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         //determina quais são os valores possíveis para o atributo
         mapaValoresNo.clear();
         cout << "\n ========== PEGAR VALORES =============" << endl;
-//            cout << "\n Atributo: " << atributos[atributo] << endl;
 
         for (c=0; c < nConjExemplos; c++){
             nExemplos = corpus.pegarQtdExemplos(c);
             for (e=0; e < nExemplos; e++){
-                mapaValoresNo   [corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))] = 0;
-                mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))];
+                mapaValoresNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))];
             }
         }
 
@@ -51,9 +47,9 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
                         qualidade++;
                 }
             }
-            it->second = qualidade;
+            it->second.freqNo = qualidade;
             cout << "\n" <<  it->first << " / ";
-            cout << it->second;
+            cout << it->second.freqNo;
             cout << "\n-----------------------------------------------------------------------------\n";
         }
 
@@ -62,13 +58,13 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         cout << "\n Atributo: " << corpus.pegarAtributo(atributo) << endl;
         cout << "\n ++++++++++++++++++++++++++++++++++++" << endl;
         for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++)
-             nExemplos += it->second;
+             nExemplos += it->second.freqNo;
 
-        for (it = mapaValoresNo.begin(), ite = mapaValoresEndNo.begin(); it!=mapaValoresNo.end(); it++, ite++) {
+        for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++) {
             cout << "\n-----------------------------------------------------------------------------\n";
             cout << "\n Criar subcorpus com o valor: " << it->first;
             iValor = corpus.pegarIndice(it->first);
-            freq = it->second;
+            freq = it->second.freqNo;
 
             vector < vector <bool> > mascara;
             mascara.resize(corpus.pegarQtdConjExemplos());
@@ -80,57 +76,44 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
             subcorpusNo = corpus.gerarSubCorpus(mascara);
 
             subcorpusNo->removerAtributo(atributo);
-//                 subcorpusNo.removerAtributo(subcorpusNo.pegarAtributo(atributo));
 
             iRespostaNo = subcorpusNo->pegarPosAtributo(nomeAtributoAlvo);
 
-//                 iRespostaNo = subcorpusNo.pegarPosAtributo(atraux);
             cout << endl << "iRespostaNo: " << iRespostaNo << endl;
 
-            melhorAttrNo=" ";
+            it->second.endNo = new TreeNo ();
             atributosNo = subcorpusNo->pegarAtributos();
-            melhorAttrNo = pegarValorMaiorFreq(*subcorpusNo, iRespostaNo);
-            int freqResposta=pegarValorFreq(*subcorpusNo, iRespostaNo);
+            (*it->second.endNo).pegarValorMaiorFreq(*subcorpusNo, iRespostaNo);
 
             if ((subcorpusNo->pegarQtdTotalExemplos()<=1) || ((subcorpusNo->pegarQtdAtributos()-1)<=0)) {
-                ite->second = new TreeNo (melhorAttrNo);
-                //cout << "\n End No: " << ite->second;
-                //cout << endl << "Press any key to quit..." << endl;
-                //getch();
+                (*it->second.endNo).adicionarNo((*it->second.endNo).melhorAttrNo);
                 continue;
             }
-            if (freqResposta==subcorpusNo->pegarQtdTotalExemplos()) {
-                cout << "\n freqResposta: " << freqResposta;
+            if (((*it->second.endNo).maiorFreq)==(subcorpusNo->pegarQtdTotalExemplos())) {
+                cout << "\n freqResposta: " << maiorFreq;
                 cout << "\n qtd exemplos: " << subcorpusNo->pegarQtdTotalExemplos();
-                ite->second = new TreeNo (melhorAttrNo);
-                //cout << "\n End No: " << ite->second;
-                //cout << endl << "Press any key to quit..." << endl;
-                //getch();
+                (*it->second.endNo).adicionarNo((*it->second.endNo).melhorAttrNo);
                 continue;
             }
-//                 melhorAttr=objNo.escolherAtributoNo(subcorpusNo, atributosNo, iRespostaNo);
 
-            melhorAttrNo=escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
-            ite->second = new TreeNo (melhorAttrNo);
-            //cout << "\n End No: " << ite->second;
-            //cout << endl << "Press any key to quit..." << endl;
-            //getch();
+            string melhor=escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
+            (*it->second.endNo).adicionarNo(melhor);
 
-            (*ite->second).pegarValoresNo(*subcorpusNo, subcorpusNo->pegarPosAtributo(melhorAttrNo), iRespostaNo);
+            (*it->second.endNo).pegarValoresNo(*subcorpusNo, subcorpusNo->pegarPosAtributo(melhor), iRespostaNo);
             delete subcorpusNo;
         }
-
         return;
 }
 
 
-// retorna o valor que aparece com mais frequencia
-string TreeNo::pegarValorMaiorFreq (Corpus &corpus, int atributo) {
+// retorna o nome do atributo que aparece com mais frequencia e da frequencia
+void TreeNo::pegarValorMaiorFreq (Corpus &corpus, int atributo) {
         map <string, int> mapaValoresMaior;
         map <string, int>::iterator it;
         int nConjExemplos, nExemplos, c, e, qualidade, iValor;
-        int maiorFreq = 0;
-        string valorMaior;
+        melhorAttrNo=" ";
+        maiorFreq = 0;
+        //string valorMaior;
 
         nConjExemplos = corpus.pegarQtdConjExemplos();
 
@@ -153,61 +136,15 @@ string TreeNo::pegarValorMaiorFreq (Corpus &corpus, int atributo) {
                 }
             }
             it->second = qualidade;
-            //cout << iValor << " / ";
-           // cout << "\n" <<  it->first << " / ";
-           // cout << it->second;
-           // cout << "\n-----------------------------------------------------------------------------\n";
         }
          for (it = mapaValoresMaior.begin(); it!=mapaValoresMaior.end(); it++)
              if (it->second > maiorFreq) {
                 maiorFreq = it->second;
-                valorMaior = it->first;
+                melhorAttrNo = it->first;
              }
-         return valorMaior;
+         return;
 }
 
-// retorna a maior frequencia
-int TreeNo::pegarValorFreq (Corpus &corpus, int atributo) {
-        map <string, int> mapaValoresMaior;
-        map <string, int>::iterator it;
-        int nExemplos, nConjExemplos, c, e, qualidade, iValor;
-        int maiorFreq = 0;
-        string valorMaior;
-
-        nConjExemplos = corpus.pegarQtdConjExemplos();
-
-        for (c = 0; c < nConjExemplos; c++){
-            nExemplos = corpus.pegarQtdExemplos(c);
-            for (e=0; e < nExemplos; e++)
-                mapaValoresMaior[corpus.pegarSimbolo(corpus.pegarValor(c, e, atributo))] = 0;
-        }
-
-        for (it = mapaValoresMaior.begin(); it!=mapaValoresMaior.end(); it++){
-            iValor = corpus.pegarIndice(it->first);
-            //calcula a frequencia de valores nesse atributo
-            qualidade = 0;
-            for (c = 0; c < nConjExemplos; c++){
-                nExemplos = corpus.pegarQtdExemplos(c);
-                for (e=0; e < nExemplos; e++){
-                    if (iValor == corpus.pegarValor(c, e, atributo))
-                        qualidade++;
-                }
-            }
-            it->second = qualidade;
-            //cout << iValor << " / ";
-            cout << "\n" <<  it->first << " / ";
-            cout << it->second;
-            cout << "\n-----------------------------------------------------------------------------\n";
-        }
-         for (it = mapaValoresMaior.begin(); it!=mapaValoresMaior.end(); it++)
-             if (it->second > maiorFreq) {
-                maiorFreq = it->second;
-                valorMaior = it->first;
-             }
-         cout << "\nMaior freq: " << maiorFreq << endl;
-
-         return maiorFreq;
-}
 
 // escolhe atributo de melhor ganho
 string TreeNo::escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int atributoAlvo) {
@@ -279,16 +216,15 @@ double TreeNo::entropia (Corpus &corpus, int atributo) {
              prob = (float) freq/nExemplos;
              valor_entropia += ((-prob) * log2(prob));
         }
-
         return valor_entropia;
 }
+
 
 // calcula o ganho da informacao
 double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
         map <string, int> mapaValores;
         map <string, int>::iterator it;
         Corpus *subcorpusganho;
-        //subcorpusganho.ajustarSeparador(',');
         int nConjExemplos, c, nExemplos, i, e, qualidade, iValor, freq, column;
         double valor_entropia = 0.0, subentropia = 0.0, valor_ganho = 0.0;
         float prob = 0.0;
@@ -369,7 +305,6 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
          cout << "\n Valor da entropia total: " << valor_entropia << endl;
          cout << "\n Valor do ganho " << endl;
          cout << "\n (Valor da entropia total - Valor subentropia acumulada): " << valor_ganho << endl;
-//             cout << "\n";
          cout << "\n=============================================================================\n";
 
          return valor_ganho;
@@ -378,14 +313,12 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
 
 // imprimir arvore de decisao
 void TreeNo::imprimirNo() {
-     map <string, TreeNo*>::iterator ite;
-     for (ite = mapaValoresEndNo.begin(); ite!=mapaValoresEndNo.end(); ite++){
-         cout << "\n\n\t\t" <<  ite->first;
-         cout << "\n\t\t   |------>  " << (*ite->second).nomeNo;
-         (*ite->second).imprimirNo();
+     map <string, freqEnd>::iterator it;
+     for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++){
+         cout << "\n\n\t\t" <<  it->first;
+         cout << "\n\t\t   |------>  " << (*it->second.endNo).nomeNo;
+         (*it->second.endNo).imprimirNo();
         // cout << "\n-----------------------------------------------------------------------------\n";
      }
 }
-
-
 
