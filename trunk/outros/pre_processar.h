@@ -12,7 +12,7 @@ using namespace std;
 class pre_processar
 {
     public:
-      bool gerarCorpusProcessado(CorpusMatriz &objCorpus, int janela);
+      bool gerarCorpusProcessado(Corpus &objCorpus, int janela);
 
 
 };
