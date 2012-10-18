@@ -32,11 +32,19 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="..\avaliador\Avaliador.cpp" />
+		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\classificador\classificador.cpp" />
+		<Unit filename="..\classificador\classificadornb.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
 		<Unit filename="..\processador\processador.cpp" />
 		<Unit filename="..\processador\processadorsh.cpp" />
 		<Unit filename="mainSH.cpp" />
+		<Unit filename="..\treinador\naivebayes.cpp" />
+		<Unit filename="..\treinador\treinador.cpp" />
+		<Unit filename="..\validador\validador.cpp" />
+		<Unit filename="..\validador\validadorkdobras.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
