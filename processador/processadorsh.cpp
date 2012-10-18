@@ -16,22 +16,23 @@ ProcessadorSerieHistorica::~ProcessadorSerieHistorica(){
 bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 {
 
-    int totlinhas, qtdConjExemplos, c;
+    int totlinhas, qtdConjExemplos, c, pos, neg;
 
     int  d, ipreco, idColDiferenca_i,  idColY, linhai, linhaj;
     float diferenca_i[janela];
     ipreco = objCorpus.pegarPosAtributo(atributo);
 
+    pos = objCorpus.pegarIndice("+1");
+    neg = objCorpus.pegarIndice("-1");
+
     //criando atributos (colunas) das diferenças de valores
     for (d=1; d<=janela; d++)
     {
-        std::string s;
-        std::stringstream out;
+        stringstream out;
         out << d;
-        s = "d-" + out.str();
-
-        objCorpus.criarAtributo(s,"0");
+        objCorpus.criarAtributo("d-" + out.str(), "0");
     }
+
     //criando atributo (coluna) de saida
     idColY = objCorpus.criarAtributo("y","0");
 
@@ -43,7 +44,7 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
             diferenca_i[d-1] = 0;
 
         //preenche os valores das diferenças
-        for (linhai=0; linhai<=totlinhas  - 1; linhai++){
+        for (linhai=0; linhai < totlinhas; linhai++){
 
             //atualiza os valores do vetor de diferencas
             for (linhaj=janela - 1;linhaj > 0; linhaj--){
@@ -57,23 +58,27 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 
             //obtem o valor de ontem do ativo
             int  v_di;
-            float valor_di =0;
+            float valor_di, valor_futuro;
             if (linhai > 0){
-                v_di = objCorpus.pegarValor(c,(linhai - 1),ipreco);
+                v_di = objCorpus.pegarValor(c, linhai - 1, ipreco);
                 (std::istringstream)(objCorpus.pegarSimbolo(v_di)) >> valor_di >> std::dec;//converte para float
             }
             else{
                 valor_di = valor_atual;
             }
 
+            if (linhai != totlinhas - 1){
+                v_di = objCorpus.pegarValor(c, linhai + 1, ipreco);
+                (std::istringstream)(objCorpus.pegarSimbolo(v_di)) >> valor_futuro >> std::dec;//converte para float
+            }
+            else{
+                valor_futuro = valor_atual;
+            }
+
             //d-1
             diferenca_i[0] = valor_atual - valor_di;
 
-            if (diferenca_i[0] >=0){
-                objCorpus.ajustarValor(c,linhai,idColY,objCorpus.pegarIndice("1"));
-            }else {
-                objCorpus.ajustarValor(c,linhai,idColY,objCorpus.pegarIndice("-1"));
-            }
+            objCorpus.ajustarValor(c, linhai, idColY, (valor_futuro > valor_atual)?pos:neg);
 
             //preenche os valores das diferenças
             for (linhaj=1;linhaj <= janela ; linhaj++){
