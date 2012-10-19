@@ -40,6 +40,7 @@ int main()
             total++;
         }
     }
+
     cout << 100.*c0/total << " / " << 100.*c1/total << endl;
     atributos = objCorpus.pegarAtributos();
 
