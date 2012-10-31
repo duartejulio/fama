@@ -17,7 +17,7 @@ class TreeNo {
         double ganho (Corpus &corpus, int atributo, int atributoAlvo);
         string escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int atributoAlvo);
         void pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo);
-        void imprimirNo();
+        string imprimirNo();
         string nomeNo;
         string melhorAttrNo;
         int    maiorFreq;
@@ -26,6 +26,6 @@ class TreeNo {
                TreeNo* endNo;
         };
         map <string, freqEnd> mapaValoresNo;
-                
+
 };
 

@@ -1,5 +1,8 @@
 #include "dtree.h"
 #include <cmath>
+#include <sstream>
+
+using namespace std;
 
 TreeNo::TreeNo () {
         nomeNo="";
@@ -7,12 +10,12 @@ TreeNo::TreeNo () {
 
 TreeNo::TreeNo(string nome) {
         nomeNo=nome;
-        cout << "\nCriar no: " << nomeNo;
+//        cout << "\nCriar no: " << nomeNo;
 }
 
 void TreeNo::adicionarNo(string nome) {
         nomeNo=nome;
-        cout << "\nCriar no: " << nomeNo;
+//        cout << "\nCriar no: " << nomeNo;
 }
 
 void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
@@ -27,7 +30,7 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
         nConjExemplos = corpus.pegarQtdConjExemplos();
         //determina quais são os valores possíveis para o atributo
         mapaValoresNo.clear();
-        cout << "\n ========== PEGAR VALORES =============" << endl;
+//        cout << "\n ========== PEGAR VALORES =============" << endl;
 
         for (c=0; c < nConjExemplos; c++){
             nExemplos = corpus.pegarQtdExemplos(c);
@@ -48,21 +51,25 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
                 }
             }
             it->second.freqNo = qualidade;
+/*
             cout << "\n" <<  it->first << " / ";
             cout << it->second.freqNo;
             cout << "\n-----------------------------------------------------------------------------\n";
+*/
         }
 
         nExemplos = 0;
+/*
         cout << "\n ++++++++++++++++++++++++++++++++++++" << endl;
         cout << "\n Atributo: " << corpus.pegarAtributo(atributo) << endl;
         cout << "\n ++++++++++++++++++++++++++++++++++++" << endl;
+*/
         for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++)
              nExemplos += it->second.freqNo;
 
         for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++) {
-            cout << "\n-----------------------------------------------------------------------------\n";
-            cout << "\n Criar subcorpus com o valor: " << it->first;
+//            cout << "\n-----------------------------------------------------------------------------\n";
+//            cout << "\n Criar subcorpus com o valor: " << it->first;
             iValor = corpus.pegarIndice(it->first);
             freq = it->second.freqNo;
 
@@ -79,7 +86,7 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
 
             iRespostaNo = subcorpusNo->pegarPosAtributo(nomeAtributoAlvo);
 
-            cout << endl << "iRespostaNo: " << iRespostaNo << endl;
+//            cout << endl << "iRespostaNo: " << iRespostaNo << endl;
 
             it->second.endNo = new TreeNo ();
             atributosNo = subcorpusNo->pegarAtributos();
@@ -90,8 +97,8 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
                 continue;
             }
             if (((*it->second.endNo).maiorFreq)==(subcorpusNo->pegarQtdTotalExemplos())) {
-                cout << "\n freqResposta: " << maiorFreq;
-                cout << "\n qtd exemplos: " << subcorpusNo->pegarQtdTotalExemplos();
+//                cout << "\n freqResposta: " << maiorFreq;
+//                cout << "\n qtd exemplos: " << subcorpusNo->pegarQtdTotalExemplos();
                 (*it->second.endNo).adicionarNo((*it->second.endNo).melhorAttrNo);
                 continue;
             }
@@ -155,8 +162,8 @@ string TreeNo::escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int at
          for (it = atr.begin(); it != atr.end(); it++) {
               if (*it != atr[atributoAlvo]) {
                   iatributo=subcorpus.pegarPosAtributo(*it);
-                  cout << "\nAtr: " << *it << endl;
-                  cout << "\nPosAtr :" << iatributo << endl;
+//                  cout << "\nAtr: " << *it << endl;
+//                  cout << "\nPosAtr :" << iatributo << endl;
                   nganho = ganho(subcorpus, iatributo, atributoAlvo);
                   if (nganho >= melhorGanho) {
                      melhorGanho = nganho;
@@ -164,9 +171,10 @@ string TreeNo::escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int at
                   }
               }
          }
+/*
          cout << "\n melhor ganho: " << melhorGanho << endl;
          cout << "\n melhor atributo: " << melhorAtributo;
-
+*/
          return melhorAtributo;
 }
 
@@ -225,7 +233,7 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
         map <string, int> mapaValores;
         map <string, int>::iterator it;
         Corpus *subcorpusganho;
-        int nConjExemplos, c, nExemplos, i, e, qualidade, iValor, freq, column;
+        int nConjExemplos, c, nExemplos, i, e, qualidade, iValor, freq;
         double valor_entropia = 0.0, subentropia = 0.0, valor_ganho = 0.0;
         float prob = 0.0;
 
@@ -234,9 +242,10 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
         //determina quais são os valores possíveis para o atributo
         mapaValores.clear();
         i = corpus.pegarPosAtributo(corpus.pegarAtributo(atributo));
+/*
         cout << "\n ========== PEGAR VALORES =============" << endl;
         cout << "\n Atributo: " << corpus.pegarAtributo(atributo) << endl;
-
+*/
         for (c = 0; c < nConjExemplos; c++){
             nExemplos = corpus.pegarQtdExemplos(c);
             for (e=0; e < nExemplos; e++)
@@ -255,12 +264,14 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
                 }
             }
             it->second = qualidade;
-//               cout << iValor << " / ";
+/*
+            cout << iValor << " / ";
             cout << "\n" <<  it->first << " / ";
             cout << it->second;
             cout << "\n-----------------------------------------------------------------------------\n";
+*/
         }
-
+/*
         for( register int s = 0 ; s < corpus.pegarQtdConjExemplos(); s++ ) {
              for( register int j = 0; j < corpus.pegarQtdExemplos(s); j++ ) {
                     column=corpus.pegarQtdAtributos();
@@ -271,14 +282,15 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
              }
 
          }
-
+*/
          nExemplos = 0;
+/*
          cout << "\n ++++++++++++++++++++++++++++++++++++" << endl;
          cout << "\n Atributo: " << corpus.pegarAtributo(atributo) << endl;
          cout << "\n ++++++++++++++++++++++++++++++++++++" << endl;
 
          cout << "\n AtributoAlvo: " << corpus.pegarAtributo(atributoAlvo) << endl;
-
+*/
          for (it = mapaValores.begin(); it!=mapaValores.end(); it++)
              nExemplos += it->second;
 
@@ -302,23 +314,26 @@ double TreeNo::ganho (Corpus &corpus, int atributo, int atributoAlvo) {
          }
          valor_entropia = entropia(corpus, atributoAlvo);
          valor_ganho = valor_entropia - subentropia;
+/*
          cout << "\n Valor da entropia total: " << valor_entropia << endl;
          cout << "\n Valor do ganho " << endl;
          cout << "\n (Valor da entropia total - Valor subentropia acumulada): " << valor_ganho << endl;
          cout << "\n=============================================================================\n";
-
+*/
          return valor_ganho;
 }
 
 
 // imprimir arvore de decisao
-void TreeNo::imprimirNo() {
-     map <string, freqEnd>::iterator it;
-     for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++){
-         cout << "\n\n\t\t" <<  it->first;
-         cout << "\n\t\t   |------>  " << (*it->second.endNo).nomeNo;
-         (*it->second.endNo).imprimirNo();
+string TreeNo::imprimirNo() {
+    ostringstream out;
+    map <string, freqEnd>::iterator it;
+    for (it = mapaValoresNo.begin(); it!=mapaValoresNo.end(); it++){
+        out << "\n\n\t\t" <<  it->first;
+        out << "\n\t\t   |------>  " << (*it->second.endNo).nomeNo;
+        out << (*it->second.endNo).imprimirNo();
         // cout << "\n-----------------------------------------------------------------------------\n";
-     }
+    }
+    return out.str();
 }
 
