@@ -42,37 +42,9 @@ int main()
 
     cout << 100.*c0/nTotalExemplos << " / " << 100.*c1/nTotalExemplos << endl;
 
-    /* Teste generateSubCorpus
-    vector < vector <bool> > mask;
-    bool sim = true;
-    mask.resize(nConjExemplos);
-    for (c=0; c<nConjExemplos; c++){
-        mask[c].resize(objCorpus.pegarQtdExemplos(c));
-        for (e=0; e < nExemplos; e++, sim = !sim)
-            mask[c][e] = true;
-    }
-    Corpus *sub = objCorpus.gerarSubCorpus(mask);
-    cout << nTotalExemplos << " - " << sub->pegarQtdTotalExemplos() << endl;
-    cout << nConjExemplos << " - " << sub->pegarQtdConjExemplos() << endl;
-
-
-    for (c=0; c<nConjExemplos; c++){
-        nExemplos = objCorpus.pegarQtdExemplos(c);
-        for (e=0; e < nExemplos; e++){
-            for (i = 0; i < 5; i++)
-                cout << objCorpus.pegarSimbolo(objCorpus.pegarValor(c, e, i))
-                    << "-"<< sub->pegarSimbolo(objCorpus.pegarValor(c, e, i)) << endl;
-        }
-    }
-
-    */
-    //return 0;
-
-
     atributos = objCorpus.pegarAtributos();
 
     for (i=0; i < (int)atributos.size(); i++) {
-        cout << "\n Atributo " << i << ":  " << atributos[i];
         // if(atributos[i]!="Purchase")
             atributosTreino.push_back(atributos[i]);
     }
@@ -80,9 +52,9 @@ int main()
     DecisionTree objTree(atributosTreino, classes);
     DecisionTree objTree2(vector<string>(), classes);
     RandomForest objForest(&objTree2, atributosTreino, 101, 2);
-    //Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
-    Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
-    cout << "OK";
+    Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
+    //Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
+
     objCorpus.criarAtributo("algoritmo", "O");
     objClass->executarClassificacao(objCorpus, iResposta + 1);
 
@@ -91,6 +63,7 @@ int main()
      iResposta, iResposta + 1)[0] );
 
     objCorpus.gravarArquivo( "../inputs/#data.gravar" );
+    //cout << objClass->descricaoConhecimento();
     delete objClass;
 
     return 0;

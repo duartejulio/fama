@@ -27,7 +27,6 @@ int main()
     if (psh.processarCorpus(objCorpus))
         cout << "Sucesso\n";
 
-
     for (int d=1; d<=janela; d++)
     {
         string s;

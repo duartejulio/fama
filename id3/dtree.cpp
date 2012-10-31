@@ -2,8 +2,8 @@
 #include <cmath>
 #include <sstream>
 #include <algorithm>
-//#include <conio.h>
-//#include <stdlib.h>
+
+using namespace std;
 
 ComiteClassificador::ComiteClassificador(vector<Classificador*> com){
     comite = com;
@@ -17,17 +17,17 @@ bool ComiteClassificador::executarClassificacao( Corpus &corpus, int atributo){
     map<int, int >::iterator it;
     vector<int> iVotos;
 
-    cout << endl << "Quant membros: " << quantidadeMembros;
+    //cout << endl << "Quant membros: " << quantidadeMembros;
 
     for (i=0; i < quantidadeMembros; i++){
         ostringstream nomeVoto;
         nomeVoto << "voto" << i;
         atributoVoto = corpus.criarAtributo(nomeVoto.str());
         iVotos.push_back(atributoVoto);
-        cout << endl << "comite" << i << ": " << comite[i];
+//        cout << endl << "comite" << i << ": " << comite[i];
 
         comite[i]->executarClassificacao(corpus, atributoVoto);
-        cout << endl << "=== teste ===";
+//        cout << endl << "=== teste ===";
     }
 
     nConjExemplos = corpus.pegarQtdConjExemplos();
@@ -67,9 +67,8 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
     vector < Classificador*> comite;
 
     atributoAlvo = corpus.pegarAtributo(atributo);
-    int sorte;
 
-    cout << endl << "valor de atributo alvo: " << atributo << endl;
+//    cout << endl << "valor de atributo alvo: " << atributo << endl;
 
     //remove atributoalvo
     for (i=0; i < atributosBase.size();i++)
@@ -81,10 +80,7 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
         vector <string> atributosAtuais(atributosBase);
         //shuffle
         random_shuffle(atributosAtuais.begin(), atributosAtuais.end());
-
-//        sorte=rand()% numeroAtributos;
-//        cout << endl << "valor de sorte: " << sorte << endl;
-
+        //clone
         Corpus *subcorpus;
         subcorpus = corpus.clone();
 
@@ -98,17 +94,16 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
 
         atributo = numeroAtributos;
 
-        cout << endl << "valor de atributo alvo: " << atributo << endl;
+//        cout << endl << "valor de atributo alvo: " << atributo << endl;
 
         arvoreBase->ajustarAtributos(atributosAtuais);
-//        Classificador* comiteteste = arvoreBase->executarTreinamento(*subcorpus, atributo);
-//        comite.push_back(arvoreBase->executarTreinamento(corpus, atributo));
 
         comite.push_back(arvoreBase->executarTreinamento(*subcorpus, atributo));
-        cout << "***" << endl;
 
-        cout << endl << "Press any key to quit..." << endl;
-//	    getch();
+        delete subcorpus;
+
+        //cout << "***" << endl;
+
     }
     return new ComiteClassificador(comite);
 }
@@ -119,23 +114,31 @@ ClassificadorTree::ClassificadorTree(vector<string> clas, TreeNo &EndNoRaiz):Cla
     Raiz = EndNoRaiz;
 }
 
+string ClassificadorTree::printDTree() {
+
+    ostringstream out;
+
+    out << "\n No Raiz:" << Raiz.nomeNo;
+    out << Raiz.imprimirNo();
+    return out.str();
+}
+
+string ClassificadorTree::descricaoConhecimento (){
+    return printDTree();
+}
+
 bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
     int i, nAmostras, nConjAmostras;
     //determina tamanho do conjunto
     nConjAmostras = corpus.pegarQtdConjExemplos();
 
-
-    cout << "\n No Raiz:" << Raiz.nomeNo;
-    cout << "\n No this Raiz:" << this->Raiz.nomeNo;
-    cout << "\n========== executarClassificao ==============";
-    cout << "\n nome No Raiz: " << Raiz.nomeNo;
+//    cout << "\n========== executarClassificao ==============";
+//    cout << "\n nome No Raiz: " << Raiz.nomeNo;
 
     for (register int c=0; c < nConjAmostras; c++){
         nAmostras = corpus.pegarQtdExemplos(c);
         for (register int e=0; e < nAmostras; e++) {
-                //cout << "\n";
                 i = corpus.pegarPosAtributo(Raiz.nomeNo);
-//                TreeNo* Endteste = Raiz.mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
 
                 TreeNo* Endteste=(Raiz.mapaValoresNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))]).endNo;
 
@@ -147,7 +150,6 @@ bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
                         cout << "**" << str << "**" << endl;
                         break;
                     }
-//                    Endteste = Endteste->mapaValoresEndNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))];
                     Endteste = (Endteste->mapaValoresNo[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))]).endNo;
                 }
 
@@ -159,13 +161,10 @@ bool ClassificadorTree::executarClassificacao( Corpus &corpus, int atributo ){
                 else
                     corpus.ajustarValor(c, e, atributo, corpus.pegarIndice("?"));
 
-
                 //for (cont=0; cont < (atributo+1); cont++)
                 //     cout << corpus.pegarSimbolo(corpus.pegarValor(c, e, cont)) << ", ";
         }
     }
-    cout << "\n========== executarClassificao ==============";
-
     return true;
 }
 
@@ -177,7 +176,7 @@ DecisionTree::DecisionTree(vector<string> atr, vector<string> cla):Treinador(){
 }
 
 void DecisionTree::pegarEndNoRaiz(TreeNo* EndNoRaiz){
-    cout << "\n========== pegarEndNoRaiz ===========";
+//    cout << "\n========== pegarEndNoRaiz ===========";
     NoRaiz=EndNoRaiz;
 }
 
@@ -192,7 +191,7 @@ void DecisionTree::printDTree() {
      cout << "\n";
      cout << "\n";
 
-     cout << "\n End No Raiz:" << NoRaiz;
+//     cout << "\n End No Raiz:" << NoRaiz;
 
      cout << "\n No Raiz:" << NoRaiz->nomeNo;
      NoRaiz->imprimirNo();
@@ -211,13 +210,13 @@ Classificador* DecisionTree::executarTreinamento( Corpus &corpus, int atributo )
 
 // no raiz
     NoRaiz.adicionarNo(melhorAttr);
-    cout << "\nNo Raiz: " << melhorAttr;
+//    cout << "\nNo Raiz: " << melhorAttr;
 
     pegarEndNoRaiz(&NoRaiz);
 
     NoRaiz.pegarValoresNo(corpus, corpus.pegarPosAtributo(melhorAttr), iResposta);
 
-    printDTree();
+    //printDTree();
 
 
     return new ClassificadorTree(classes, NoRaiz);

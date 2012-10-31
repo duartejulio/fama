@@ -8,11 +8,13 @@
 class ClassificadorTree:public Classificador{
         vector <string> classes;
         TreeNo Raiz, *Endteste;
+        string printDTree();
     public:
         ClassificadorTree(vector<string>, TreeNo &EndNoRaiz);
         bool executarClassificacao( Corpus &corpusProva, int atributo);
         bool gravarConhecimento( string arquivo ){return true;}
         bool carregarConhecimento( string arquivo ){return true;}
+        string descricaoConhecimento ();
 };
 
 //prototipo do treinador
