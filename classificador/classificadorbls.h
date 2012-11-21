@@ -8,7 +8,7 @@ class ClassificadorBLS:public Classificador
     vector<string> classes;
 
 public:
-    ClassificadorBLS(vector<string> classes);
+    ClassificadorBLS(vector<string> classes, string nomeAtributo = "valor");
     virtual ~ClassificadorBLS();
 
     virtual bool executarClassificacao(Corpus&, int);
