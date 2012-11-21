@@ -5,9 +5,10 @@
 #include <iomanip>
 #include <iostream>
 
-ClassificadorBLS::ClassificadorBLS(vector<string> classes)
+ClassificadorBLS::ClassificadorBLS(vector<string> classes, string nomeAtributo)
 {
     this->classes = classes;
+    this->nomeAtributo = nomeAtributo;
     //ctor
 }
 
@@ -28,7 +29,7 @@ bool ClassificadorBLS::executarClassificacao(Corpus &corpus, int atributo)
     nConjExemplos = corpus.pegarQtdConjExemplos();
     nClasses = classes.size();
 	val_ant = 0.0;
-	ipreco = corpus.pegarPosAtributo("valor");
+	ipreco = corpus.pegarPosAtributo(nomeAtributo);
 
 
     pos = corpus.pegarIndice("+1");
