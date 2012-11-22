@@ -17,7 +17,7 @@ using namespace std;
 int main()
 {
     vector<string> atributos, classes, atributosTreino;
-    int janela = 4, dobras=2;
+    int janela = 5, dobras=2;
      //indice do atributo a aprender
     int iResposta, iSaida, iSaidaBLS;
 
@@ -25,16 +25,14 @@ int main()
     CorpusMatriz objCorpus(vector<string>(), ',', false, true);
     ProcessadorSerieHistorica psh(janela, "valor");
 
-    objCorpus.carregarArquivo( "../inputs/ativos_petr4" );
+    objCorpus.carregarArquivo( "../inputs/ativos" );
     if (psh.processarCorpus(objCorpus))
         cout << "Sucesso\n";
 
-    for (int d=1; d<=janela; d++)
-    {
-        string s;
+    for (int d=1; d<=janela; d++){
         stringstream out;
-        out << d;
-        atributosTreino.push_back("d-" + out.str());
+        out << "d-" << d;
+        atributosTreino.push_back(out.str());
     }
     classes.push_back("-1");
     classes.push_back("+1");
@@ -48,20 +46,6 @@ int main()
     iSaida = objCorpus.criarAtributo("saida_nb");
     iSaidaBLS = objCorpus.criarAtributo("saida_bls");
 
-/*
-    cout << "*OK" << endl;
-    vector< vector< float > > v = objValidador.executarExperimento(objNB, objCorpus, iResposta, iSaida);
-    cout << "*" << v[0][0] << endl;
-    float media = 0;
-    for (int c=0;c<dobras;c++){
-        cout << c << " - " << v[c][0] << endl;
-        media += v[c][0];
-    }
-    cout << "*" << media/dobras << endl;
-*/
-
-
-
     Classificador *objClass = objNB.executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
     cout << objClass->descricaoConhecimento();
@@ -69,10 +53,9 @@ int main()
     cout << "Qualidade Naive Bayes: " << 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaida)[0] << "%" << endl ;
 
     ClassificadorBLS *cbls;
-    cbls = new ClassificadorBLS(classes);
+    cbls = new ClassificadorBLS(classes, "valor");
     cbls->executarClassificacao(objCorpus, iSaidaBLS);
-
-
+    cout << cbls->descricaoConhecimento();
 
     cout << "Qualidade BLS: " << 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaBLS)[0] << "%" << endl ;
 
