@@ -71,3 +71,10 @@ void ClassificadorBLS::ajustarClasses(vector<string> classes)
 }
 
 
+string ClassificadorBLS::descricaoConhecimento(){
+    ostringstream ret;
+    ret << "Se " << nomeAtributo << "_-1 maior que " << nomeAtributo << "_0 --> -1" << endl;
+    ret << "Caso contrário --> +1" << endl;
+
+    return ret.str();
+}
