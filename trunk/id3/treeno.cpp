@@ -18,14 +18,23 @@ void TreeNo::adicionarNo(string nome) {
 //        cout << "\nCriar no: " << nomeNo;
 }
 
-void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
+void TreeNo::pegarValoresNo (Corpus &corpus, vector<string> atr, int atributo, int iRespostaNo) {
         map <string, freqEnd>::iterator it;
         vector<string> atributosNo;
-        int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq;
-        string nomeAtributoAlvo;
+        int nExemplos, nConjExemplos, c, e, qualidade, iValor, freq, nAtributos, a;
+        string nomeAtributoAlvo, nomeAtributoRemovido;
         Corpus *subcorpusNo;
 
+        nomeAtributoRemovido = corpus.pegarAtributo(atributo);
         nomeAtributoAlvo = corpus.pegarAtributo(iRespostaNo);
+
+        nAtributos = atr.size();
+        a = 0;
+        while (a < nAtributos){
+            if (atr[a]!=nomeAtributoRemovido)
+                atributosNo.push_back(atr[a]);
+            a++;
+        }
 
         nConjExemplos = corpus.pegarQtdConjExemplos();
         //determina quais são os valores possíveis para o atributo
@@ -89,10 +98,10 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
 //            cout << endl << "iRespostaNo: " << iRespostaNo << endl;
 
             it->second.endNo = new TreeNo ();
-            atributosNo = subcorpusNo->pegarAtributos();
+
             (*it->second.endNo).pegarValorMaiorFreq(*subcorpusNo, iRespostaNo);
 
-            if ((subcorpusNo->pegarQtdTotalExemplos()<=1) || ((subcorpusNo->pegarQtdAtributos()-1)<=0)) {
+            if ((subcorpusNo->pegarQtdTotalExemplos()<=1) || ((nAtributos - 2)<=0)) {
                 (*it->second.endNo).adicionarNo((*it->second.endNo).melhorAttrNo);
                 continue;
             }
@@ -103,10 +112,10 @@ void TreeNo::pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo) {
                 continue;
             }
 
-            string melhor=escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
+            string melhor = escolherAtributoNo(*subcorpusNo, atributosNo, iRespostaNo);
             (*it->second.endNo).adicionarNo(melhor);
 
-            (*it->second.endNo).pegarValoresNo(*subcorpusNo, subcorpusNo->pegarPosAtributo(melhor), iRespostaNo);
+            (*it->second.endNo).pegarValoresNo(*subcorpusNo, atributosNo, subcorpusNo->pegarPosAtributo(melhor), iRespostaNo);
             delete subcorpusNo;
         }
         return;
@@ -159,8 +168,9 @@ string TreeNo::escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int at
          double melhorGanho = 0.0, nganho = 0.0;
          string melhorAtributo;
          int iatributo;
+         string nomeAtributoAlvo = subcorpus.pegarAtributo(atributoAlvo);
          for (it = atr.begin(); it != atr.end(); it++) {
-              if (*it != atr[atributoAlvo]) {
+              if (*it != nomeAtributoAlvo) {//jc
                   iatributo=subcorpus.pegarPosAtributo(*it);
 //                  cout << "\nAtr: " << *it << endl;
 //                  cout << "\nPosAtr :" << iatributo << endl;

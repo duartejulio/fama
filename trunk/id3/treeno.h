@@ -16,7 +16,7 @@ class TreeNo {
         double entropia (Corpus &corpus, int atributo);
         double ganho (Corpus &corpus, int atributo, int atributoAlvo);
         string escolherAtributoNo (Corpus &subcorpus, vector<string> atr, int atributoAlvo);
-        void pegarValoresNo (Corpus &corpus, int atributo, int iRespostaNo);
+        void pegarValoresNo (Corpus &corpus, vector<string> atr, int atributo, int iRespostaNo);
         string imprimirNo();
         string nomeNo;
         string melhorAttrNo;

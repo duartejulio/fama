@@ -2,6 +2,7 @@
 #include <cmath>
 #include <sstream>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -66,6 +67,8 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
     register unsigned int i;
     vector < Classificador*> comite;
 
+    srand ( unsigned ( time (NULL) ) );
+
     atributoAlvo = corpus.pegarAtributo(atributo);
 
 //    cout << endl << "valor de atributo alvo: " << atributo << endl;
@@ -81,26 +84,30 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
         //shuffle
         random_shuffle(atributosAtuais.begin(), atributosAtuais.end());
         //clone
-        Corpus *subcorpus;
-        subcorpus = corpus.clone();
+        //Corpus *subcorpus;
+        //subcorpus = corpus.clone();
 
         while (atributosAtuais.size() > numeroAtributos) {
-            subcorpus->removerAtributo(atributosAtuais.back());
+          //  subcorpus->removerAtributo(atributosAtuais.back());
             atributosAtuais.pop_back();
         }
 
         //readiciona atributo alvo
         atributosAtuais.push_back(atributoAlvo);
 
-        atributo = numeroAtributos;
 
+//        atributo = numeroAtributos;
 //        cout << endl << "valor de atributo alvo: " << atributo << endl;
 
         arvoreBase->ajustarAtributos(atributosAtuais);
 
-        comite.push_back(arvoreBase->executarTreinamento(*subcorpus, atributo));
+        comite.push_back(arvoreBase->executarTreinamento(corpus, atributo));
 
-        delete subcorpus;
+//        for (int j=0; j<atributosAtuais.size();j++)
+//            cout << j << "-" << atributosAtuais[j] << endl;
+
+//        cout << comite[i]->descricaoConhecimento();
+//        delete subcorpus;
 
         //cout << "***" << endl;
 
@@ -206,7 +213,7 @@ Classificador* DecisionTree::executarTreinamento( Corpus &corpus, int atributo )
 
     TreeNo NoRaiz;
 
-    melhorAttr=NoRaiz.escolherAtributoNo(corpus, atributos, iResposta);
+    melhorAttr = NoRaiz.escolherAtributoNo(corpus, atributos, iResposta);
 
 // no raiz
     NoRaiz.adicionarNo(melhorAttr);
@@ -214,7 +221,7 @@ Classificador* DecisionTree::executarTreinamento( Corpus &corpus, int atributo )
 
     pegarEndNoRaiz(&NoRaiz);
 
-    NoRaiz.pegarValoresNo(corpus, corpus.pegarPosAtributo(melhorAttr), iResposta);
+    NoRaiz.pegarValoresNo(corpus, atributos, corpus.pegarPosAtributo(melhorAttr), iResposta);
 
     //printDTree();
 
