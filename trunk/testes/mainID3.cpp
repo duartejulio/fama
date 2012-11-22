@@ -44,16 +44,17 @@ int main()
 
     atributos = objCorpus.pegarAtributos();
 
-    for (i=0; i < (int)atributos.size(); i++) {
-        // if(atributos[i]!="Purchase")
-            atributosTreino.push_back(atributos[i]);
+    for (i=0; i < (int)atributos.size(); i++){
+        cout << i << "-" << atributos[i] << endl;
+        atributosTreino.push_back(atributos[i]);
     }
+
 
     DecisionTree objTree(atributosTreino, classes);
     DecisionTree objTree2(vector<string>(), classes);
-    RandomForest objForest(&objTree2, atributosTreino, 101, 2);
-    Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
-    //Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
+    RandomForest objForest(&objTree2, atributosTreino, 101, 3);
+    //Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
+    Classificador *objClass = objForest.executarTreinamento(objCorpus, iResposta);
 
     objCorpus.criarAtributo("algoritmo", "O");
     objClass->executarClassificacao(objCorpus, iResposta + 1);
@@ -63,7 +64,7 @@ int main()
      iResposta, iResposta + 1)[0] );
 
     objCorpus.gravarArquivo( "../inputs/#data.gravar" );
-    //cout << objClass->descricaoConhecimento();
+    cout << objClass->descricaoConhecimento();
     delete objClass;
 
     return 0;
