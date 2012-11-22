@@ -16,11 +16,13 @@ public:
     void ajustarClasses(vector<string> classes);
     bool gravarConhecimento(string)
     {
-        throw "Não Implementado";
+        cout << "Desnecessário";
+        return true;
     }
     bool carregarConhecimento(string)
     {
-        throw "Não Implementado";
+        cout << "Desnecessário";
+        return true;
     }
 
 };
