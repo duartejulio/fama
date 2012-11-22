@@ -6,6 +6,7 @@
 class ClassificadorBLS:public Classificador
 {
     vector<string> classes;
+    string nomeAtributo;
 
 public:
     ClassificadorBLS(vector<string> classes, string nomeAtributo = "valor");
