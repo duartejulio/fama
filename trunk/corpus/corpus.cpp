@@ -300,8 +300,6 @@ int Corpus::pegarQtdTotalExemplos(){
         nExemplosTotal += pegarQtdExemplos(c);
 
     return nExemplosTotal;
-
-
 }
 
 Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
