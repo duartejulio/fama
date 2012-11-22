@@ -35,6 +35,8 @@
 		<Unit filename="..\avaliador\Avaliador.cpp" />
 		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
 		<Unit filename="..\classificador\classificador.cpp" />
+		<Unit filename="..\classificador\classificadorbls.cpp" />
+		<Unit filename="..\classificador\classificadorbls.h" />
 		<Unit filename="..\classificador\classificadornb.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
