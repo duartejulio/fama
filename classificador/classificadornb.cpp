@@ -73,6 +73,7 @@ string ClassificadorNB::descricaoConhecimento(){
     for (c = 0; c < nClasses; c++)
         priori[c] = count[c]/(float)soma;
 
+    ret << setprecision(4);
     ret << "---------------------------------------------------------------" << endl;
     ret << "| " << setiosflags(ios::left) << setw(15) << "Classe/Priori";
     ret << "| " << setiosflags(ios::left) << setw(15) << "Atributo";
@@ -85,8 +86,8 @@ string ClassificadorNB::descricaoConhecimento(){
             if (a)
                 ret << "| " << setiosflags(ios::left) << setw(15) << " ";
             else
-                ret << "| " << setiosflags(ios::left) << setw(10) <<
-                 classes[c] << setw(5) << priori[c];
+                ret << "| " << setiosflags(ios::left) << setw(9) <<
+                 classes[c] << setw(6) << priori[c];
             ret << "| " << setiosflags(ios::left) << setw(15) << atributos[a];
             ret << "| " << setiosflags(ios::left) << setw(10) << medias[c][a];
             ret << "| " << setiosflags(ios::left) << setw(14) << desvio[c][a];
