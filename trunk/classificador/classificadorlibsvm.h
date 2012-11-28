@@ -4,12 +4,14 @@
 class ClassificadorLibSvm:public Classificador{
     private:
         vector<string> classes;
+        vector<string> atributos;
         struct svm_problem problema;
         struct svm_model modelo;
         string nomeAtributo;
 
     public:
         ClassificadorLibSvm(vector<string> classes,
+                            vector<string> atributos,
                             struct svm_problem problema,
                             struct svm_model modelo,
                             string nomeAtributo = "valor");
