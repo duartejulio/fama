@@ -52,7 +52,7 @@ Integração com LibSvm: Verificando Parâmetros e Passando da classe Corpus para a
     // gerando arquivo de modelo do libsvm
     svm_save_model(model_file_name,model);
 
-    return new ClassificadorLibSvm(classes, *problema, *model, "teste");
+    return new ClassificadorLibSvm(classes, atributos, *problema, *model, "teste");
 
 }
 

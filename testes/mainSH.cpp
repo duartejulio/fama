@@ -73,7 +73,6 @@ int main()
 
     struct svm_parameter param;
 
-
     param.svm_type = C_SVC;
 	param.kernel_type = LINEAR; //RBF;
 	param.degree = 3;

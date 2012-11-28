@@ -6,14 +6,17 @@
 #include <iostream>
 
 ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
+                                         vector<string> atr,
                                          svm_problem problema,
                                          svm_model modelo,
                                          string nomeAtributo)
 {
     this->classes = classes;
+    this->atributos = atr;
     this->nomeAtributo = nomeAtributo;
     this->problema = problema;
     this->modelo = modelo;
+
 
 }
 
