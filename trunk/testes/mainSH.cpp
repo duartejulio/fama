@@ -18,15 +18,17 @@ using namespace std;
 int main()
 {
     vector<string> atributos, classes, atributosTreino;
-    int janela = 30, dobras=2;
+    int janela = 600, dobras=2;
      //indice do atributo a aprender
     int iResposta, iSaida, iSaidaBLS, iSaidaSVM;
+    string atributoValorEmD = "valor";
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(vector<string>(), ',', false, true);
-    ProcessadorSerieHistorica psh(janela, "valor");
 
-    objCorpus.carregarArquivo( "../inputs/ativos" );
+    ProcessadorSerieHistorica psh(janela, atributoValorEmD);
+
+    objCorpus.carregarArquivo( "../inputs/ativos_alll11" );
     if (psh.processarCorpus(objCorpus))
         cout << "Sucesso\n";
 
@@ -38,11 +40,6 @@ int main()
     classes.push_back("-1");
     classes.push_back("+1");
 
-    NaiveBayes objNB(atributosTreino, classes);
-
-    AvaliadorAcuracia objAvalAcur;
-    ValidadorKDobras objValidador(objAvalAcur, dobras);
-
     iResposta = objCorpus.pegarPosAtributo("y");
     iSaida = objCorpus.criarAtributo("saida_nb");
     iSaidaBLS = objCorpus.criarAtributo("saida_bls");
@@ -51,6 +48,12 @@ int main()
 /*************************************************************************************************
                                           Naive Bayes
 *************************************************************************************************/
+
+    NaiveBayes objNB(atributosTreino, classes);
+
+    AvaliadorAcuracia objAvalAcur;
+    ValidadorKDobras objValidador(objAvalAcur, dobras);
+
     Classificador *objClass = objNB.executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
     cout << objClass->descricaoConhecimento();
@@ -90,7 +93,7 @@ int main()
 	param.weight = NULL;
 
 
-    LibSvm objLSVM(atributosTreino, classes, param);
+    LibSvm objLSVM(atributosTreino, classes, atributoValorEmD, param);
     Classificador *objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
 
     objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
