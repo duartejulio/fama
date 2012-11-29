@@ -6,12 +6,12 @@
 //#include "../libsvm/libsvm.dll"
 //#import "../libsvm/libsvm.dll" no_namespace rename("EOF", "EndOfFile")
 
-LibSvm::LibSvm(vector<string> atr, vector<string> cla, struct svm_parameter par):Treinador(){
+LibSvm::LibSvm(vector<string> atr, vector<string> cla, string valord, struct svm_parameter par):Treinador(){
     atributos = atr;
     classes = cla;
+    valor_dia = valord;
     param = par;
 }
-
 
 Classificador* LibSvm::executarTreinamento( Corpus &corpus, int atributo ){
 
@@ -41,18 +41,22 @@ Integração com LibSvm: Verificando Parâmetros e Passando da classe Corpus para a
         //gerar exceção e exibir mensagem, caso erro
     }
     // gerando a classe problema do libsvm a partir do corpus
-    struct svm_problem *problema  = gerarClasseProblemaSvm(corpus, atributo, nTotalExemplos, nAtributos, nConjExemplos);
+    struct svm_problem problema;
 
-    // setando nome do arquivo de modelo a ser gravado
-    strcpy(model_file_name, "out_model_svm.model");
+    if (gerarClasseProblemaSvm(corpus, atributo, nTotalExemplos, nAtributos, nConjExemplos, problema)) {
 
-    //treinando com os parametros para gerar o modelo
-    model = svm_train(problema, &param);
+         // setando nome do arquivo de modelo a ser gravado
+         strcpy(model_file_name, "out_model_svm.model");
 
-    // gerando arquivo de modelo do libsvm
-    svm_save_model(model_file_name,model);
+         //treinando com os parametros para gerar o modelo
+         model = svm_train(&problema, &param);
 
-    return new ClassificadorLibSvm(classes, atributos, *problema, *model, "teste");
+         // gerando arquivo de modelo do libsvm
+         svm_save_model(model_file_name,model);
+    }
+
+    return new ClassificadorLibSvm(classes, atributos, problema, model);
+
 
 }
 
@@ -62,13 +66,17 @@ bool LibSvm::verificarParametros(svm_parameter param) {
 
 }
 
-svm_problem* LibSvm::gerarClasseProblemaSvm(Corpus &corpus, int atributo, int nTotalExemplos, unsigned int nAtributos, unsigned int nConjExemplos) {
+bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
+                                            int atributo,
+                                            int nTotalExemplos,
+                                            unsigned int nAtributos,
+                                            unsigned int nConjExemplos,
+                                            struct svm_problem &prob) {
 
 
     struct svm_node *x_node; //nó atributos
-    struct svm_problem prob; //problema (corpus)
-    unsigned int nExemplos, i, a, e, c, v, iregistro ;
-
+    //struct svm_problem prob; //problema (corpus)
+    unsigned int nExemplos, i, a, e, c, v, iregistro, iValorDia ;
 
     float val;
 
@@ -86,41 +94,56 @@ svm_problem* LibSvm::gerarClasseProblemaSvm(Corpus &corpus, int atributo, int nT
             v = corpus.pegarValor(c, e, atributo);
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
             prob.y[iregistro] = val;
-            iregistro += 1; //incrementa o indice do i-ésimo elemento, considerando todos os registros de todos os conjuntos
 
-            x_node = new struct svm_node[nAtributos]; //alocando vetor de atributos (total att - y + finalizador svm_node) = maximo
+            //alocando vetor de atributos (total att + y + finalizador svm_node) = maximo
+            x_node = new struct svm_node[nAtributos + 1 + 1];
 
             int aux_a = 0;
+            prob.x[iregistro] = x_node;
+
+            //o primeiro valor do nó svm_node = valor do dia
+            iValorDia = corpus.pegarPosAtributo(valor_dia);
+            v = corpus.pegarValor(c, e, iValorDia);
+            (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
+            x_node[0].index = 1;
+            x_node[0].value = val;
+            aux_a += 1;
+
+            // próximos valores do nó svm_node = diferenças
             for (a=0; a<nAtributos;a++){
                 i = corpus.pegarPosAtributo(atributos[a]);
                 v = corpus.pegarValor(c, e, i);
                 (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
                 if (val != 0.0) {
-                    x_node[aux_a].index = (a + 1);
+                    x_node[aux_a].index = (a + 2); //1o. é do att valor em D
                     x_node[aux_a].value = val;
-                    aux_a = aux_a + 1;
+                    //add o no com os valores da i-ésima linha de registro
+                    //prob.x[iregistro][aux_a] = &x_node[aux_a];
+
+                    aux_a += 1;
                 }
             }
             //finalizador
             x_node[aux_a].index = (-1);
-            x_node[aux_a].value = 0.0;
+            //x_node[aux_a].value = 0.0;
 
-            //add o no com os valores da i-ésima linha de registro
-            prob.x[iregistro] = &x_node[aux_a];
+            iregistro += 1; //incrementa o indice do i-ésimo elemento, considerando todos os registros de todos os conjuntos
+
         }
      }
 
     //somente para teste. mostrar o conteudo do svm_problem !!!!!!!!!!!!!!!!!!!!!!!1
-     int ip, jp;
-     for (ip=0; ip<prob.l; ip++){
-        int lengthatt = sizeof(prob.x)/sizeof(int);
-        for (jp=0; jp<(lengthatt); jp++){
-             cout << "problema: " << ip << " node[ " << jp << "].index = " << prob.x[ip][jp].index << "value = " << prob.x[ip][jp].value;
-        }
-     }
+//     int reg_i, att_i_x;
+//     for (reg_i=0; reg_i<prob.l; reg_i++){
+//        cout << "registro " << reg_i << "\n";
+//        int qtdatt = sizeof(prob.x)/sizeof(int);
+//        for (att_i_x=0; att_i_x<(qtdatt); att_i_x++){
+//             cout << "    atributo " << att_i_x << " index:=" << prob.x[reg_i][att_i_x].index << " value:=" << prob.x[reg_i][att_i_x].value << "\n";
+//        }
+//     }
 
 
-    return &prob;
+    return true;
 
 
 }

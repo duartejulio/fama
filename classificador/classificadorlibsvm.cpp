@@ -6,16 +6,16 @@
 #include <iostream>
 
 ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
-                                         vector<string> atr,
+                                         vector<string> atributos,
                                          svm_problem problema,
-                                         svm_model modelo,
+                                         svm_model* modelo,
                                          string nomeAtributo)
 {
     this->classes = classes;
-    this->atributos = atr;
-    this->nomeAtributo = nomeAtributo;
+    this->atributos = atributos;
     this->problema = problema;
     this->modelo = modelo;
+    this->nomeAtributo = nomeAtributo;
 
 
 }
@@ -23,17 +23,17 @@ ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
 bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
 {
 
-    double target_label, predict_label; //alvo e encontrada
-    int i, a, e, c, pos, neg, out, iClasse, nExemplos, nConjExemplos, nAtributos, nClasses, v;
+    double predict_label; //alvo e encontrada
+    int i, a, e, c, pos, neg, out, nExemplos, nConjExemplos, nAtributos, nClasses, v;
     //struct svm_problem prob;
-    struct svm_model *mod;
+    struct svm_model* mod;
     struct svm_node *x_node; //nó atributos
 
     float val;
 
 
     //prob = this->problema; a principio nao vou mais precisar usar pq estou varrendo corpus
-    *mod = this->modelo;
+    mod = this->modelo;
 
     /*
     varro o objeto corpus e transformo cada linha em um nó svm_node.
@@ -53,22 +53,31 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
     for (c=0; c < nConjExemplos; c++){
         nExemplos = corpus.pegarQtdExemplos(c);
         for (e = 0; e < nExemplos; e++){
-                x_node = new struct svm_node[nAtributos]; //alocando vetor de atributos (total att - y + finalizador svm_node) = maximo
+
+                x_node = new struct svm_node[nAtributos + 1 + 1]; //alocando vetor de atributos (total att + valor d atual + finalizador svm_node) = maximo
                 int aux_a = 0;
+
+
+                int iValorDia = corpus.pegarPosAtributo("valor");
+                v = corpus.pegarValor(c, e, iValorDia);
+                (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
+                x_node[0].index = 1;
+                x_node[0].value = val;
+                aux_a += 1;
+
                 for (a=0; a < nAtributos; a++){
                     i = corpus.pegarPosAtributo(atributos[a]);
                     v = corpus.pegarValor(c, e, i);
                     (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
 
                     if (val != 0.0) {
-                        x_node[aux_a].index = (a + 1);
+                        x_node[aux_a].index = (a + 2);
                         x_node[aux_a].value = val;
-                        aux_a = aux_a + 1;
+                        aux_a += 1;
                     }
                 }
                 //finalizador
                 x_node[aux_a].index = (-1);
-                x_node[aux_a].value = 0.0;
 
 
                 //x = prob.x[i];
@@ -81,8 +90,8 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
                     out = neg;
                 }
 
-                iClasse = corpus.pegarIndice(classes[out]);
-                corpus.ajustarValor(c,e,atributo,iClasse);
+                //iClasse = corpus.pegarIndice(classes[out]);
+                corpus.ajustarValor(c,e,atributo,out);
 
         }
     }
