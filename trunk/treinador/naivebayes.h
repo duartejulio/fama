@@ -7,4 +7,5 @@ class NaiveBayes:public Treinador{
     public:
         NaiveBayes(vector<string>, vector<string>);
         Classificador* executarTreinamento( Corpus &corpus, int atributo );
+        void atualizarAtributosTreino(vector<string>);
 };

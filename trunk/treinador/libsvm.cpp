@@ -13,6 +13,16 @@ LibSvm::LibSvm(vector<string> atr, vector<string> cla, string valord, struct svm
     param = par;
 }
 
+
+
+void LibSvm::atualizarValorD(string valor) {
+     valor_dia = valor;
+}
+
+void LibSvm::atualizarAtributosTreino(vector<string> atr) {
+     atributos = atr;
+}
+
 Classificador* LibSvm::executarTreinamento( Corpus &corpus, int atributo ){
 
 	unsigned int nExemplos, nConjExemplos, nAtributos, e, c;
@@ -55,7 +65,8 @@ Integração com LibSvm: Verificando Parâmetros e Passando da classe Corpus para a
          svm_save_model(model_file_name,model);
     }
 
-    return new ClassificadorLibSvm(classes, atributos, problema, model);
+    return new ClassificadorLibSvm(classes, atributos, problema, model, valor_dia);
+
 
 
 }

@@ -17,6 +17,10 @@ ClassificadorBLS::~ClassificadorBLS()
     //dtor
 }
 
+void ClassificadorBLS::atualizarValorEmD(string nomeAtributo){
+    this->nomeAtributo = nomeAtributo;
+}
+
 bool ClassificadorBLS::executarClassificacao(Corpus &corpus, int atributo)
 {
     //recebe o corpus e o indice do atributo a ser comparado

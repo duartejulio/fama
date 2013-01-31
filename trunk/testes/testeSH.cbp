@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="..\avaliador\Avaliador.cpp" />
 		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\classificador\ClassificadorRegLog.cpp" />
+		<Unit filename="..\classificador\ClassificadorRegLog.h" />
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\classificador\classificadorbls.cpp" />
 		<Unit filename="..\classificador\classificadorbls.h" />
@@ -51,6 +53,9 @@
 		<Unit filename="..\treinador\libsvm.cpp" />
 		<Unit filename="..\treinador\libsvm.h" />
 		<Unit filename="..\treinador\naivebayes.cpp" />
+		<Unit filename="..\treinador\naivebayes.h" />
+		<Unit filename="..\treinador\reglog.cpp" />
+		<Unit filename="..\treinador\reglog.h" />
 		<Unit filename="..\treinador\treinador.cpp" />
 		<Unit filename="..\validador\validador.cpp" />
 		<Unit filename="..\validador\validadorkdobras.cpp" />

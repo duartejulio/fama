@@ -15,6 +15,7 @@ public:
     virtual bool executarClassificacao(Corpus&, int);
     void ajustarClasses(vector<string> classes);
     string descricaoConhecimento();
+    void atualizarValorEmD(string nomeAtributo);
     bool gravarConhecimento(string)
     {
         cout << "Desnecessário";
