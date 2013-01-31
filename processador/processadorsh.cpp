@@ -8,24 +8,28 @@ using namespace std;
 ProcessadorSerieHistorica::ProcessadorSerieHistorica(int janela, string atributo){
     this->janela = janela;
     this->atributo = atributo;
+    this->attcriados = false;
+    float diferenca_i[janela];
 }
 
 ProcessadorSerieHistorica::~ProcessadorSerieHistorica(){
 }
 
-bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
-{
+bool ProcessadorSerieHistorica::criarNovosAtributos() {
+}
 
-    int totlinhas, qtdConjExemplos, c, pos, neg;
+void ProcessadorSerieHistorica::atualizarJanela(int janela){
+    this->janela = janela;
+}
 
-    int  d, ipreco, idColDiferenca_i,  idColY, linhai, linhaj;
-    float diferenca_i[janela];
-    ipreco = objCorpus.pegarPosAtributo(atributo);
+void ProcessadorSerieHistorica::atualizarAtributo(string att){
+    this->atributo = att;
+}
 
-    pos = objCorpus.pegarIndice("+1");
-    neg = objCorpus.pegarIndice("-1");
+void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int janela){
 
-    //criando atributos (colunas) das diferenças de valores
+    int d;
+
     for (d=1; d<=janela; d++)
     {
         stringstream out;
@@ -33,8 +37,35 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
         objCorpus.criarAtributo("d-" + out.str(), "0");
     }
 
-    //criando atributo (coluna) de saida
-    idColY = objCorpus.criarAtributo("y","0");
+    objCorpus.criarAtributo("y","0");
+}
+
+bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
+{
+
+    int totlinhas, qtdConjExemplos, c, pos, neg;
+    int  d, ipreco, idColDiferenca_i,  idColY, linhai, linhaj;
+
+    ipreco = objCorpus.pegarPosAtributo(atributo);
+
+    pos = objCorpus.pegarIndice("+1");
+    neg = objCorpus.pegarIndice("-1");
+
+//    if (!attcriados) {
+//
+//        for (d=1; d<=janela; d++)
+//        {
+//            stringstream out;
+//            out << d;
+//            objCorpus.criarAtributo("d-" + out.str(), "0");
+//        }
+//
+//        idColY = objCorpus.criarAtributo("y","0");
+//
+//        attcriados = true;
+//    }
+
+    idColY = objCorpus.pegarPosAtributo("y");
 
     qtdConjExemplos = objCorpus.pegarQtdConjExemplos();
     for (c=0; c<qtdConjExemplos; c++){
@@ -96,7 +127,6 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
                 objCorpus.ajustarValor(c,linhai,idColDiferenca_i, objCorpus.pegarIndice(out2.str()));
 
             }
-
         }
     }
 

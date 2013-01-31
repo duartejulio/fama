@@ -15,4 +15,6 @@ class LibSvm:public Treinador{
     public:
         LibSvm(vector<string>, vector<string>, string, svm_parameter);
         Classificador* executarTreinamento( Corpus &corpus, int atributo );
+        void atualizarAtributosTreino(vector<string>);
+        void atualizarValorD(string valor);
 };

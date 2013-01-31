@@ -9,7 +9,7 @@ ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
                                          vector<string> atributos,
                                          svm_problem problema,
                                          svm_model* modelo,
-                                         string nomeAtributo)
+                                         string nomeAtributo )
 {
     this->classes = classes;
     this->atributos = atributos;
@@ -58,7 +58,7 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
                 int aux_a = 0;
 
 
-                int iValorDia = corpus.pegarPosAtributo("valor");
+                int iValorDia = corpus.pegarPosAtributo(nomeAtributo);
                 v = corpus.pegarValor(c, e, iValorDia);
                 (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
                 x_node[0].index = 1;

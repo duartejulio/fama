@@ -7,10 +7,19 @@ class ProcessadorSerieHistorica
 {
         int janela;
         string atributo;
+        bool attcriados;
+		float diferenca_i[];
+        bool criarNovosAtributos();
+		
+		
+
     public:
         ProcessadorSerieHistorica(int janela, string atributo);
-        ~ProcessadorSerieHistorica();
         bool processarCorpus(Corpus&);
+        ~ProcessadorSerieHistorica();
+		void atualizarJanela(int janela);
+		void atualizarAtributo(string att);
+		void criarAtributosAuxiliares(Corpus&, int janela);
 
 };
 
