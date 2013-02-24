@@ -2,9 +2,7 @@
 #define PARAM_H
 
 #include <QDialog>
-#include <QAbstractItemModel>
 #include <QSpinBox>
-#include <vector>
 #include <sstream>
 #include "modeloparam.h"
 

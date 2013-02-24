@@ -1,11 +1,7 @@
 #ifndef MODELOPARAM_H
 #define MODELOPARAM_H
 
-#include <QAbstractTableModel>
-#include <QFont>
-#include <QCheckBox>
 #include <QTableView>
-#include <vector>
 #include "param.h"
 
 class Param;

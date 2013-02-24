@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2012-08-17T20:36:15
+# Project created by QtCreator 2013-02-24T12:48:59
 #
 #-------------------------------------------------
 
@@ -12,16 +12,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         janela.cpp \
-    ../../corpus/corpusmatriz.cpp \
-    ../../corpus/corpus.cpp \
     param.cpp \
-    modeloparam.cpp
+    modeloparam.cpp \
+    ../../corpusInterface/corpusmatriz.cpp \
+    ../../corpusInterface/corpus.cpp
 
 HEADERS  += janela.h \
-    ../../corpus/corpusmatriz.h \
-    ../../corpus/corpus.h \
     param.h \
-    modeloparam.h
+    modeloparam.h \
+    ../../corpusInterface/corpusmatriz.h \
+    ../../corpusInterface/corpus.h
 
 FORMS    += janela.ui \
     param.ui

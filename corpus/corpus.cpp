@@ -17,6 +17,14 @@ Corpus::~Corpus()
 
 }
 
+/*Corpus& Corpus::construirJanela( Param &popUp )
+{
+    ostringstream erro;
+    erro << "Construtor de janela nao definido\n";
+    throw erro.str();
+    return *this;
+}*/
+
 string Corpus::pegarSimbolo( int indice )
 {
     if ( indice < 0 || indice >= ( int )simbolos.size() )
