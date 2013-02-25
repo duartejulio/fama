@@ -88,8 +88,47 @@ void Janela::habilitarBotao(int index)
 void Janela::atributoSelecionado( int row, int column )
 {
     int atributo = ui->tableWidget_atributos->item( row, 0 )->text().toInt();
+    int i, j, distintos, conjEx = corpus->pegarQtdConjExemplos(), qtdEx, totalSimbolos = corpus->pegarQtdSimbolos();
+    string aux = "Nominal";
+    vector< int > estatistica( totalSimbolos ), indices;
 
     ui->lineEdit_nome->setText( ui->tableWidget_atributos->item( row, 1 )->text() );
+
+    //calculo estatistico
+    for( i = 0; i < conjEx; ++i )
+    {
+        qtdEx = corpus->pegarQtdExemplos( i );
+        for( j = 0; j < qtdEx; ++j )
+            ++estatistica[corpus->pegarValor( i, j, atributo )];
+    }
+
+    for( i = 0; i < totalSimbolos; ++i  )
+        if( estatistica[i] ) indices.push_back( i );
+
+    distintos = indices.size();
+
+    //ui->lineEdit_tipo->setText( aux = corpus->tipoDoAtributo( atributo ) );
+    ui->lineEdit_tipo->setText( "Nominal" );
+    ui->lineEdit_distintos->setText( QString( "%1" ).arg( distintos ) );
+
+    if( aux == "Nominal" ) ui->tableWidget_estatistica->setHorizontalHeaderLabels( QStringList() << "Label" << "Quantidade" );
+
+    //limpador da janela de estatistica
+    for( int i = 0; i < ui->tableWidget_estatistica->rowCount(); ++i )
+    {
+        delete ui->tableWidget_estatistica->item( i, 0 );
+        delete ui->tableWidget_estatistica->item( i, 1 );
+    }
+
+    ui->tableWidget_estatistica->setRowCount( distintos );
+    QTableWidgetItem *item;
+    for( i = 0; i < distintos; ++i )
+    {
+        item = new QTableWidgetItem( QString( "%1" ).arg( QString::fromStdString(corpus->pegarSimbolo( indices[i] ) ) ) );
+        ui->tableWidget_estatistica->setItem( i, 0, item );
+        item = new QTableWidgetItem( QString( "%1" ).arg( estatistica[indices[i]] ) );
+        ui->tableWidget_estatistica->setItem( i, 1, item );
+    }
 }
 
 void Janela::definirParametros()
