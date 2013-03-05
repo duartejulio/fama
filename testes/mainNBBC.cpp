@@ -6,74 +6,67 @@
 #include "../corpus/corpusmatriz.h"
 #include "../avaliador/avaliador_acuracia.h"
 #include "../validador/validadorkdobras.h"
-#include "../stump/stump.h"
+#include "../treinador/naivebayes.h"
 
 using namespace std;
 
 int main()
 {
     vector<string> atributos, classes, atributosTreino;
-    int nConjExemplos, e, c0, c1, c2, c, iResposta, iSaida, total;
+    unsigned int nConjExemplos, e, c0, c1, c, u, iResposta, iSaida, total, dobras = 10;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(atributos, ';', true);
-    objCorpus.carregarArquivo( "../inputs/malware_din_est.txt" );
+    CorpusMatriz objCorpus(atributos, ',', true);
+    objCorpus.carregarArquivo( "../inputs/breast-cancer-wisconsin" );
 
     //indice do atributo a aprender
-    iResposta = objCorpus.pegarPosAtributo("Maligno");
-
+    iResposta = objCorpus.pegarPosAtributo("Class");
+    cout << "Classe:" << iResposta << endl;
     //quantidade de conjuntos de exemplos
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";
 
     //indica classes alvo
-    classes.push_back("0");
-    classes.push_back("1");
+    classes.push_back("2");
+    classes.push_back("4");
 
     //calcula priori das classes
-    c2 = c0 = c1 = total = 0;
+    c0 = c1 = total = u = 0;
     for (c = 0; c < nConjExemplos; c++){
-        for (e = 0; e < objCorpus.pegarQtdExemplos(c); e++){
+        for (e = 0; e < (unsigned)objCorpus.pegarQtdExemplos(c); e++){
             if (objCorpus.pegarIndice(classes[0]) == objCorpus.pegarValor(c, e, iResposta))
                 c0++;
             else
             if (objCorpus.pegarIndice(classes[1]) == objCorpus.pegarValor(c, e, iResposta))
                 c1++;
             else{
-                cout << c << "," << e <<"**" << objCorpus.pegarSimbolo(objCorpus.pegarValor(c, e, iResposta)) << "**" << endl;
-                c2++;
+                cout << iResposta << " " << objCorpus.pegarSimbolo(objCorpus.pegarValor(c, e, iResposta)) << endl;
+                u++;
             }
             total++;
         }
     }
-    cout << 100.*c0/total << " / " << 100.*c1/total << " / " << 100.*c2/total << endl;
-    //cout << c0 << " / " << c1 << " / " << c2 << endl;
+
+    cout << 100.*c0/total << " / " << 100.*c1/total <<  " / " << 100.*u/total << endl;
     atributos = objCorpus.pegarAtributos();
 
     //remove atributos que nao devem ser utilizados pelo treinamento
     for (unsigned int i=0; i < atributos.size(); i++)
-        if (i!=iResposta)
+        if (i!=iResposta && i)//tira classe e serial
             atributosTreino.push_back(atributos[i]);
 
-    DecisionStump objStump(atributosTreino, classes);
+    NaiveBayes objNB(atributosTreino, classes);
+
     AvaliadorAcuracia objAvalAcur;
-    ValidadorKDobras objValidador(objAvalAcur, 10);
+    ValidadorKDobras objValidador(objAvalAcur, dobras);
     iSaida = objCorpus.criarAtributo("saida", "O");
 
-    vector< vector< float > > v = objValidador.executarExperimento(objStump, objCorpus, iResposta, iSaida);
+    vector< vector< float > > v = objValidador.executarExperimento(objNB, objCorpus, iResposta, iSaida);
     float media = 0;
-    for (c=0;c<10;c++){
+    for (c=0;c<dobras;c++){
         cout << c << " - " << v[c][0] << endl;
-        media +=v[c][0];
+        media += v[c][0];
     }
-    cout << "*" << media/10 << endl;
-
-
-    Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
-    objClass->executarClassificacao(objCorpus, iSaida);
-    printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
-     iResposta, iSaida)[0]);
-
-    delete objClass;
+    cout << "*" << media/dobras << endl;
 
     return 0;
 }
