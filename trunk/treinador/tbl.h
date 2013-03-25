@@ -6,7 +6,6 @@
 #include "maisprovavel.h"
 #include "../outros/regra.h"
 #include <cmath>
-#define ATRBT_CLASSIFICADO 0
 
 class TBL : public Treinador
 {
@@ -16,7 +15,7 @@ class TBL : public Treinador
         string atributoChute;
         bool carregarMolde( string arqMoldeRegras );
     public:
-        TBL( Classificador* classInicial, string arqMoldeRegras, string atributoChute, int toleranciaScore );
+        TBL( Classificador* classInicial = NULL, string arqMoldeRegras = "", string atributoChute = "tpos", int toleranciaScore = 5 );
         virtual ~TBL();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo );
 };

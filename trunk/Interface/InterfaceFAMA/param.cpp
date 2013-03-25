@@ -6,6 +6,9 @@ Param::Param(QWidget *parent) :
     ui(new Ui::Param)
 {
     ui->setupUi(this);
+
+    //tamanho da coluna no TableView é definido com base no seu conteúdo
+    ui->tableView->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
 }
 
 Param::~Param()

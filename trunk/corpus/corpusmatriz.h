@@ -19,8 +19,7 @@ class CorpusMatriz : public Corpus
                       bool apararValores = false);
         bool carregarArquivo( string arquivo );
         bool gravarArquivo( string arquivo );
-        Corpus* clone();
-        //Corpus& construirJanela( Param &popUp );
+        virtual Corpus* clone();
 };
 
 #endif // CORPUSMATRIZ_H
