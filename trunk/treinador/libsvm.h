@@ -13,7 +13,7 @@ class LibSvm:public Treinador{
         bool gerarClasseProblemaSvm(Corpus &corpus, int atributo, int nTotalExemplos, unsigned int nAtributos, unsigned int nConjExemplos, struct svm_problem &prob);
 
     public:
-        LibSvm(vector<string>, vector<string>, string, svm_parameter);
+        LibSvm(vector<string>, vector<string>, svm_parameter);
         Classificador* executarTreinamento( Corpus &corpus, int atributo );
         void atualizarAtributosTreino(vector<string>);
         void atualizarValorD(string valor);

@@ -20,10 +20,6 @@ using namespace std;
 string atributoValorEmD;                    //nome do atributo do valor do ativo no dia D (ex.: valor_petr4)
 vector<string> atributosTreino;             //representa os atributos de treinamento (valor, fechamento, abertura, d-1, d-2...)
 
-vector<int> valores_janelas(1);             //vetor das janelas a serem testadas
-vector<string> valores_codigoativo(1);      //vetor dos ativos a serem testados
-vector<string> classes;                     //representa as classes, positivas (+1) e negativa (-1)
-
 int iResposta;                              //índice da resposta (atributo objetivo)
 
 int iSaidaNB;                               //índice da saida do algoritmo NB
@@ -56,6 +52,13 @@ int iter;                                   // auxiliar regressao logistica
 unsigned int i, j;                          //variaveis auxiliares
 string auxexecbls;                          //manter o valor do BLS
 
+int janela_max = 60;                             //tamanho maximo da janela do processamento
+int ativos_max = 1;                         //numero de ativos do vetor
+
+vector<int> valores_janelas(ativos_max);             //vetor das janelas a serem testadas
+vector<string> valores_codigoativo(ativos_max);      //vetor dos ativos a serem testados
+vector<string> classes;                     //representa as classes, positivas (+1) e negativa (-1)
+
 int main()
 {
     /**************************** PARAMENTROS DE ENTRADA DO PROGRAMA *****************************/
@@ -66,46 +69,42 @@ int main()
     //valores_janelas[4] = 20;
     //valores_janelas[5] = 40;
     //valores_janelas[6] = 60;
-    valores_janelas[0] = 100; //tamanho máximo da janela
+    valores_janelas[0] = 60;
+
 
     //valores_codigoativo[0] = "alll11";
-    //valores_codigoativo[0] = "ligt3";
-    //valores_codigoativo[0] = "petr4";
-    //valores_codigoativo[0] = "vivo4";
-    //valores_codigoativo[0] = "vale5";
-    valores_codigoativo[0] = "arcz6";
+    //valores_codigoativo[1] = "ligt3";
+    valores_codigoativo[0] = "petr4";
+    //valores_codigoativo[3] = "vivo4";
+    //valores_codigoativo[4] = "vale5";
+    //valores_codigoativo[5] = "arcz6";
 
     //define quais algoritmos serão executados
-    svm = false;
+    svm = true;
     nb = false;
-    bls = true;
+    bls = false;
     reglog = false;
 
     /**************************** INICIO DO PROGRAMA *****************************/
 
-    //carrega objeto corpus
     CorpusMatriz objCorpus(vector<string>(), ',', false, true);
 
-
-    //classes.push_back("-1");
     classes.push_back("-1");
     classes.push_back("+1");
 
-    //carrega arquivo de ativos
+
     objCorpus.carregarArquivo( "../inputs/ativos_completos_bvmf" );
-    //objCorpus.carregarArquivo( "../inputs/ativos_completos_bvmf" );
-    //objeto controlador dos algortimos a serem executados
-    ProcessadorSerieHistorica psh(100, "");
-    //cria atributos a serem utilizados como parametros (y, d-1, d-2, d-..n)
-    psh.criarAtributosAuxiliares(objCorpus, 100);
-    //setar variaveis controladoras dos indices
+
+    ProcessadorSerieHistorica psh(janela_max, "");
+
+    psh.criarAtributosAuxiliares(objCorpus, janela_max);//cria atributos a serem utilizados como parametros (y, d-1, d-2, d-..n)
+
     iResposta = objCorpus.pegarPosAtributo("y");
     iSaidaNB = objCorpus.criarAtributo("saida_nb");
     iSaidaBLS = objCorpus.criarAtributo("saida_bls");
     iSaidaSVM = objCorpus.criarAtributo("saida_svm");
     iSaidaRegLog = objCorpus.criarAtributo("saida_reglog");
 
-    //configuracoes SVM
     param.svm_type = C_SVC;
     param.kernel_type = LINEAR; //RBF;
     param.degree = 3;
@@ -122,26 +121,23 @@ int main()
     param.weight_label = NULL;
     param.weight = NULL;
 
-    //configuracoes REGRESSAO LOGISTICA
     e= 2.7182818;
     alpha = 0.001;
     lamb = 0.002;
     Jmin = 1000;
     iter = 200;
 
-    LibSvm objLSVM(atributosTreino, classes, atributoValorEmD, param);
+    LibSvm objLSVM(atributosTreino, classes, param);
     NaiveBayes objNB(atributosTreino, classes);
     RegLog objTreino(classes);
 
     cbls = new ClassificadorBLS(classes, atributoValorEmD);
     std::string s;
 
-    //arquivo de saida
     ofstream outfile;
     outfile.open("../outputs/saida.txt", fstream::out);
     outfile.clear();
 
-    //execucao
     try{
 
         for (i=0; i<valores_codigoativo.size();i++){
@@ -171,6 +167,8 @@ int main()
 
                 cout << ":: d-" << valores_janelas[j] << " = " ;
                 //atributosTreino.clear();
+
+                atributosTreino.push_back(atributoValorEmD);
 
                 //atualiza atributos de treino (d-1, d-2...d-n)
                 for (int d=inicio_janela; d<=valores_janelas[j]; d++){
@@ -263,7 +261,6 @@ int main()
 
                     if (svm) {
 
-                        objLSVM.atualizarValorD(atributoValorEmD);
                         objLSVM.atualizarAtributosTreino(atributosTreino);
                         objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
 
