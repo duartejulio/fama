@@ -8,14 +8,12 @@
 ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
                                          vector<string> atributos,
                                          svm_problem problema,
-                                         svm_model* modelo,
-                                         string nomeAtributo )
+                                         svm_model* modelo )
 {
     this->classes = classes;
     this->atributos = atributos;
     this->problema = problema;
     this->modelo = modelo;
-    this->nomeAtributo = nomeAtributo;
 
 
 }
@@ -55,15 +53,7 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
         for (e = 0; e < nExemplos; e++){
 
                 x_node = new struct svm_node[nAtributos + 1 + 1]; //alocando vetor de atributos (total att + valor d atual + finalizador svm_node) = maximo
-                int aux_a = 0;
 
-
-                int iValorDia = corpus.pegarPosAtributo(nomeAtributo);
-                v = corpus.pegarValor(c, e, iValorDia);
-                (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
-                x_node[0].index = 1;
-                x_node[0].value = val;
-                aux_a += 1;
 
                 for (a=0; a < nAtributos; a++){
                     i = corpus.pegarPosAtributo(atributos[a]);
@@ -71,16 +61,14 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
                     (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
 
                     if (val != 0.0) {
-                        x_node[aux_a].index = (a + 2);
-                        x_node[aux_a].value = val;
-                        aux_a += 1;
+                        x_node[a].index = (a + 1);
+                        x_node[a].value = val;
+
                     }
                 }
                 //finalizador
-                x_node[aux_a].index = (-1);
+                x_node[a].index = (-1);
 
-
-                //x = prob.x[i];
                 predict_label = svm_predict(mod,x_node);
 
                 if (predict_label >= 0.5) {
@@ -90,7 +78,6 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
                     out = neg;
                 }
 
-                //iClasse = corpus.pegarIndice(classes[out]);
                 corpus.ajustarValor(c,e,atributo,out);
 
         }
@@ -111,8 +98,7 @@ void ClassificadorLibSvm::ajustarClasses(vector<string> classes)
 
 string ClassificadorLibSvm::descricaoConhecimento(){
     ostringstream ret;
-    ret << "Se " << nomeAtributo << "_-1 maior que " << nomeAtributo << "_0 --> -1" << endl;
-    ret << "Caso contrário --> +1" << endl;
+    ret << " ";
 
     return ret.str();
 }

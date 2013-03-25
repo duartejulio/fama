@@ -6,17 +6,10 @@
 //#include "../libsvm/libsvm.dll"
 //#import "../libsvm/libsvm.dll" no_namespace rename("EOF", "EndOfFile")
 
-LibSvm::LibSvm(vector<string> atr, vector<string> cla, string valord, struct svm_parameter par):Treinador(){
+LibSvm::LibSvm(vector<string> atr, vector<string> cla, struct svm_parameter par):Treinador(){
     atributos = atr;
     classes = cla;
-    valor_dia = valord;
     param = par;
-}
-
-
-
-void LibSvm::atualizarValorD(string valor) {
-     valor_dia = valor;
 }
 
 void LibSvm::atualizarAtributosTreino(vector<string> atr) {
@@ -65,7 +58,7 @@ Integração com LibSvm: Verificando Parâmetros e Passando da classe Corpus para a
          svm_save_model(model_file_name,model);
     }
 
-    return new ClassificadorLibSvm(classes, atributos, problema, model, valor_dia);
+    return new ClassificadorLibSvm(classes, atributos, problema, model);
 
 
 
@@ -87,7 +80,7 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
 
     struct svm_node *x_node; //nó atributos
     //struct svm_problem prob; //problema (corpus)
-    unsigned int nExemplos, i, a, e, c, v, iregistro, iValorDia ;
+    unsigned int nExemplos, i, a, e, c, v, iregistro ;
 
     float val;
 
@@ -109,34 +102,21 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
             //alocando vetor de atributos (total att + y + finalizador svm_node) = maximo
             x_node = new struct svm_node[nAtributos + 1 + 1];
 
-            int aux_a = 0;
             prob.x[iregistro] = x_node;
 
-            //o primeiro valor do nó svm_node = valor do dia
-            iValorDia = corpus.pegarPosAtributo(valor_dia);
-            v = corpus.pegarValor(c, e, iValorDia);
-            (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
-            x_node[0].index = 1;
-            x_node[0].value = val;
-            aux_a += 1;
-
-            // próximos valores do nó svm_node = diferenças
+               // próximos valores do nó svm_node = diferenças
             for (a=0; a<nAtributos;a++){
                 i = corpus.pegarPosAtributo(atributos[a]);
                 v = corpus.pegarValor(c, e, i);
                 (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
                 if (val != 0.0) {
-                    x_node[aux_a].index = (a + 2); //1o. é do att valor em D
-                    x_node[aux_a].value = val;
-                    //add o no com os valores da i-ésima linha de registro
-                    //prob.x[iregistro][aux_a] = &x_node[aux_a];
+                    x_node[a].index = (a + 1);
+                    x_node[a].value = val;
 
-                    aux_a += 1;
                 }
             }
             //finalizador
-            x_node[aux_a].index = (-1);
-            //x_node[aux_a].value = 0.0;
+            x_node[a].index = (-1);
 
             iregistro += 1; //incrementa o indice do i-ésimo elemento, considerando todos os registros de todos os conjuntos
 

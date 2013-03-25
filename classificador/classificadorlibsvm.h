@@ -7,14 +7,13 @@ class ClassificadorLibSvm:public Classificador{
         vector<string> atributos;
         struct svm_problem problema;
         struct svm_model* modelo;
-        string nomeAtributo;
+
 
     public:
         ClassificadorLibSvm(vector<string> classes,
                             vector<string> atributos,
                             struct svm_problem problema,
-                            struct svm_model* modelo,
-                            string nomeAtributo = "valor");
+                            struct svm_model* modelo);
 
         bool executarClassificacao(Corpus&, int);
         void ajustarClasses(vector<string> classes);
