@@ -6,9 +6,7 @@
 #include <map>
 #include <cstdio>
 #include <cstdlib>
-//#include <QWidget>
-//#include "../Interface/InterfaceFAMA/modeloparam.h"
-//#include "../Interface/InterfaceFAMA/param.h"
+#include <sstream>
 
 using namespace std;
 
@@ -20,7 +18,7 @@ class Corpus
         virtual bool carregarArquivo( string arquivo ) = 0;
         virtual bool gravarArquivo( string arquivo ) = 0;
         virtual Corpus* clone() = 0;
-        //virtual Corpus& construirJanela( Param &popUp );
+        virtual Corpus* construirJanela( void *popUp );
         string pegarSimbolo( int indice );
         int pegarIndice( string simbolo );
         int criarAtributo( string atributo, string valorAtributo = "O");
