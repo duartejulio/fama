@@ -30,17 +30,20 @@ void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int 
 
     int d;
 
+    novosAtributos.clear();
     for (d=1; d<=janela; d++)
     {
         stringstream out;
         out << d;
         objCorpus.criarAtributo("d-" + out.str(), "0");
+        novosAtributos.push_back("d-" + out.str());
     }
 
     objCorpus.criarAtributo("y","0");
+    //não adiciona y nos novos Atributos (não deve ser treinado com ele)
 }
 
-bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
+vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 {
 
     int totlinhas, qtdConjExemplos, c, pos, neg;
@@ -130,6 +133,6 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
         }
     }
 
-    return true;
+    return novosAtributos;
 
 }

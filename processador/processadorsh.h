@@ -10,12 +10,11 @@ class ProcessadorSerieHistorica
         bool attcriados;
 		float diferenca_i[];
         bool criarNovosAtributos();
-		
-		
+        vector<string> novosAtributos;
 
     public:
         ProcessadorSerieHistorica(int janela, string atributo);
-        bool processarCorpus(Corpus&);
+        vector<string> processarCorpus(Corpus&);
         ~ProcessadorSerieHistorica();
 		void atualizarJanela(int janela);
 		void atualizarAtributo(string att);

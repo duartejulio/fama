@@ -17,17 +17,18 @@ ProcessadorLogaritmo::ProcessadorLogaritmo(vector<string> atr,int b){
 ProcessadorLogaritmo::~ProcessadorLogaritmo(){
 }
 
-
 void ProcessadorLogaritmo::criarAtributos(Corpus &objCorpus){
-
+    novosAtributos.clear();
     for(int i=0; i< numatributos; i++)
     {
+
         objCorpus.criarAtributo("log"+atributo[i],"0");
+        novosAtributos.push_back("log"+atributo[i]);
     }
 
 }
 
-bool ProcessadorLogaritmo::processarCorpus(Corpus &objCorpus)
+vector<string> ProcessadorLogaritmo::processarCorpus(Corpus &objCorpus)
 {
 
     int totlinhas, qtdConjExemplos,c;
@@ -36,9 +37,7 @@ bool ProcessadorLogaritmo::processarCorpus(Corpus &objCorpus)
     indices = new int[numatributos];
 
     for(int i=0; i<numatributos; i++)
-    {
-            indices[i] = objCorpus.pegarPosAtributo(atributo[i]);
-    }
+        indices[i] = objCorpus.pegarPosAtributo(atributo[i]);
 
     criarAtributos(objCorpus);
 
@@ -67,6 +66,6 @@ bool ProcessadorLogaritmo::processarCorpus(Corpus &objCorpus)
         }
 
 
-    return true;
+    return novosAtributos;
 
 }

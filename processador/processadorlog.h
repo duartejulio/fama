@@ -6,7 +6,7 @@
 class ProcessadorLogaritmo
 {
         int numatributos;
-        vector<string> atributo;
+        vector<string> atributo, novosAtributos;
         bool attcriados;
         int b;
 
@@ -14,7 +14,7 @@ class ProcessadorLogaritmo
 
     public:
         ProcessadorLogaritmo(vector<string> atr, int b);
-        bool processarCorpus(Corpus&);
+        vector<string> processarCorpus(Corpus&);
         ~ProcessadorLogaritmo();
         void criarAtributos(Corpus&);
 

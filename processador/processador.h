@@ -9,7 +9,7 @@ class Processador
     public:
         Processador();
         virtual ~Processador();
-        virtual bool processarCorpus(Corpus &) = 0;
+        virtual vector<string> processarCorpus(Corpus &) = 0;
 };
 
 #endif // PROCESSADOR_H
