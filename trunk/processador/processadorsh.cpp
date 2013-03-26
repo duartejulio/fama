@@ -48,8 +48,8 @@ bool ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 
     ipreco = objCorpus.pegarPosAtributo(atributo);
 
-    pos = objCorpus.pegarIndice("+1");
-    neg = objCorpus.pegarIndice("-1");
+   // pos = objCorpus.pegarIndice("+1");
+    //neg = objCorpus.pegarIndice("-1");
 
 //    if (!attcriados) {
 //
