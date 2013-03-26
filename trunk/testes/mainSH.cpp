@@ -9,7 +9,7 @@
 #include "../avaliador/avaliador_acuracia.h"
 #include "../treinador/naivebayes.h"
 #include "../treinador/libsvm.h"
-#include "../treinador/reglog.h"
+#include "../treinador/regressaologistica.h"
 #include "../validador/validadorkdobras.h"
 #include "../classificador/classificadorbls.h"
 
@@ -129,7 +129,7 @@ int main()
 
     LibSvm objLSVM(atributosTreino, classes, param);
     NaiveBayes objNB(atributosTreino, classes);
-    RegLog objTreino(classes);
+    RegressaoLogistica objTreino(classes);
 
     cbls = new ClassificadorBLS(classes, atributoValorEmD);
     std::string s;
@@ -152,7 +152,7 @@ int main()
             cout << "******************************************" << endl ;
 
             //seta os valores dos parametros d-1, d-2, d-n no corpus
-            if (!psh.processarCorpus(objCorpus))
+            if (!psh.processarCorpus(objCorpus).size())
                 { cout << "psh.processarCorpus: Erro\n"; }
 
             //realiza a execucao com distintos parametros de janelas j para o ativo i
@@ -162,7 +162,7 @@ int main()
                 outfile << valores_janelas[j] << ";";
 
                 //atualiza valores das janelas
-                if (!psh.processarCorpus(objCorpus))
+                if (!psh.processarCorpus(objCorpus).size())
                     { cout << "psh.processarCorpus: Erro\n"; }
 
                 cout << ":: d-" << valores_janelas[j] << " = " ;
@@ -238,7 +238,8 @@ int main()
                     if (reglog) {
 
                         //thetas_mini.resize(M+1);
-                        objTreino.ajustarParametros(e, alpha, lamb, Jmin, iter, atributosTreino);
+                        //fui obrigado a comentar a linha seguinte pois a regressao logistica do FAMA não possui esses parametros
+                        //objTreino.ajustarParametros(e, alpha, lamb, Jmin, iter, atributosTreino);
                         objClassRegLog = objTreino.executarTreinamento(objCorpus, iResposta);
 
 
