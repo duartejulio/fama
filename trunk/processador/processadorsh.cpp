@@ -9,10 +9,11 @@ ProcessadorSerieHistorica::ProcessadorSerieHistorica(int janela, string atributo
     this->janela = janela;
     this->atributo = atributo;
     this->attcriados = false;
-    float diferenca_i[janela];
+    diferenca_i = new float[janela];
 }
 
 ProcessadorSerieHistorica::~ProcessadorSerieHistorica(){
+    delete []diferenca_i;
 }
 
 bool ProcessadorSerieHistorica::criarNovosAtributos() {
@@ -134,5 +135,4 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
     }
 
     return novosAtributos;
-
 }
