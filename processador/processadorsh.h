@@ -8,7 +8,7 @@ class ProcessadorSerieHistorica
         int janela;
         string atributo;
         bool attcriados;
-		float diferenca_i[];
+		float *diferenca_i;
         bool criarNovosAtributos();
         vector<string> novosAtributos;
 
