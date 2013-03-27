@@ -83,8 +83,6 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
         }
     }
 
-
-
 	return true;
 
 }
