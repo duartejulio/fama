@@ -85,7 +85,7 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
 
     prob.l = nTotalExemplos; //total de exemplos no geral
     prob.y = new double[nTotalExemplos]; //vetor de resposta
-    prob.x = new struct svm_node* [nTotalExemplos]();
+    prob.x = new struct svm_node* [nTotalExemplos];
 
 
     iregistro = 0;
@@ -103,7 +103,7 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
 
             prob.x[iregistro] = x_node;
 
-               // próximos valores do nó svm_node = diferenças
+            // próximos valores do nó svm_node = diferenças
             for (a=0; a<nAtributos;a++){
                 i = corpus.pegarPosAtributo(atributos[a]);
                 v = corpus.pegarValor(c, e, i);
