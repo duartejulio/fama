@@ -52,32 +52,48 @@ int iter;                                   // auxiliar regressao logistica
 unsigned int i, j;                          //variaveis auxiliares
 string auxexecbls;                          //manter o valor do BLS
 
-int janela_max = 60;                             //tamanho maximo da janela do processamento
-int ativos_max = 1;                         //numero de ativos do vetor
+int janela_max = 60;                        //tamanho maximo da janela do processamento
+int qtd_ativos = 6; //6                     //quantidade de itens no vetor de ativos
+int qtd_janela = 7; //7                     //quantidade de itens no vetor da janela
 
-vector<int> valores_janelas(ativos_max);             //vetor das janelas a serem testadas
-vector<string> valores_codigoativo(ativos_max);      //vetor dos ativos a serem testados
-vector<string> classes;                     //representa as classes, positivas (+1) e negativa (-1)
+vector<int> valores_janelas(qtd_janela);        //vetor das janelas a serem testadas
+vector<string> valores_codigoativo(qtd_ativos); //vetor dos ativos a serem testados
+vector<string> classes;                         //representa as classes, positivas (+1) e negativa (-1)
 
 int main()
 {
+    /*
+    Estrutura do Corpus (atual)
+    1:   valor_alll11
+    2:   valor_ligt3
+    3:   valor_petr4
+    4:   valor_vivo4
+    5:   valor_vale5
+    6:   valor_arcz6
+    7:   d-1
+    8:   d-2
+    n:   d-n
+    n+1: y (+1,-1)
+    n+2: saida_nb (+1,-1,0)
+    n+3: saida_bls (+1,-1,0)
+    n+4: saida_svm (+1,-1,0)
+    n+5: saida_reglog (+1,-1,0)
+    */
     /**************************** PARAMENTROS DE ENTRADA DO PROGRAMA *****************************/
-    //valores_janelas[0] = 3;
-    //valores_janelas[1] = 5;
-    //valores_janelas[2] = 10;
-    //valores_janelas[3] = 15;
-    //valores_janelas[4] = 20;
-    //valores_janelas[5] = 40;
-    //valores_janelas[6] = 60;
-    valores_janelas[0] = 60;
+    valores_janelas[0] = 3;
+    valores_janelas[1] = 5;
+    valores_janelas[2] = 10;
+    valores_janelas[3] = 15;
+    valores_janelas[4] = 20;
+    valores_janelas[5] = 40;
+    valores_janelas[6] = 60;
 
-
-    //valores_codigoativo[0] = "alll11";
-    //valores_codigoativo[1] = "ligt3";
-    valores_codigoativo[0] = "petr4";
-    //valores_codigoativo[3] = "vivo4";
-    //valores_codigoativo[4] = "vale5";
-    //valores_codigoativo[5] = "arcz6";
+    valores_codigoativo[0] = "alll11";
+    valores_codigoativo[1] = "ligt3";
+    valores_codigoativo[2] = "petr4";
+    valores_codigoativo[3] = "vivo4";
+    valores_codigoativo[4] = "vale5";
+    valores_codigoativo[5] = "arcz6";
 
     //define quais algoritmos serão executados
     svm = true;
@@ -87,24 +103,24 @@ int main()
 
     /**************************** INICIO DO PROGRAMA *****************************/
 
-    CorpusMatriz objCorpus(vector<string>(), ',', false, true);
+    CorpusMatriz objCorpus(vector<string>(), ';', false, true);
 
     classes.push_back("-1");
     classes.push_back("+1");
-
 
     objCorpus.carregarArquivo( "../inputs/ativos_completos_bvmf" );
 
     ProcessadorSerieHistorica psh(janela_max, "");
 
-    psh.criarAtributosAuxiliares(objCorpus, janela_max);//cria atributos a serem utilizados como parametros (y, d-1, d-2, d-..n)
-
+    //cria atributos a serem utilizados como parametros (y, d-1, d-2, d-..n) + saidas de algoritmos
+    psh.criarAtributosAuxiliares(objCorpus, janela_max);
+    //obtendo referencia em memoria para os atributos
     iResposta = objCorpus.pegarPosAtributo("y");
     iSaidaNB = objCorpus.criarAtributo("saida_nb");
     iSaidaBLS = objCorpus.criarAtributo("saida_bls");
     iSaidaSVM = objCorpus.criarAtributo("saida_svm");
     iSaidaRegLog = objCorpus.criarAtributo("saida_reglog");
-
+    //parametros do sistema para SVM
     param.svm_type = C_SVC;
     param.kernel_type = LINEAR; //RBF;
     param.degree = 3;
@@ -120,23 +136,24 @@ int main()
     param.nr_weight = 0;
     param.weight_label = NULL;
     param.weight = NULL;
-
+    //parametros do sistema para Reglog
     e= 2.7182818;
     alpha = 0.001;
     lamb = 0.002;
     Jmin = 1000;
     iter = 200;
-
+    //algortimos
     LibSvm objLSVM(atributosTreino, classes, param);
     NaiveBayes objNB(atributosTreino, classes);
     RegressaoLogistica objTreino(classes);
-
+    //classificador baseline
     cbls = new ClassificadorBLS(classes, atributoValorEmD);
     std::string s;
-
+    //arquivo auxiliar para analise posterior
     ofstream outfile;
     outfile.open("../outputs/saida.txt", fstream::out);
     outfile.clear();
+    outfile << "ATIVO;JANELA;BLS;SVM;NB;REGLOG;" << endl;
 
     try{
 
@@ -148,50 +165,47 @@ int main()
             atributoValorEmD = "valor_" + valores_codigoativo[i];
             psh.atualizarAtributo(atributoValorEmD);
             cout << "******************************************" << endl ;
-            cout << ":: Processando Ativo " << valores_codigoativo[i] << endl ;
+            cout << ":: Processando Ativo: " << valores_codigoativo[i] << endl ;
             cout << "******************************************" << endl ;
 
-            //seta os valores dos parametros d-1, d-2, d-n no corpus
+            //seta os valores dos parametros d-1, d-2, d-n + y no corpus para o ativo em questao
             if (!psh.processarCorpus(objCorpus).size())
-                { cout << "psh.processarCorpus: Erro\n"; }
+            {
+                cout << "psh.processarCorpus: Erro\n";
+            }
+
+            //temporario!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            objCorpus.gravarArquivo( "../inputs/#corpus_" + valores_codigoativo[i] + ".txt" );
 
             //realiza a execucao com distintos parametros de janelas j para o ativo i
             int inicio_janela = 1;
             for (j=0; j<valores_janelas.size();j++){
-
+                //log
                 outfile << valores_janelas[j] << ";";
-
-                //atualiza valores das janelas
-                if (!psh.processarCorpus(objCorpus).size())
-                    { cout << "psh.processarCorpus: Erro\n"; }
-
                 cout << ":: d-" << valores_janelas[j] << " = " ;
-                //atributosTreino.clear();
-
-                atributosTreino.push_back(atributoValorEmD);
+                //seta os valores dos parametros d-1, d-2, d-n + y no corpus para o ativo em questao
+                //??????????????????????????????????????????????????
+                if (!psh.processarCorpus(objCorpus).size())
+                {
+                    cout << "psh.processarCorpus: Erro\n";
+                }
 
                 //atualiza atributos de treino (d-1, d-2...d-n)
                 for (int d=inicio_janela; d<=valores_janelas[j]; d++){
                     std::stringstream out;
                     out << "d-" << d;
-                    //cout << out.str();
                     atributosTreino.push_back(out.str());
                 }
-
+                //marco o proximo valor a ser calculado, na proxima iteracao
                 inicio_janela = valores_janelas[j] + 1;
-
                 //atualiza janela atual
                 janela = valores_janelas[j];
                 psh.atualizarJanela(janela);
 
-                //std::stringstream out;
-                //out << valores_janelas[j];
-                //s = out.str();
-
                 /****************************************** Base Line System ******************************************/
 
                     if (bls) {
-
+                        //só executa na primeira vez, para este baseline
                         if (j==0){
 
                             cbls->atualizarValorEmD(atributoValorEmD);
@@ -204,7 +218,7 @@ int main()
                             cout << " BLS: " << acuracia << "%"  ;
                             outfile << acuracia << ";";
 
-                        }
+                        } //se nao for primeira vez, pega memoria
                         else{
                             cout << " BLS: " << auxexecbls << "%"  ;
                             outfile << auxexecbls << ";";
@@ -212,9 +226,31 @@ int main()
 
                     }
                     else{
-                        outfile << "0.0;";
+                        outfile << "-1;";
                     }
-                    /******************************************* Naive Bayes *********************************************/
+
+                /********************************************* LibSVM **********************************************/
+
+                    if (svm) {
+
+                        objLSVM.atualizarAtributosTreino(atributosTreino);
+                        objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
+
+                        objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
+                        //cout << objClassLibSvm->descricaoConhecimento();
+
+                        acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaSVM)[0];
+                        cout << " SVM: " << acuracia << "%"  ;
+                        outfile << acuracia << ";" ;
+
+                        //out << acuracia; s = out.str();
+
+                    }
+                    else{
+                        outfile << "-1;";
+                    }
+
+                /******************************************* Naive Bayes *********************************************/
 
                     if (nb) {
 
@@ -231,9 +267,9 @@ int main()
                         //out << acuracia; s = out.str();
                     }
                     else{
-                        outfile << "0.0;";
+                        outfile << "-1;";
                     }
-                    /********************************* Regressão Logística (Gradiente) ************************************/
+                /********************************* Regressão Logística (Gradiente) ************************************/
 
                     if (reglog) {
 
@@ -255,29 +291,9 @@ int main()
 
                     }
                     else{
-                        outfile << "0.0;";
+                        outfile << "-1;";
                     }
 
-                    /********************************************* LibSVM **********************************************/
-
-                    if (svm) {
-
-                        objLSVM.atualizarAtributosTreino(atributosTreino);
-                        objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
-
-                        objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
-                        //cout << objClassLibSvm->descricaoConhecimento();
-
-                        acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaSVM)[0];
-                        cout << " SVM: " << acuracia << "%"  ;
-                        outfile << acuracia << ";" ;
-
-                        //out << acuracia; s = out.str();
-
-                    }
-                    else{
-                        outfile << "0.0;";
-                    }
 
                     //objLSVM.~Treinador();
                     cout << endl;
@@ -288,7 +304,7 @@ int main()
 
         outfile.flush();
         outfile.close();
-        objCorpus.gravarArquivo( "../inputs/#teste_nb.txt" );
+        objCorpus.gravarArquivo( "../inputs/#corpus_final.txt" );
         getchar();
         return 0;
 
