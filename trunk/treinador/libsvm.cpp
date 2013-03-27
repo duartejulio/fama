@@ -61,7 +61,6 @@ Integração com LibSvm: Verificando Parâmetros e Passando da classe Corpus para a
     return new ClassificadorLibSvm(classes, atributos, problema, model);
 
 
-
 }
 
 bool LibSvm::verificarParametros(svm_parameter param) {
