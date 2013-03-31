@@ -5,10 +5,9 @@
 #include <iomanip>
 #include <iostream>
 
-ClassificadorBLS::ClassificadorBLS(vector<string> classes, string nomeAtributo)
+ClassificadorBLS::ClassificadorBLS(vector<string> classes)
 {
     this->classes = classes;
-    this->nomeAtributo = nomeAtributo;
     //ctor
 }
 
