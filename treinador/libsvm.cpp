@@ -98,8 +98,8 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
             prob.y[iregistro] = val;
 
-            //alocando vetor de atributos (total att + y + finalizador svm_node) = maximo
-            x_node = new struct svm_node[nAtributos + 1 + 1];
+            //alocando vetor de atributos (total att + finalizador svm_node) = maximo
+            x_node = new struct svm_node[nAtributos + 1];
 
             prob.x[iregistro] = x_node;
 
@@ -108,11 +108,11 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
                 i = corpus.pegarPosAtributo(atributos[a]);
                 v = corpus.pegarValor(c, e, i);
                 (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
-                if (val != 0.0) {
+                //if (val != 0.0) {
                     x_node[a].index = (a + 1);
                     x_node[a].value = val;
 
-                }
+                //}
             }
             //finalizador
             x_node[a].index = (-1);
