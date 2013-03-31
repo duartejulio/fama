@@ -17,7 +17,7 @@ using namespace std;
 
 /**************************** DECLARAÇÃO DE VARIÁVEIS *****************************/
 
-string atributoValorEmD;                    //nome do atributo do valor do ativo no dia D (ex.: valor_petr4)
+string atributo_atual;                    //nome do atributo do valor do ativo no dia D (ex.: valor_petr4)
 vector<string> atributosTreino;             //representa os atributos de treinamento (valor, fechamento, abertura, d-1, d-2...)
 
 int iResposta;                              //índice da resposta (atributo objetivo)
@@ -97,8 +97,8 @@ int main()
 
     //define quais algoritmos serão executados
     svm = true;
-    nb = false;
-    bls = false;
+    nb = true;
+    bls = true;
     reglog = false;
 
     /**************************** INICIO DO PROGRAMA *****************************/
@@ -110,16 +110,17 @@ int main()
 
     objCorpus.carregarArquivo( "../inputs/ativos_completos_bvmf" );
 
+    //informa maior janela a ser executada e ação a ser lida vazia, inicialmente
     ProcessadorSerieHistorica psh(janela_max, "");
 
     //cria atributos a serem utilizados como parametros (y, d-1, d-2, d-..n) + saidas de algoritmos
-    psh.criarAtributosAuxiliares(objCorpus, janela_max);
+    psh.criarAtributosAuxiliares(objCorpus);
     //obtendo referencia em memoria para os atributos
     iResposta = objCorpus.pegarPosAtributo("y");
-    iSaidaNB = objCorpus.criarAtributo("saida_nb");
-    iSaidaBLS = objCorpus.criarAtributo("saida_bls");
-    iSaidaSVM = objCorpus.criarAtributo("saida_svm");
-    iSaidaRegLog = objCorpus.criarAtributo("saida_reglog");
+    iSaidaNB = objCorpus.pegarPosAtributo("saida_nb");
+    iSaidaBLS = objCorpus.pegarPosAtributo("saida_bls");
+    iSaidaSVM = objCorpus.pegarPosAtributo("saida_svm");
+    iSaidaRegLog = objCorpus.pegarPosAtributo("saida_reglog");
     //parametros do sistema para SVM
     param.svm_type = C_SVC;
     param.kernel_type = LINEAR; //RBF;
@@ -147,7 +148,7 @@ int main()
     NaiveBayes objNB(atributosTreino, classes);
     RegressaoLogistica objTreino(classes);
     //classificador baseline
-    cbls = new ClassificadorBLS(classes, atributoValorEmD);
+    cbls = new ClassificadorBLS(classes);
     std::string s;
     //arquivo auxiliar para analise posterior
     ofstream outfile;
@@ -161,12 +162,14 @@ int main()
 
             outfile << valores_codigoativo[i] << ";";
 
-            //atualiza o valor em D do ativo de execucao
-            atributoValorEmD = "valor_" + valores_codigoativo[i];
-            psh.atualizarAtributo(atributoValorEmD);
+            atributo_atual = "valor_" + valores_codigoativo[i];
+            psh.atualizarAtributo(atributo_atual);
             cout << "******************************************" << endl ;
             cout << ":: Processando Ativo: " << valores_codigoativo[i] << endl ;
             cout << "******************************************" << endl ;
+
+            //limpando o vetor de atributos de treinamento
+            atributosTreino.clear();
 
             //seta os valores dos parametros d-1, d-2, d-n + y no corpus para o ativo em questao
             if (!psh.processarCorpus(objCorpus).size())
@@ -174,21 +177,12 @@ int main()
                 cout << "psh.processarCorpus: Erro\n";
             }
 
-            //temporario!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            objCorpus.gravarArquivo( "../inputs/#corpus_" + valores_codigoativo[i] + ".txt" );
-
             //realiza a execucao com distintos parametros de janelas j para o ativo i
             int inicio_janela = 1;
             for (j=0; j<valores_janelas.size();j++){
                 //log
                 outfile << valores_janelas[j] << ";";
                 cout << ":: d-" << valores_janelas[j] << " = " ;
-                //seta os valores dos parametros d-1, d-2, d-n + y no corpus para o ativo em questao
-                //??????????????????????????????????????????????????
-                if (!psh.processarCorpus(objCorpus).size())
-                {
-                    cout << "psh.processarCorpus: Erro\n";
-                }
 
                 //atualiza atributos de treino (d-1, d-2...d-n)
                 for (int d=inicio_janela; d<=valores_janelas[j]; d++){
@@ -208,7 +202,7 @@ int main()
                         //só executa na primeira vez, para este baseline
                         if (j==0){
 
-                            cbls->atualizarValorEmD(atributoValorEmD);
+                            cbls->atualizarValorEmD(atributo_atual);
                             cbls->executarClassificacao(objCorpus, iSaidaBLS);
                             //cout << cbls->descricaoConhecimento();
                             acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaBLS)[0];
@@ -235,7 +229,6 @@ int main()
 
                         objLSVM.atualizarAtributosTreino(atributosTreino);
                         objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
-
                         objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
                         //cout << objClassLibSvm->descricaoConhecimento();
 
@@ -255,7 +248,6 @@ int main()
                     if (nb) {
 
                         objNB.atualizarAtributosTreino(atributosTreino);
-
                         objClass = objNB.executarTreinamento(objCorpus, iResposta);
                         objClass->executarClassificacao(objCorpus, iSaidaNB);
                         //cout << objClass->descricaoConhecimento();
@@ -300,11 +292,17 @@ int main()
             } //fim j - janela
             cout << endl;
             outfile << ";" << endl ;
+
+            //temporario!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            objCorpus.gravarArquivo( "../inputs/#2corpus_" + valores_codigoativo[i] + ".txt" );
+
         } //fim i - codigo ativo
 
         outfile.flush();
         outfile.close();
-        objCorpus.gravarArquivo( "../inputs/#corpus_final.txt" );
+
+        psh.~ProcessadorSerieHistorica();
+
         getchar();
         return 0;
 
@@ -316,7 +314,6 @@ int main()
         cout << err;
         return 1;
     }
-
 
 }
 
