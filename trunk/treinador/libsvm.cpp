@@ -79,7 +79,7 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
 
     struct svm_node *x_node; //nó atributos
     //struct svm_problem prob; //problema (corpus)
-    unsigned int nExemplos, i, a, e, c, v, iregistro ;
+    unsigned int nExemplos, i, a, b, e, c, v, iregistro, difzero ;
 
     float val;
 
@@ -98,24 +98,34 @@ bool LibSvm::gerarClasseProblemaSvm(Corpus &corpus,
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
             prob.y[iregistro] = val;
 
+            difzero = 0;
+            // próximos valores do nó svm_node = diferenças
+            for (a=0; a<nAtributos; a++){
+                i = corpus.pegarPosAtributo(atributos[a]);
+                v = corpus.pegarValor(c, e, i);
+                (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
+                if (val != 0.0)
+                    difzero++;
+            }
+
             //alocando vetor de atributos (total att + finalizador svm_node) = maximo
-            x_node = new struct svm_node[nAtributos + 1];
+            x_node = new struct svm_node[difzero + 1];
 
             prob.x[iregistro] = x_node;
 
             // próximos valores do nó svm_node = diferenças
-            for (a=0; a<nAtributos;a++){
+            for (b=0,a=0; a<nAtributos;a++){
                 i = corpus.pegarPosAtributo(atributos[a]);
                 v = corpus.pegarValor(c, e, i);
                 (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;
-                //if (val != 0.0) {
-                    x_node[a].index = (a + 1);
-                    x_node[a].value = val;
-
-                //}
+                if (val != 0.0) {
+                    x_node[b].index = (a + 1);
+                    x_node[b].value = val;
+                    b++;
+                }
             }
             //finalizador
-            x_node[a].index = (-1);
+            x_node[b].index = (-1);
 
             iregistro += 1; //incrementa o indice do i-ésimo elemento, considerando todos os registros de todos os conjuntos
 
