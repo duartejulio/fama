@@ -11,6 +11,7 @@
 #include "../treinador/libsvm.h"
 #include "../treinador/regressaologistica.h"
 #include "../validador/validadorkdobras.h"
+#include "../validador/validadorkdobras_deslizante.h"
 #include "../classificador/classificadorbls.h"
 
 using namespace std;
@@ -27,8 +28,6 @@ int iSaidaBLS;                              //índice da saida do algoritmo BLS
 int iSaidaSVM;                              //índice da saida do algoritmo Support Vector Machine
 int iSaidaRegLog;                           //índice da saida do algoritmo Regressão Logistica
 
-int dobras = 2;                             //auxiliar para algoritmo NB
-
 float acuracia = 0.0;                       //calcula acuracia do algoritmo
 int janela;                                 //janela atual da execucao do algoritmo
 
@@ -36,9 +35,9 @@ bool svm;                                   //executa algoritmo Support Vector M
 bool nb;                                    //executa algoritmo Naive Bayes
 bool bls;                                   //executa algortimo Base Line System
 bool reglog;                                //executa algoritmo Regressão Logística
+bool svm_validacao_cruzada;
 
 AvaliadorAcuracia objAvalAcur;              //objeto do framework avaliador de acuracia
-ValidadorKDobras objValidador(objAvalAcur, dobras); //auxiliar  do algoritmo NB
 stringstream out;                           //auxiliar para manipular strings
 
 Classificador *objClass;                    //classificador NB
@@ -52,9 +51,9 @@ int iter;                                   // auxiliar regressao logistica
 unsigned int i, j;                          //variaveis auxiliares
 string auxexecbls;                          //manter o valor do BLS
 
-int janela_max = 60;                        //tamanho maximo da janela do processamento
-int qtd_ativos = 6; //6                     //quantidade de itens no vetor de ativos
-int qtd_janela = 7; //7                     //quantidade de itens no vetor da janela
+int janela_max = 100;                       //tamanho maximo da janela do processamento
+int qtd_ativos = 6;                         //quantidade de itens no vetor de ativos
+int qtd_janela = 8;                         //quantidade de itens no vetor da janela
 
 vector<int> valores_janelas(qtd_janela);        //vetor das janelas a serem testadas
 vector<string> valores_codigoativo(qtd_ativos); //vetor dos ativos a serem testados
@@ -87,6 +86,7 @@ int main()
     valores_janelas[4] = 20;
     valores_janelas[5] = 40;
     valores_janelas[6] = 60;
+    valores_janelas[7] = 100;
 
     valores_codigoativo[0] = "alll11";
     valores_codigoativo[1] = "ligt3";
@@ -96,14 +96,18 @@ int main()
     valores_codigoativo[5] = "arcz6";
 
     //define quais algoritmos serão executados
-    svm = true;
-    nb = true;
-    bls = true;
+    svm = false;
+    nb = false;
+    bls = false;
     reglog = false;
+    svm_validacao_cruzada = true;
 
     /**************************** INICIO DO PROGRAMA *****************************/
+    //dividirExemplos = separa cada linha do corpus como um exemplo (TRUE: não alterar)
+    //separarValores = trim
 
-    CorpusMatriz objCorpus(vector<string>(), ';', false, true);
+    CorpusMatriz objCorpus(vector<string>(), ';', true, true);
+
 
     classes.push_back("-1");
     classes.push_back("+1");
@@ -152,9 +156,15 @@ int main()
     std::string s;
     //arquivo auxiliar para analise posterior
     ofstream outfile;
+    ofstream outfile2;
+
     outfile.open("../outputs/saida.txt", fstream::out);
+    outfile2.open("../outputs/saida_k.txt", fstream::out);
+
     outfile.clear();
-    outfile << "ATIVO;JANELA;BLS;SVM;NB;REGLOG;" << endl;
+    outfile2.clear();
+
+    outfile << "ATIVO;JANELA;BLS;SVM;SVM_K;NB;REGLOG;" << endl;
 
     try{
 
@@ -168,6 +178,11 @@ int main()
             cout << ":: Processando Ativo: " << valores_codigoativo[i] << endl ;
             cout << "******************************************" << endl ;
 
+            outfile2 << "******************************************" << endl ;
+            outfile2 << ":: Processando Ativo: " << valores_codigoativo[i] << endl ;
+            outfile2 << "******************************************" << endl ;
+
+
             //limpando o vetor de atributos de treinamento
             atributosTreino.clear();
 
@@ -177,11 +192,15 @@ int main()
                 cout << "psh.processarCorpus: Erro\n";
             }
 
+
             //realiza a execucao com distintos parametros de janelas j para o ativo i
             int inicio_janela = 1;
             for (j=0; j<valores_janelas.size();j++){
                 //log
                 outfile << valores_janelas[j] << ";";
+
+                outfile2 << "janela: " << valores_janelas[j] << ";" << endl ;
+
                 cout << ":: d-" << valores_janelas[j] << " = " ;
 
                 //atualiza atributos de treino (d-1, d-2...d-n)
@@ -228,20 +247,44 @@ int main()
                     if (svm) {
 
                         objLSVM.atualizarAtributosTreino(atributosTreino);
+
                         objClassLibSvm = objLSVM.executarTreinamento(objCorpus, iResposta);
                         objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
-                        //cout << objClassLibSvm->descricaoConhecimento();
-
+                        ////cout << objClassLibSvm->descricaoConhecimento();
                         acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaSVM)[0];
-                        cout << " SVM: " << acuracia << "%"  ;
-                        outfile << acuracia << ";" ;
 
-                        //out << acuracia; s = out.str();
+                        cout << " SVM sem validacao cruzada!: " << acuracia << "%"  ;
+                        outfile << acuracia << ";";
 
                     }
                     else{
                         outfile << "-1;";
                     }
+
+                     if (svm_validacao_cruzada){
+
+                        objLSVM.atualizarAtributosTreino(atributosTreino);
+
+                        int dobras = 12;
+                        ValidadorKFoldDeslizante objValidador(objAvalAcur, dobras);
+                        vector< vector< float > > v = objValidador.executarExperimento(objLSVM, objCorpus, iResposta, iSaidaSVM);
+                        float c,soma_acuracia = 0;
+                        for (c=0;c<dobras - 1;c++){
+                            acuracia = 100.* v[c][0];
+                            cout << c+1 << " validacao: - " << acuracia << "%" << endl;
+                            outfile2 << c+1 << " validacao: - " << acuracia << "%" << endl;
+                            soma_acuracia += v[c][0];
+                        }
+
+                        cout << " Media SVM k-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%"  ;
+                        outfile2 << "k=" << dobras << endl ;
+                        outfile2 << " Media SVM k-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
+
+                        outfile << 100.*(soma_acuracia/(dobras - 1)) << ";" ;
+                     }
+                     else{
+                        outfile << "-1;";
+                     }
 
                 /******************************************* Naive Bayes *********************************************/
 

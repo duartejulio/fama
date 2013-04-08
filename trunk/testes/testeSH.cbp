@@ -65,6 +65,8 @@
 		<Unit filename="..\validador\validador.cpp" />
 		<Unit filename="..\validador\validadorkdobras.cpp" />
 		<Unit filename="..\validador\validadorkdobras.h" />
+		<Unit filename="..\validador\validadorkdobras_deslizante.cpp" />
+		<Unit filename="..\validador\validadorkdobras_deslizante.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
