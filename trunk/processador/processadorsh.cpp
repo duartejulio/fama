@@ -54,65 +54,58 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 {
 
     int totlinhas, qtdConjExemplos, c, pos, neg;
-    int  d, iPreco, idColDiferenca_i,  iY, linhai, linhaj, iSaidaNB,iSaidaBLS,iSaidaSVM,iSaidaRegLog;
-
-//    if (!attcriados) {
-//
-//        for (d=1; d<=janela; d++)
-//        {
-//            stringstream out;
-//            out << d;
-//            objCorpus.criarAtributo("d-" + out.str(), "0");
-//        }
-//
-//        idColY = objCorpus.criarAtributo("y","0");
-//
-//        attcriados = true;
-//    }
+    int  d, ipreco, idColDiferenca_i,  iY, linhai, coldif, iSaidaNB,iSaidaBLS,iSaidaSVM,iSaidaRegLog;
 
     pos = objCorpus.pegarIndice("+1");
     neg = objCorpus.pegarIndice("-1");
 
-    iPreco = objCorpus.pegarPosAtributo(this->atributo);
+    ipreco = objCorpus.pegarPosAtributo(this->atributo);
     iY = objCorpus.pegarPosAtributo("y");
     iSaidaNB = objCorpus.pegarPosAtributo("saida_nb");
     iSaidaBLS = objCorpus.pegarPosAtributo("saida_bls");
     iSaidaSVM = objCorpus.pegarPosAtributo("saida_svm");
     iSaidaRegLog = objCorpus.pegarPosAtributo("saida_reglog");
 
-    qtdConjExemplos = objCorpus.pegarQtdConjExemplos();
-    for (c=0; c<qtdConjExemplos; c++){
-        totlinhas = objCorpus.pegarQtdExemplos(c);
 
-        for (d=0; d<janela; d++)
-            diferenca_i[d] = 0;
+    for (d=0; d<janela; d++){
+        diferenca_i[d] = 0;
+    }
+
+    qtdConjExemplos = objCorpus.pegarQtdConjExemplos();
+    //tive que alterar aqui pq agora cada registro eh considerado um conjunto de exemplos!
+    for (c=0; c<qtdConjExemplos; c++){
+        totlinhas = objCorpus.pegarQtdExemplos(c); //sempre = 1
 
         //preenche os valores das diferenças
         for (linhai=0; linhai < totlinhas; linhai++){
 
             //atualiza os valores do vetor de diferencas
-            for (linhaj=janela - 1;linhaj > 0; linhaj--){
-                diferenca_i[linhaj] = diferenca_i[linhaj - 1];
+            for (coldif=janela - 1;coldif > 0; coldif--){
+                diferenca_i[coldif] = diferenca_i[coldif - 1];
             }
 
             //obtem o valor atual do ativo
-            int  vatual= objCorpus.pegarValor(c,linhai,iPreco);
+            int  vatual= objCorpus.pegarValor(c,linhai,ipreco);
             float valor_atual;
             (std::istringstream)(objCorpus.pegarSimbolo(vatual)) >> valor_atual >> std::dec;//converte para float
 
             //obtem o valor de ontem do ativo
             int  v_di;
             float valor_di, valor_futuro;
-            if (linhai > 0){
-                v_di = objCorpus.pegarValor(c, linhai - 1, iPreco);
+            //if (linhai > 0){
+            if (c > 0){ //alterei aqui por conta da separacao das linhas por conjunto de exemplos
+                //v_di = objCorpus.pegarValor(c, linhai - 1, ipreco);
+                v_di = objCorpus.pegarValor(c - 1, linhai , ipreco);
                 (std::istringstream)(objCorpus.pegarSimbolo(v_di)) >> valor_di >> std::dec;//converte para float
             }
             else{
                 valor_di = valor_atual;
             }
 
-            if (linhai != totlinhas - 1){
-                v_di = objCorpus.pegarValor(c, linhai + 1, iPreco);
+            //if (linhai != totlinhas - 1){
+            if (c != qtdConjExemplos - 1){
+                //v_di = objCorpus.pegarValor(c, linhai + 1, ipreco);
+                v_di = objCorpus.pegarValor(c + 1, linhai , ipreco);
                 (std::istringstream)(objCorpus.pegarSimbolo(v_di)) >> valor_futuro >> std::dec;//converte para float
             }
             else{
@@ -125,17 +118,17 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
             objCorpus.ajustarValor(c, linhai, iY, (valor_futuro > valor_atual)?pos:neg);
 
             //preenche os valores das diferenças
-            for (linhaj=1;linhaj <= janela ; linhaj++){
+            for (coldif=1;coldif <= janela ; coldif++){
                 std::string s;
                 std::stringstream out;
-                out << linhaj;
+                out << coldif;
                 s = "d-" + out.str();
 
                 idColDiferenca_i = objCorpus.pegarPosAtributo(s);
 
                 std::stringstream out2;
                 out2 << setprecision(2) << setiosflags(ios::fixed);
-                out2 << diferenca_i[linhaj-1];
+                out2 << diferenca_i[coldif-1];
 
                 objCorpus.ajustarValor(c,linhai,idColDiferenca_i, objCorpus.pegarIndice(out2.str()));
 

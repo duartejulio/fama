@@ -8,7 +8,7 @@ class ProcessadorSerieHistorica
         int janela;
         string atributo;
         bool attcriados;
-		float *diferenca_i; //dar uma olhada aqui porque nao estava indo com []´s...
+		float *diferenca_i;
         bool criarNovosAtributos();
         vector<string> novosAtributos;
 
