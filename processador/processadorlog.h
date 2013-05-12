@@ -9,12 +9,16 @@ class ProcessadorLogaritmo
         vector<string> atributo, novosAtributos;
         bool attcriados;
         int b;
+        float maxvalor;
+        float minvalor;
+        float normalizador;
 
 
 
     public:
-        ProcessadorLogaritmo(vector<string> atr, int b);
+        ProcessadorLogaritmo(vector<string> atr, int b, float normalizador);
         vector<string> processarCorpus(Corpus&);
+        void normalizarCorpus(Corpus&);
         ~ProcessadorLogaritmo();
         void criarAtributos(Corpus&);
 
