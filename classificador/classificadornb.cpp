@@ -19,7 +19,7 @@ ClassificadorNB::ClassificadorNB(vector<string> clas, vector<string> atr,
 }
 
 bool ClassificadorNB::executarClassificacao( Corpus &corpus, int atributo ){
-    int a, e, c, cl, nExemplos, nConjExemplos, nAtributos, gcl, nClasses, i, v, iClasse;
+    int a, e, c, cl, nExemplos, nConjExemplos, nAtributos, gcl = 0, nClasses, i, v, iClasse;
     map <int, int> mapaClasses;
     float prod, maxprod, val;
 
@@ -49,6 +49,7 @@ bool ClassificadorNB::executarClassificacao( Corpus &corpus, int atributo ){
                     gcl = cl;
                 }
             }
+
             iClasse = corpus.pegarIndice(classes[gcl]);
             corpus.ajustarValor(c,e,atributo,iClasse);
             //cout << gcl << " " << iClasse << " " << classes[gcl] << "\n";

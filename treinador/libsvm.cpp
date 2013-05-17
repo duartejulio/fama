@@ -12,9 +12,7 @@ LibSvm::LibSvm(vector<string> atr, vector<string> cla, struct svm_parameter par)
     param = par;
 }
 
-void LibSvm::atualizarAtributosTreino(vector<string> atr) {
-     atributos = atr;
-}
+
 
 Classificador* LibSvm::executarTreinamento( Corpus &corpus, int atributo ){
 
