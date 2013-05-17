@@ -17,30 +17,23 @@ ProcessadorSerieHistorica::~ProcessadorSerieHistorica(){
     diferenca_i = NULL; // Clear a to prevent using invalid memory reference.
 }
 
-bool ProcessadorSerieHistorica::criarNovosAtributos() {
-}
-
-void ProcessadorSerieHistorica::atualizarJanela(int janela){
-    this->janela = janela;
-}
-
 void ProcessadorSerieHistorica::atualizarAtributo(string att){
     this->atributo = att;
 }
 
-void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus){
+void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int janela_ini, int janela_fim){
 
     int d;
 
     this->novosAtributos.clear();
-    for (d=1; d<=this->janela; d++)
+    for (d=janela_ini; d<=janela_fim; d++)
     {
         stringstream out;
         out << d;
-        objCorpus.criarAtributo("d-" + out.str(), "0");
+        int id = objCorpus.criarAtributo("d-" + out.str(), "0");
         this->novosAtributos.push_back("d-" + out.str());
     }
-
+    //variavel alvo (y) deve ser a ultima por conta de implementacao da regressao logistica
     objCorpus.criarAtributo("y","0");
     objCorpus.criarAtributo("saida_bls","0");
     objCorpus.criarAtributo("saida_nb","0");
@@ -61,11 +54,11 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
 
     ipreco = objCorpus.pegarPosAtributo(this->atributo);
     iY = objCorpus.pegarPosAtributo("y");
+
     iSaidaNB = objCorpus.pegarPosAtributo("saida_nb");
     iSaidaBLS = objCorpus.pegarPosAtributo("saida_bls");
     iSaidaSVM = objCorpus.pegarPosAtributo("saida_svm");
     iSaidaRegLog = objCorpus.pegarPosAtributo("saida_reglog");
-
 
     for (d=0; d<janela; d++){
         diferenca_i[d] = 0;
@@ -139,6 +132,7 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
             objCorpus.ajustarValor(c,linhai,iSaidaBLS, objCorpus.pegarIndice("0"));
             objCorpus.ajustarValor(c,linhai,iSaidaRegLog, objCorpus.pegarIndice("0"));
             objCorpus.ajustarValor(c,linhai,iSaidaSVM, objCorpus.pegarIndice("0"));
+
         }
     }
 

@@ -32,9 +32,11 @@ bool ClassificadorRegressaoLogistica::executarClassificacao(Corpus &corpus, int 
     return true;
 }
 
+//RegressaoLogistica::RegressaoLogistica(vector<string> atributos, vector<string> classes)
 RegressaoLogistica::RegressaoLogistica(vector<string> classes)
 {
     this->classes = classes;
+    //this->atributos = atributos;
 }
 
 RegressaoLogistica::~RegressaoLogistica()
@@ -102,7 +104,8 @@ Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atri
     classeMap[classes[0]] = 0;
     classeMap[classes[1]] = 1;
 
-    n = atributo + 1;
+    n = atributo + 1; //considera sempre que y será o ultimo atributo, logo tem-se o erro pq mantem sempre a msm quantidade de atts
+    //n = atributos.size() + 1;
     m = corpus.pegarQtdConjExemplos();
     X = new float*[m];
     y = new int[m];
@@ -112,7 +115,10 @@ Classificador* RegressaoLogistica::executarTreinamento( Corpus &corpus, int atri
         X[i] = new float[n];
         X[i][0] = 1.0;
         for (j=0; j<atributo;j++){
+        //for (j=0; j<atributos.size();j++){
+            //int ia = corpus.pegarPosAtributo(atributos[j]);
             v = corpus.pegarValor(i, 0, j);
+            //v = corpus.pegarValor(i, 0, ia);
 
             (std::istringstream)(corpus.pegarSimbolo(v)) >> val >> std::dec;//converte para float
             X[i][j + 1] = val;

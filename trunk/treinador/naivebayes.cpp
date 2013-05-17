@@ -9,10 +9,6 @@ NaiveBayes::NaiveBayes(vector<string> atr, vector<string> cla):Treinador(){
     classes = cla;
 }
 
-void NaiveBayes::atualizarAtributosTreino(vector<string> atr) {
-     atributos = atr;
-}
-
 Classificador* NaiveBayes::executarTreinamento( Corpus &corpus, int atributo ){
     unsigned int nExemplos, nConjExemplos, nAtributos,
      i, a, e, c, v, iClasse;

@@ -16,9 +16,8 @@ class ProcessadorSerieHistorica
         ProcessadorSerieHistorica(int janela, string atributo);
         vector<string> processarCorpus(Corpus&);
         ~ProcessadorSerieHistorica();
-		void atualizarJanela(int janela);
 		void atualizarAtributo(string att);
-		void criarAtributosAuxiliares(Corpus&);
+		void criarAtributosAuxiliares(Corpus&, int janela_ini, int janela_fim);
 
 };
 

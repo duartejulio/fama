@@ -33,8 +33,10 @@ class ClassificadorRegressaoLogistica:public Classificador{
 
 class RegressaoLogistica : public Treinador
 {
+    //vector<string> classes, atributos;
     vector<string> classes;
     public:
+        //RegressaoLogistica(vector<string> atributos, vector<string> classes);
         RegressaoLogistica(vector<string> classes);
         virtual ~RegressaoLogistica();
         virtual Classificador* executarTreinamento( Corpus &corpus, int atributo );

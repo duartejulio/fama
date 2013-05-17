@@ -16,23 +16,17 @@ ClassificadorBLS::~ClassificadorBLS()
     //dtor
 }
 
-void ClassificadorBLS::atualizarValorEmD(string nomeAtributo){
-    this->nomeAtributo = nomeAtributo;
-}
-
 bool ClassificadorBLS::executarClassificacao(Corpus &corpus, int atributo)
 {
     //recebe o corpus e o indice do atributo a ser comparado
 	int  e, c, nExemplos, nConjExemplos, gcl, nClasses, v, ipreco, pos, neg;
     float val, val_ant;
 
-
-
     //determina tamanho do conjunto
     nConjExemplos = corpus.pegarQtdConjExemplos();
     nClasses = classes.size();
 	val_ant = 0.0;
-	ipreco = corpus.pegarPosAtributo(nomeAtributo);
+	ipreco = corpus.pegarPosAtributo("valor");
 
 
     pos = corpus.pegarIndice("+1");
