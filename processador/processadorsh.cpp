@@ -30,7 +30,7 @@ void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int 
     {
         stringstream out;
         out << d;
-        int id = objCorpus.criarAtributo("d-" + out.str(), "0");
+        objCorpus.criarAtributo("d-" + out.str(), "0");
         this->novosAtributos.push_back("d-" + out.str());
     }
     //variavel alvo (y) deve ser a ultima por conta de implementacao da regressao logistica
@@ -43,8 +43,10 @@ void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int 
     //não adiciona y nos novos Atributos (não deve ser treinado com ele)
 }
 
-vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
-{
+
+vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int janela_max){
+
+    this->janela_max = janela_max;
 
     int totlinhas, qtdConjExemplos, c, pos, neg;
     int  d, ipreco, idColDiferenca_i,  iY, linhai, coldif, iSaidaNB,iSaidaBLS,iSaidaSVM,iSaidaRegLog;
@@ -136,5 +138,49 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus)
         }
     }
 
+    //chamada para retirar valores indesejados do corpus (0´s), criados a partir da diferenca nos preços.
+    //nesta implementação vou usar a maior janela para o dataset não ter tamanho diferente em função da janela, não comprometendo assim a qualidade
+    //da saida do modelo.
+
+    //objCorpus.gravarArquivo("#antes.txt");
+
+    removerRegistrosZerados(objCorpus, janela_max);
+
+    //objCorpus.gravarArquivo("#depois.txt");
+
     return this->novosAtributos;
+}
+
+
+bool ProcessadorSerieHistorica::removerRegistrosZerados(Corpus &objCorpus, int janela_atual){
+
+    int qtd_linhas =  objCorpus.pegarQtdSentencas();
+    int j;
+    vector< int > vetMascara(qtd_linhas);
+    vector< Corpus* > vetCorpus;
+
+    try{
+        for( j = 0; j < qtd_linhas; ++j ){
+            if (j < janela_atual){
+                vetMascara[j] = 0;
+            }
+            else{
+                vetMascara[j] = 1;
+            }
+        }
+
+        vetCorpus = objCorpus.splitCorpus(vetMascara, 2);
+
+        objCorpus = *vetCorpus[1];
+
+        delete vetCorpus[1];
+
+        return true;
+
+    }catch(string err){
+        return false;
+    }
+
+
+
 }

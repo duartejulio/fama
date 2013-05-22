@@ -51,7 +51,6 @@
 		<Unit filename="..\processador\processadorsh.cpp" />
 		<Unit filename="..\processador\processadorsh.h" />
 		<Unit filename="mainSH.cpp" />
-		<Unit filename="mainSH_AnaliseParametros.cpp" />
 		<Unit filename="..\treinador\libsvm.cpp" />
 		<Unit filename="..\treinador\libsvm.h" />
 		<Unit filename="..\treinador\naivebayes.cpp" />

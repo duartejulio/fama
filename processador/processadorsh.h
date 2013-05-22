@@ -6,6 +6,7 @@
 class ProcessadorSerieHistorica
 {
         int janela;
+        int janela_max;
         string atributo;
         bool attcriados;
 		float *diferenca_i;
@@ -14,10 +15,11 @@ class ProcessadorSerieHistorica
 
     public:
         ProcessadorSerieHistorica(int janela, string atributo);
-        vector<string> processarCorpus(Corpus&);
+        vector<string> processarCorpus(Corpus&, int janela_max);
         ~ProcessadorSerieHistorica();
 		void atualizarAtributo(string att);
 		void criarAtributosAuxiliares(Corpus&, int janela_ini, int janela_fim);
+		bool removerRegistrosZerados(Corpus&, int janela_atual);
 
 };
 
