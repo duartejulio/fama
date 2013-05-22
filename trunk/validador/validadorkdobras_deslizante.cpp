@@ -23,7 +23,7 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento( Treinad
     vector< int > vetMascara(qtd_linhas);
     int sobra_dobras, tam_dobra, tam_janela_deslizante, iniciotreino, fimtreino, inicioteste, fimteste;
 
-    tam_janela_deslizante = 2; //quantidade maxima de blocos a serem usados no processo formando a janela deslizante
+    tam_janela_deslizante = 3; //quantidade maxima de blocos a serem usados no processo formando a janela deslizante
 
     if (tam_janela_deslizante >= numeroIteracoes){
         ostringstream erro;
@@ -102,11 +102,11 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento( Treinad
     return resultado;
 }
 
-vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento2( Treinador &treinador,
+vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento2(Treinador &treinador,
                                                                          Corpus &corpus,
                                                                          int atributoTreino,
                                                                          int atributoTeste,
-                                                                         int tam_janela_deslizante ) {
+                                                                         int tam_janela_deslizante) {
     Classificador *classificador;
     int i, j, qtd_linhas = corpus.pegarQtdSentencas();
     vector< vector< float > > resultado;
@@ -114,9 +114,9 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento2( Treina
     vector< int > vetMascara(qtd_linhas);
     int tam_dobra, iniciotreino, fimtreino, inicioteste, fimteste;
 
-    /* criando uma dobra por registro */
-    //numeroIteracoes = corpus.pegarQtdSentencas() - tam_janela_deslizante;
-    numeroIteracoes = tam_janela_deslizante;
+    /* criando uma dobra por registro, ignorando dobras do construtor */
+    numeroIteracoes = corpus.pegarQtdSentencas() - tam_janela_deslizante;
+    //numeroIteracoes = tam_janela_deslizante;
 
     tam_dobra = 1;
 
@@ -163,16 +163,16 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento3( Treina
                                                                          int atributoTeste,
                                                                          int tam_treino) {
     Classificador *classificador;
-    int i, j, qtd_linhas = corpus.pegarQtdSentencas();
+    int j, qtd_linhas = corpus.pegarQtdSentencas();
     vector< vector< float > > resultado;
     vector< Corpus* > vetCorpus;
     vector< int > vetMascara(qtd_linhas);
-    int tam_dobra, iniciotreino, fimtreino, inicioteste, fimteste;
+    int iniciotreino, fimtreino, inicioteste, fimteste;
 
     iniciotreino = 0;
     fimtreino = tam_treino - 1;
     inicioteste = fimtreino + 1;
-    fimteste = corpus.pegarQtdSentencas();
+    fimteste = corpus.pegarQtdSentencas() - 1;
 
     for( j = 0; j < qtd_linhas; ++j )
     {
@@ -180,11 +180,9 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento3( Treina
             vetMascara[j] = 0;} //treina com k blocos
         else if ((j >= inicioteste) && (j<=fimteste)) {
             vetMascara[j] = 1;} //classifica com k+1 bloco
-        else {
-            vetMascara[j] = 2;} //ignora outros
     }
 
-    vetCorpus = corpus.splitCorpus(vetMascara, 3); //intCorpus = 3 (treino, teste, outros_ignorar)
+    vetCorpus = corpus.splitCorpus(vetMascara, 2); //intCorpus = 2 (treino, teste)
 
     classificador = treinador.executarTreinamento( *vetCorpus[0], atributoTreino );
     classificador->executarClassificacao( *vetCorpus[1], atributoTeste );
@@ -193,7 +191,6 @@ vector< vector< float > > ValidadorKFoldDeslizante::executarExperimento3( Treina
 
     delete vetCorpus[0];
     delete vetCorpus[1];
-    delete vetCorpus[2];
 
     delete classificador;
 

@@ -33,7 +33,7 @@ bool reglog = false;                                //executa algoritmo Regressã
 bool svm_validacao_cruzada = true;                 //objeto avaliador de acurácia
 bool reglog_validacao_cruzada = false;
 bool nb_validacao_cruzada = false;
-int dobras = 5;
+int dobras = 10;
 AvaliadorAcuracia objAvalAcur;              //objeto do framework avaliador de acuracia
 stringstream out;                           //auxiliar para manipular strings
 struct svm_parameter param;                 //auxiliar para integracao com SVM
@@ -43,12 +43,12 @@ string auxexecbls;                          //manter o valor do BLS
                     //quantidade de itens no vetor de ativos
                     //quantidade de itens no vetor da janela
 vector<int> valores_janelas(8);        //vetor das janelas a serem testadas
-vector<string> valores_codigoativo(50); //50 -vetor dos ativos a serem testados
+vector<string> valores_codigoativo(3); //50 -vetor dos ativos a serem testados
 vector<string> classes;                         //representa as classes, positivas (+1) e negativa (-1)
 
-std::stringstream ssouttela;
 //float **MATRIX_BEST_WINDOW;
 
+int janela_max = 0;
 
 int main()
 {
@@ -89,60 +89,62 @@ int main()
     valores_janelas[6] = 60;
     valores_janelas[7] = 80;
 
+    janela_max = 80;
+
 
     //nome dos arquivos texto com serie devem seguir este sufixo
     //MATRIX_BEST_WINDOW = new float*[51];
 
     valores_codigoativo[0] = "ALLL11";
-    valores_codigoativo[1] = "LIGT3";
-    valores_codigoativo[2] = "PETR4";
-    valores_codigoativo[3] = "VIVO4";
-    valores_codigoativo[4] = "VALE5";
-    valores_codigoativo[5] = "ARCZ6";
-    valores_codigoativo[6] = "AMBV4";
-    valores_codigoativo[7] = "BBAS3";
-    valores_codigoativo[8] = "BBDC4";
-    valores_codigoativo[9] = "BNCA3";
-    valores_codigoativo[10] = "BRAP4";
-    valores_codigoativo[11] = "BRKM5";
-    valores_codigoativo[12] = "BRTO4";
-    valores_codigoativo[13] = "CCRO3";
-    valores_codigoativo[14] = "CGAS5";
-    valores_codigoativo[15] = "CLSC6";
-    valores_codigoativo[16] = "CMIG4";
-    valores_codigoativo[17] = "CPFE3";
-    valores_codigoativo[18] = "CPLE6";
-    valores_codigoativo[19] = "CRUZ3";
-    valores_codigoativo[20] = "CSAN3";
-    valores_codigoativo[21] = "CSNA3";
-    valores_codigoativo[22] = "CYRE3";
-    valores_codigoativo[23] = "DURA4";
-    valores_codigoativo[24] = "ELET6";
-    valores_codigoativo[25] = "EMBR3";
-    valores_codigoativo[26] = "GGBR4";
-    valores_codigoativo[27] = "GOLL4";
-    valores_codigoativo[28] = "ITAU4";
-    valores_codigoativo[29] = "ITSA4";
-    valores_codigoativo[30] = "KLBN4";
-    valores_codigoativo[31] = "LAME4";
-    valores_codigoativo[32] = "LREN3";
-    valores_codigoativo[33] = "NATU3";
-    valores_codigoativo[34] = "NETC4";
-    valores_codigoativo[35] = "PCAR4";
-    valores_codigoativo[36] = "PRGA3";
-    valores_codigoativo[37] = "RSID3";
-    valores_codigoativo[38] = "SBSP3";
-    valores_codigoativo[39] = "SDIA4";
-    valores_codigoativo[40] = "TAMM4";
-    valores_codigoativo[41] = "TCSL4";
-    valores_codigoativo[42] = "TMCP4";
-    valores_codigoativo[43] = "TLPP4";
-    valores_codigoativo[44] = "TNLP4";
-    valores_codigoativo[45] = "TRPL4";
-    valores_codigoativo[46] = "UBBR11";
-    valores_codigoativo[47] = "UGPA4";
-    valores_codigoativo[48] = "USIM5";
-    valores_codigoativo[49] = "VCPA4";
+    valores_codigoativo[1] = "PETR4";
+    valores_codigoativo[2] = "ELET6";
+//    valores_codigoativo[3] = "VIVO4";
+//    valores_codigoativo[4] = "VALE5";
+//    valores_codigoativo[5] = "ARCZ6";
+//    valores_codigoativo[6] = "AMBV4";
+//    valores_codigoativo[7] = "BBAS3";
+//    valores_codigoativo[8] = "BBDC4";
+//    valores_codigoativo[9] = "BNCA3";
+//    valores_codigoativo[10] = "BRAP4";
+//    valores_codigoativo[11] = "BRKM5";
+//    valores_codigoativo[12] = "BRTO4";
+//    valores_codigoativo[13] = "CCRO3";
+//    valores_codigoativo[14] = "CGAS5";
+//    valores_codigoativo[15] = "CLSC6";
+//    valores_codigoativo[16] = "CMIG4";
+//    valores_codigoativo[17] = "CPFE3";
+//    valores_codigoativo[18] = "CPLE6";
+//    valores_codigoativo[19] = "CRUZ3";
+//    valores_codigoativo[20] = "CSAN3";
+//    valores_codigoativo[21] = "CSNA3";
+//    valores_codigoativo[22] = "CYRE3";
+//    valores_codigoativo[23] = "DURA4";
+//    valores_codigoativo[24] = "LIGT3";
+//    valores_codigoativo[25] = "EMBR3";
+//    valores_codigoativo[26] = "GGBR4";
+//    valores_codigoativo[27] = "GOLL4";
+//    valores_codigoativo[28] = "ITAU4";
+//    valores_codigoativo[29] = "ITSA4";
+//    valores_codigoativo[30] = "KLBN4";
+//    valores_codigoativo[31] = "LAME4";
+//    valores_codigoativo[32] = "LREN3";
+//    valores_codigoativo[33] = "NATU3";
+//    valores_codigoativo[34] = "NETC4";
+//    valores_codigoativo[35] = "PCAR4";
+//    valores_codigoativo[36] = "PRGA3";
+//    valores_codigoativo[37] = "RSID3";
+//    valores_codigoativo[38] = "SBSP3";
+//    valores_codigoativo[39] = "SDIA4";
+//    valores_codigoativo[40] = "TAMM4";
+//    valores_codigoativo[41] = "TCSL4";
+//    valores_codigoativo[42] = "TMCP4";
+//    valores_codigoativo[43] = "TLPP4";
+//    valores_codigoativo[44] = "TNLP4";
+//    valores_codigoativo[45] = "TRPL4";
+//    valores_codigoativo[46] = "UBBR11";
+//    valores_codigoativo[47] = "UGPA4";
+//    valores_codigoativo[48] = "USIM5";
+//    valores_codigoativo[49] = "VCPA4";
 
 
     //parametros do sistema para SVM
@@ -172,7 +174,7 @@ int main()
     std::string s;
     //arquivo auxiliar para analise posterior
     ofstream outfileCVS;
-    //ofstream outfileK;
+    ofstream outfileK;
 
     try{
 
@@ -180,10 +182,10 @@ int main()
         classes.push_back("+1");
 
         outfileCVS.open("../outputs/saida.txt", fstream::out);
-        //outfileK.open("../outputs/saida_k.txt", fstream::out);
+        outfileK.open("../outputs/saida_k.txt", fstream::out);
 
         outfileCVS.clear();
-        //outfileK.clear();
+        outfileK.clear();
 
         outfileCVS << "ATIVO;JANELA;BLS;SVM;SVM_K;NB;NB_K;RL;RL_K" << endl;
 
@@ -192,14 +194,12 @@ int main()
 
             //MATRIX_BEST_WINDOW[i] = new float[4]; //4 algoritmos
 
-            ssouttela << "******************************************" << endl ;
-            ssouttela << ":: Processando Ativo: " << valores_codigoativo[i] << endl ;
-            ssouttela << "******************************************" << endl ;
-
+            cout << "******************************************************************************************************************************" << endl ;
+            cout << "Processando Ativo " << valores_codigoativo[i] << endl ;
+            cout << "******************************************************************************************************************************" << endl ;
             outfileCVS << valores_codigoativo[i] << ";";
-            cout << ssouttela.str();
-            //outfileK << ssouttela.str();
-            ssouttela.clear();
+            outfileK << valores_codigoativo[i] << endl;
+
 
             //realiza a execucao com distintos parametros de janelas j para o ativo i
             int inicio_janela = 1;
@@ -216,8 +216,9 @@ int main()
                 //psh.criarAtributosAuxiliares(objCorpus, inicio_janela,valores_janelas[j]);
                 psh.criarAtributosAuxiliares(objCorpus, 1, valores_janelas[j]);
                 //seta os valores dos parametros d-1, d-2, d-n + y no corpus para o ativo em questao e zera as saidas
-                if (!psh.processarCorpus(objCorpus).size())
+                if (!psh.processarCorpus(objCorpus, janela_max).size())
                     { cout << "psh.processarCorpus: Erro\n";}
+
 
                 iResposta    = objCorpus.pegarPosAtributo("y");
                 iSaidaBLS    = objCorpus.pegarPosAtributo("saida_bls");
@@ -226,11 +227,12 @@ int main()
                 iSaidaSVM    = objCorpus.pegarPosAtributo("saida_svm");
 
                 //log
+                cout << "    d-" << valores_janelas[j] << ": " ;
                 outfileCVS << valores_janelas[j] << ";";
-                ssouttela << "    d-" << valores_janelas[j] << " = " << endl ;
-                //outfileK << ssouttela.str();
-                cout << ssouttela.str();
-                ssouttela.clear();
+                outfileK << "d-" << valores_janelas[j] << ": " ;
+                if ((j+1) == valores_janelas.size()){
+                    outfileK << "" << endl;
+                }
 
                 //atualiza atributos de treino (d-1, d-2...d-n)
                 //for (int d=inicio_janela; d<=valores_janelas[j]; d++){
@@ -289,74 +291,76 @@ int main()
                     objClassLibSvm->executarClassificacao(objCorpus, iSaidaSVM);
                     ////cout << objClassLibSvm->descricaoConhecimento();
                     acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaSVM)[0];
-                    cout << " SVM sem validacao cruzada!: " << acuracia << "%"  ;
+                    cout << "******************************************************************************************************************************" << endl ;
+                    cout << " SVM [sem validacao cruzada]: " << acuracia << "%" << endl;
+                    cout << "******************************************************************************************************************************" << endl ;
                     outfileCVS << acuracia/100 << ";";
                     delete objClassLibSvm;
 
                     if (svm_validacao_cruzada){
 
-//                        ValidadorKFoldDeslizante objValidadorSVM(objAvalAcur, dobras);
-//                        vector< vector< float > > v = objValidadorSVM.executarExperimento(objLSVM, objCorpus, iResposta, iSaidaSVM);
-//                        float c,soma_acuracia = 0;
-//                        for (c=0;c<dobras - 1;c++){
-//                            acuracia = 100.* v[c][0];
-//                            ssouttela << c+1 << " validacao: - " << acuracia << "%" << endl;
-//                            cout << ssouttela.str();
-//                            //outfileK << ssouttela.str();
-//                            ssouttela.clear();
-//                            soma_acuracia += v[c][0];
-//                        }
-//                        ssouttela << " Media SVM " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
-//                        cout << ssouttela.str();
-//                        //outfileK << ssouttela.str();
-//                        ssouttela.clear();
-//
-//                        outfileCVS << (soma_acuracia/(dobras - 1)) << ";" ;
+                                float c,soma_acuracia = 0;
 
-//                            //  TESTE DE EXPERIMENTO2
-//                            ValidadorKFoldDeslizante objValidadorSVM(objAvalAcur, dobras);
-//                            int tamanho_janela_deslizante = 80;
-//                            vector< vector< float > > v = objValidadorSVM.executarExperimento2(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_janela_deslizante);
-//                            float c,soma_acuracia = 0;
-//                            int tot = objCorpus.pegarQtdSentencas() - tamanho_janela_deslizante ;
-//                            for (c=0; c < tot  ;c++){
-//                                acuracia = 100.* v[c][0];
-//                                ssouttela << c+1 << " validacao: " << acuracia << "%" << endl;
-//                                cout << ssouttela.str();
-//                                //outfileK << ssouttela.str();
-//                                ssouttela.clear();
-//                                soma_acuracia += v[c][0];
-//                            }
-//                            ssouttela << " Media SVM " << dobras << " dobras: " << 100.*(soma_acuracia/tot) << "%" << endl  ;
-//                            cout << ssouttela.str();
-//                            //outfileK << ssouttela.str();
-//                            ssouttela.clear();
-//
-//                            outfileCVS << (soma_acuracia/tot-1) << ";" ;
+                                /*
+                                // ******************************** TESTE DE EXPERIMENTO1 ********************************
+                                ValidadorKFoldDeslizante objValidadorSVM1(objAvalAcur, dobras);
+                                vector<vector<float>> vret1 = objValidadorSVM1.executarExperimento(objLSVM, objCorpus, iResposta, iSaidaSVM);
 
-                                //TESTE DE EXPERIMENTO3
-                                ValidadorKFoldDeslizante objValidadorSVM(objAvalAcur, dobras);
-                                int tamanho_treino = 80;
-                                vector< vector< float > > v = objValidadorSVM.executarExperimento3(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_treino);
-                                acuracia = 100.* v[0][0];
-                                ssouttela << " validacao " << dobras << " dobras: " << acuracia << "%" << endl;
-                                cout << ssouttela.str();
-                                //outfileK << ssouttela.str();
-                                ssouttela.clear();
+                                cout << "******************************************************************************************************************************" << endl ;
+                                soma_acuracia = 0;
+                                for (c=0;c<dobras - 1;c++){
+                                    acuracia = 100.* vret1[c][0];
+                                    cout << c+1 << " execucao: " << acuracia << "%" << endl;
+                                    outfileK << c+1 << " execucao: " << acuracia << "%" << endl;
+                                    soma_acuracia += vret1[c][0];
+                                }
+                                cout << " Validacao experimento 1 (Media SVM) " << dobras << " dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                outfileCVS << (soma_acuracia/(dobras - 1)) << ";" ;
+                                outfileK << "Media SVM_K_exp2: " << (soma_acuracia/(dobras - 1)) << ";" ;
+                                c = 0; soma_acuracia=0;
+                                */
 
-                                //outfileK << ssouttela.str();
 
-                                outfileCVS << (acuracia) << ";" ;
 
-                                //FIM TESTE DE EXPERIMENTO3
+                                // ******************************** TESTE DE EXPERIMENTO2 ********************************
+                                ValidadorKFoldDeslizante objValidadorSVM2(objAvalAcur, 0);
+                                int tamanho_janela_deslizante = 200;
+                                vector< vector< float > > vret2 = objValidadorSVM2.executarExperimento2(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_janela_deslizante);
+                                int tot = objCorpus.pegarQtdSentencas() - tamanho_janela_deslizante ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                soma_acuracia = 0;
+                                for (c=0; c < tot  ;c++){
+                                    acuracia = 100.* vret2[c][0];
+                                    cout << c+1 << " execucao: " << acuracia << "%" << endl;
+                                    outfileK << c+1 << " execucao: " << acuracia << "%" << endl;
+                                    soma_acuracia += vret2[c][0];
+                                }
+                                cout << " Validacao experimento 2 (Media SVM) " << tot << " execucoes: " << 100.*(soma_acuracia/tot) << "%" << endl  ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                outfileCVS << (soma_acuracia/tot) << ";" ;
+                                outfileK << "Media SVM_K_exp2: " << (soma_acuracia/tot) << ";" ;
+                                c = 0; soma_acuracia=0;
+
+
+                                /*
+                                // ******************************** TESTE DE EXPERIMENTO3 ********************************
+                                ValidadorKFoldDeslizante objValidadorSVM3(objAvalAcur, 0);
+                                int tamanho_treino = 180;
+                                vector< vector< float > > vret3 = objValidadorSVM3.executarExperimento3(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_treino);
+                                acuracia = 100.* vret3[0][0];
+                                cout << "******************************************************************************************************************************" << endl ;
+                                cout << " Validacao experimento 3: " << acuracia << "%" << endl ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                outfileCVS << (vret3[0][0]) << ";" ;
+                                outfileK << "SVM_K_exp3: " << (vret3[0][0]);
+                                */
 
 
                     }
                     else{
                         outfileCVS << "0;";
                     }
-
-                    //objLSVM.~Treinador();
 
                 }
                 else{
@@ -384,18 +388,15 @@ int main()
                         float c,soma_acuracia = 0;
                         for (c=0;c<dobras - 1;c++){
                             acuracia = 100.* v[c][0];
-                            ssouttela << c+1 << " validacao: - " << acuracia << "%" << endl;
-                            cout << ssouttela.str();
-                            //outfileK << ssouttela.str();
-                            ssouttela.clear();
+                            cout << c+1 << " validacao: - " << acuracia << "%" << endl;
+                            outfileK << c+1 << " validacao: - " << acuracia << "%" << endl;
                             soma_acuracia += v[c][0];
                         }
 
-                        ssouttela << " Media NB " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
-                        cout << ssouttela.str();
-                        //outfileK << ssouttela.str();
-                        ssouttela.clear();
+                        cout << " Media NB " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
                         outfileCVS << (soma_acuracia/(dobras - 1)) << ";" ;
+                        outfileK << " Media NB " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
+
 
                     }
                     else{
@@ -410,19 +411,14 @@ int main()
 
                 if (reglog) {
 
-                    //objCorpus.gravarArquivo( "../outputs/#corpusfull" + valores_codigoativo[i] + ".txt" );
-
                     Classificador *objClassRegLog;
-                    //RegressaoLogistica oTRL(atributosTreino, classes);
                     RegressaoLogistica objRL(classes);
                     objClassRegLog = objRL.executarTreinamento(objCorpus, iResposta);
                     objClassRegLog->executarClassificacao(objCorpus, iSaidaRegLog);
                     acuracia = 100.*objAvalAcur.calcularDesempenho(objCorpus, iResposta, iSaidaRegLog)[0];
                     cout << " Regressao Logistica: " << acuracia << "%"  ;
                     outfileCVS << acuracia/100 << ";";
-                    //oTRL.~RegressaoLogistica();
                     delete objClassRegLog;
-                    //out << acuracia; s = out.str();
 
                     if (reglog_validacao_cruzada){
 
@@ -431,19 +427,15 @@ int main()
                         float c,soma_acuracia = 0;
                         for (c=0;c<dobras - 1;c++){
                             acuracia = 100.* v[c][0];
-                            ssouttela << c+1 << " validacao: - " << acuracia << "%" << endl;
-                            cout << ssouttela.str();
-                            //outfileK << ssouttela.str();
-                            ssouttela.clear();
+                            cout << c+1 << " validacao: - " << acuracia << "%" << endl;
+                            outfileK << c+1 << " validacao: - " << acuracia << "%" << endl;
                             soma_acuracia += v[c][0];
                         }
 
-                        ssouttela << " Media RL " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
-                        cout << ssouttela.str();
-                        //outfileK << ssouttela.str();
-                        ssouttela.clear();
-
+                        cout << " Media RL " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
                         outfileCVS << (soma_acuracia/(dobras - 1)) << ";" ;
+                        outfileK << " Media RL " << dobras << "-dobras: " << 100.*(soma_acuracia/(dobras - 1)) << "%" << endl  ;
+
                     }
                     else{
                         outfileCVS << "0;";
@@ -456,20 +448,16 @@ int main()
 
                 cout << endl;
 
-        } //fim j - janela
-        cout << endl;
-        outfileCVS << ";" << endl ;
-
-        ////temporario!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //objCorpus.gravarArquivo( "../outputs/#fim_corpus_" + valores_codigoativo[i] + ".txt" );
-
+            } //fim j - janela
+            cout << endl;
+            outfileCVS << ";" << endl ;
 
         } //fim i - codigo ativo
 
         outfileCVS.flush();
         outfileCVS.close();
-        //outfileK.flush();
-        //outfileK.close();
+        outfileK.flush();
+        outfileK.close();
 
         cout << "Fim da execucao dos algoritmos. Pressione ENTER" ;
 
@@ -481,10 +469,10 @@ int main()
             {
                 outfileCVS.close();
             }
-            //if (outfileK.is_open())
-            //{
-            //    outfileK.close();
-            //}
+            if (outfileK.is_open())
+            {
+                outfileK.close();
+            }
             cout << err;
             return 1;
         }
