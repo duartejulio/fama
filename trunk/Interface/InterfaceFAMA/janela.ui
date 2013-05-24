@@ -594,7 +594,7 @@
              <number>2</number>
             </property>
             <attribute name="horizontalHeaderVisible">
-             <bool>true</bool>
+             <bool>false</bool>
             </attribute>
             <attribute name="horizontalHeaderDefaultSectionSize">
              <number>50</number>
@@ -619,7 +619,7 @@
      </widget>
      <widget class="QWidget" name="tab_validacao">
       <attribute name="title">
-       <string>Classificação</string>
+       <string>Validação</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
@@ -938,6 +938,328 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_treinamento">
+      <attribute name="title">
+       <string>Treinamento/Classificação</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_escolhaTreinador">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>271</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>261</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>99999</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Treinamento</string>
+       </property>
+       <widget class="QComboBox" name="comboBox_metodoTreinador">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>221</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::InsertAlphabetically</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Escolha o Treinador</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QToolButton" name="toolButton_treinador2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>20</y>
+          <width>25</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_guardarConhecimento">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Guardar Conhecimento:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_guardarConhecimento">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>160</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>101</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <italic>false</italic>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../imagens/save.png</normaloff>../imagens/save.png</iconset>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_treinar">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>110</y>
+          <width>151</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Treinar</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_atributoTreino2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Atributo de treino:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_atributoTreino2">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>60</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_escolhaClassificador2">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>10</y>
+         <width>271</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>261</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>99999</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Classificação</string>
+       </property>
+       <widget class="QComboBox" name="comboBox_metodoClassificador">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::InsertAlphabetically</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Escolha o Classificador</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_carregarConhecimento">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Carregar Conhecimento:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_carregarConhecimento">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>60</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>101</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <italic>false</italic>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../imagens/folder_open.png</normaloff>../imagens/folder_open.png</iconset>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_classificar">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>150</y>
+          <width>151</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Classificar</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_novoAtributo2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Novo atributo:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_novoAtributo2">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>100</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>novo</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -1089,6 +1411,118 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>comboBox_metodoTreinador</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Janela</receiver>
+   <slot>escolherTreinador(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>151</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButton_treinador2</sender>
+   <signal>clicked()</signal>
+   <receiver>Janela</receiver>
+   <slot>definirParametrosTreinador()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>264</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_treinar</sender>
+   <signal>clicked()</signal>
+   <receiver>Janela</receiver>
+   <slot>treinar()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>-17</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_guardarConhecimento</sender>
+   <signal>clicked()</signal>
+   <receiver>Janela</receiver>
+   <slot>guardarConhecimento()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>214</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>259</x>
+     <y>416</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_metodoClassificador</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Janela</receiver>
+   <slot>escolherMetodoClassificacao(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>515</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_carregarConhecimento</sender>
+   <signal>clicked()</signal>
+   <receiver>Janela</receiver>
+   <slot>carregarConhecimento()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>108</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>418</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_classificar</sender>
+   <signal>clicked()</signal>
+   <receiver>Janela</receiver>
+   <slot>classificar()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>421</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>456</x>
+     <y>418</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>abrirArquivo()</slot>
@@ -1099,5 +1533,12 @@
   <slot>escolherAvaliador(int)</slot>
   <slot>executarValidacao()</slot>
   <slot>abrirArquivoTeste()</slot>
+  <slot>escolherTreinador(int)</slot>
+  <slot>definirParametrosTreinador()</slot>
+  <slot>treinar()</slot>
+  <slot>guardarConhecimento()</slot>
+  <slot>escolherMetodoClassificacao(int)</slot>
+  <slot>carregarConhecimento()</slot>
+  <slot>classificar()</slot>
  </slots>
 </ui>
