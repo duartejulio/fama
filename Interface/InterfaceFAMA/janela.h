@@ -31,6 +31,7 @@ private:
     Ui::Janela *ui;
     Corpus *corpus, *corpusTeste;
     Treinador *treinador;
+    Classificador *classificador;
     Avaliador *avaliador;
     QString s;
     Param popUp;
@@ -43,9 +44,15 @@ public slots:
     void atributoSelecionado( int row, int column );
     void definirParametros();
     void escolherClassificador( int index );
+    void escolherTreinador( int index );
+    void escolherMetodoClassificacao( int index );
     void escolherAvaliador( int index );
     void definirParametrosTreinador();
     void executarValidacao();
+    void guardarConhecimento();
+    void carregarConhecimento();
+    void treinar();
+    void classificar();
 };
 
 #endif // JANELA_H

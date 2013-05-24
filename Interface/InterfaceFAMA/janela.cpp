@@ -10,6 +10,7 @@ Janela::Janela(QWidget *parent) :
     treinador = NULL;
     avaliador = new AvaliadorAcuracia();
     corpusTeste = NULL;
+    classificador = NULL;
 
     //a adição de novos tipos de Corpus deve ser feita identicamente ao modelo abaixo
     ui->comboBox_corpus->addItem( "CorpusMatriz" );
@@ -18,6 +19,13 @@ Janela::Janela(QWidget *parent) :
     ui->comboBox_metodo->addItem( "Mais Provavel" );
     ui->comboBox_metodo->addItem( "Hidden Markov Model - HMM" );
     ui->comboBox_metodo->addItem( "Transformation Based Learning - TBL" );
+
+    ui->comboBox_metodoTreinador->addItem( "Mais Provavel" );
+    ui->comboBox_metodoTreinador->addItem( "Hidden Markov Model - HMM" );
+    ui->comboBox_metodoTreinador->addItem( "Transformation Based Learning - TBL" );
+    ui->comboBox_metodoClassificador->addItem( "Mais Provavel" );
+    ui->comboBox_metodoClassificador->addItem( "Hidden Markov Model - HMM" );
+    ui->comboBox_metodoClassificador->addItem( "Transformation Based Learning - TBL" );
 
     //a adição de novos tipos de Avaliadores deve ser feita identicamente ao modelo abaixo
     ui->comboBox_avaliador->addItem( "Acurácia" );
@@ -43,6 +51,8 @@ void Janela::abrirArquivo()
     {
         logicaDeAbertura();
         ui->comboBox_metodo->setEnabled( true );
+        ui->comboBox_metodoTreinador->setEnabled( true );
+        ui->comboBox_metodoClassificador->setEnabled( true );
     }
 }
 
@@ -67,6 +77,7 @@ void Janela::logicaDeAbertura()
     //limpador da janela de atributos
     ui->tableWidget_atributos->clearContents();
     ui->comboBox_atributoTreino->clear();
+    ui->comboBox_atributoTreino2->clear();
 
     ui->tableWidget_atributos->setRowCount( n );
     QTableWidgetItem *item;
@@ -77,6 +88,7 @@ void Janela::logicaDeAbertura()
         item = new QTableWidgetItem( aux = QString( "%1" ).arg( QString::fromStdString(corpus->pegarAtributo(i)) ) );
         ui->tableWidget_atributos->setItem( i, 1, item );
         ui->comboBox_atributoTreino->insertItem( i, aux );
+        ui->comboBox_atributoTreino2->insertItem( i, aux );
     }
 
     //retorna seta normal do mouse
@@ -317,6 +329,45 @@ void Janela::escolherClassificador( int index )
     definirParametrosTreinador();
 }
 
+void Janela::escolherTreinador( int index )
+{
+    if( treinador != NULL ) delete treinador;
+    switch( index )
+    {
+        case 0 :
+            treinador = NULL;
+            ui->toolButton_treinador2->setEnabled( false );
+            ui->pushButton_guardarConhecimento->setEnabled( false );
+            ui->pushButton_treinar->setEnabled( false );
+            return;
+        case 1 :
+            treinador = new MaisProvavelUI();
+            break;
+        case 2 :
+            treinador = new HMMUI();
+            break;
+        case 3 :
+            treinador = new TBLUI();
+            break;
+    }
+    ui->toolButton_treinador2->setEnabled( true );
+    ui->pushButton_treinar->setEnabled( true );
+    definirParametrosTreinador();
+}
+
+void Janela::escolherMetodoClassificacao( int index )
+{
+    if( classificador != NULL ) delete classificador;
+    if( !index )
+    {
+        classificador = NULL;
+        ui->pushButton_carregarConhecimento->setEnabled( false );
+        ui->pushButton_classificar->setEnabled( false );
+        return;
+    }
+    ui->pushButton_carregarConhecimento->setEnabled( true );
+}
+
 void Janela::escolherAvaliador( int index )
 {
     if( avaliador != NULL ) delete avaliador;
@@ -417,4 +468,68 @@ void Janela::abrirArquivoTeste()
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
     corpusTeste->carregarArquivo( t );
     QApplication::restoreOverrideCursor();
+}
+
+void Janela::treinar()
+{
+    //coloca seta do mouse em espera
+    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
+
+    classificador = treinador->executarTreinamento( *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino2->currentText().toStdString() ) );
+    ui->pushButton_guardarConhecimento->setEnabled( true );
+
+    //retorna seta normal do mouse
+    QApplication::restoreOverrideCursor();
+}
+
+void Janela::classificar()
+{
+    //coloca seta do mouse em espera
+    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
+
+    classificador->executarClassificacao( *corpus, corpus->criarAtributo( ui->lineEdit_novoAtributo2->text().toStdString(), "" ) );
+
+    //retorna seta normal do mouse
+    QApplication::restoreOverrideCursor();
+}
+
+void Janela::guardarConhecimento()
+{
+    if( ( s = QFileDialog::getOpenFileName( this, "Gravar Conhecimento","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    {
+        //coloca seta do mouse em espera
+        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
+
+        classificador->gravarConhecimento( s.toStdString() );
+
+        //retorna seta normal do mouse
+        QApplication::restoreOverrideCursor();
+    }
+}
+
+void Janela::carregarConhecimento()
+{
+    if( ( s = QFileDialog::getOpenFileName( this, "Carregar Conhecimento","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    {
+        //coloca seta do mouse em espera
+        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
+
+        switch( ui->comboBox_metodoClassificador->currentIndex() )
+        {
+            case 1 :
+                classificador = new ClassificadorMaisProvavel( s.toStdString() );
+                break;
+            case 2 :
+                classificador = new ClassificadorHMM( s.toStdString() );
+                break;
+            case 3 :
+                //classificador = new ClassificadorTBL( s.toStdString() );
+                break;
+        }
+
+        ui->pushButton_classificar->setEnabled( true );
+
+        //retorna seta normal do mouse
+        QApplication::restoreOverrideCursor();
+    }
 }
