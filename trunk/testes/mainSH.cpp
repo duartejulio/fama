@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
+#include <math.h>
 
 #include "../processador/processadorsh.h"
 #include "../corpus/corpusmatriz.h"
@@ -33,7 +34,7 @@ bool reglog = false;                                //executa algoritmo Regressã
 bool svm_validacao_cruzada = true;                 //objeto avaliador de acurácia
 bool reglog_validacao_cruzada = false;
 bool nb_validacao_cruzada = false;
-int dobras = 10;
+
 AvaliadorAcuracia objAvalAcur;              //objeto do framework avaliador de acuracia
 stringstream out;                           //auxiliar para manipular strings
 struct svm_parameter param;                 //auxiliar para integracao com SVM
@@ -246,6 +247,8 @@ int main()
                 atributosTreino.push_back("maximo");
                 atributosTreino.push_back("minimo");
                 atributosTreino.push_back("abertura");
+                atributosTreino.push_back("considerar");
+
 
 
                 inicio_janela = valores_janelas[j] + 1;
@@ -295,16 +298,17 @@ int main()
                     cout << " SVM [sem validacao cruzada]: " << acuracia << "%" << endl;
                     cout << "******************************************************************************************************************************" << endl ;
                     outfileCVS << acuracia/100 << ";";
-                    delete objClassLibSvm;
+                    //delete objClassLibSvm;
 
                     if (svm_validacao_cruzada){
 
                                 float c,soma_acuracia = 0;
+                                int dobras = 30;
 
                                 /*
                                 // ******************************** TESTE DE EXPERIMENTO1 ********************************
                                 ValidadorKFoldDeslizante objValidadorSVM1(objAvalAcur, dobras);
-                                vector<vector<float>> vret1 = objValidadorSVM1.executarExperimento(objLSVM, objCorpus, iResposta, iSaidaSVM);
+                                vector< vector < float > > vret1 = objValidadorSVM1.executarExperimento(objLSVM, objCorpus, iResposta, iSaidaSVM);
 
                                 cout << "******************************************************************************************************************************" << endl ;
                                 soma_acuracia = 0;
@@ -323,9 +327,10 @@ int main()
 
 
 
+                                /*
                                 // ******************************** TESTE DE EXPERIMENTO2 ********************************
                                 ValidadorKFoldDeslizante objValidadorSVM2(objAvalAcur, 0);
-                                int tamanho_janela_deslizante = 200;
+                                int tamanho_janela_deslizante = 14;
                                 vector< vector< float > > vret2 = objValidadorSVM2.executarExperimento2(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_janela_deslizante);
                                 int tot = objCorpus.pegarQtdSentencas() - tamanho_janela_deslizante ;
                                 cout << "******************************************************************************************************************************" << endl ;
@@ -341,12 +346,53 @@ int main()
                                 outfileCVS << (soma_acuracia/tot) << ";" ;
                                 outfileK << "Media SVM_K_exp2: " << (soma_acuracia/tot) << ";" ;
                                 c = 0; soma_acuracia=0;
+                                */
+
+                                /* */
+                                //passando o classificador ao inves de ficar treinando toda hora
+                                // ******************************** TESTE DE EXPERIMENTO22 ********************************
+                                ValidadorKFoldDeslizante objValidadorSVM2(objAvalAcur, 0);
+                                int tamanho_janela_deslizante = 80;
+                                vector< vector< float > > vret22 = objValidadorSVM2.executarExperimento22(objClassLibSvm, objCorpus, iResposta, iSaidaSVM, tamanho_janela_deslizante);
+                                int tot = objCorpus.pegarQtdSentencas() - tamanho_janela_deslizante ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                soma_acuracia = 0;
+                                int contar=0;
+                                for (c=0; c < tot  ;c++){
+                                    if (vret22[c][0] == -1){
+                                        //acuracia = 100.* vret22[c][0];
+                                        cout << c+1 << " execucao: nao considerado" << endl;
+                                        //cout << c+1 << " execucao:" << acuracia << "%" << endl;
+                                        //outfileK << c+1 << " execucao: " << acuracia << "%" << endl;
+                                    }
+                                    else
+                                    {
+                                         acuracia = 100.* vret22[c][0];
+                                         cout << c+1 << " execucao:" << acuracia << "%" << endl;
+                                         soma_acuracia += vret22[c][0];
+                                         contar++;
+                                    }
+
+
+                                }
+                                //cout << " Validacao experimento 2 (Media SVM) " << tot << " execucoes: " << 100.*(soma_acuracia/tot) << "%" << endl  ;
+                                cout << " Validacao experimento 2 (Media SVM) " << tot << " execucoes: " << 100.*(soma_acuracia/contar) << "%" << endl  ;
+                                cout << "******************************************************************************************************************************" << endl ;
+                                outfileCVS << (soma_acuracia/contar) << ";" ;
+                                //outfileCVS << (soma_acuracia/tot) << ";" ;
+                                //outfileK << "Media SVM_K_exp2: " << (soma_acuracia/tot) << ";" ;
+                                c = 0; soma_acuracia=0;
+
+                                delete objClassLibSvm;
+
+
+
 
 
                                 /*
                                 // ******************************** TESTE DE EXPERIMENTO3 ********************************
                                 ValidadorKFoldDeslizante objValidadorSVM3(objAvalAcur, 0);
-                                int tamanho_treino = 180;
+                                int tamanho_treino = floor((objCorpus.pegarQtdSentencas() * 0.8)); //80% da base para treino
                                 vector< vector< float > > vret3 = objValidadorSVM3.executarExperimento3(objLSVM, objCorpus, iResposta, iSaidaSVM, tamanho_treino);
                                 acuracia = 100.* vret3[0][0];
                                 cout << "******************************************************************************************************************************" << endl ;
@@ -355,6 +401,7 @@ int main()
                                 outfileCVS << (vret3[0][0]) << ";" ;
                                 outfileK << "SVM_K_exp3: " << (vret3[0][0]);
                                 */
+
 
 
                     }
@@ -382,6 +429,8 @@ int main()
 
                     delete objClass;
                     if (nb_validacao_cruzada){
+
+                        int dobras = 10;
 
                         ValidadorKFoldDeslizante objValidadorNB(objAvalAcur, dobras);
                         vector< vector< float > > v = objValidadorNB.executarExperimento(objNB, objCorpus, iResposta, iSaidaNB);
@@ -421,6 +470,8 @@ int main()
                     delete objClassRegLog;
 
                     if (reglog_validacao_cruzada){
+
+                        int dobras = 10;
 
                         ValidadorKFoldDeslizante objValidadorRL(objAvalAcur, dobras);
                         vector< vector< float > > v = objValidadorRL.executarExperimento(objRL, objCorpus, iResposta, iSaidaRegLog);

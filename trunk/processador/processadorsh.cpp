@@ -40,6 +40,10 @@ void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int 
     objCorpus.criarAtributo("saida_reglog","0");
     objCorpus.criarAtributo("saida_svm","0");
 
+    //Este atributo controla a sensibilidade pela qual vamos trabalhar.
+    //Pequenas oscilações (tanto no acréscimo quanto no decrescimo) serão desconsideradas através de um fator de sensibilidade
+    objCorpus.criarAtributo("considerar", "0");
+
     //não adiciona y nos novos Atributos (não deve ser treinado com ele)
 }
 
@@ -49,7 +53,7 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
     this->janela_max = janela_max;
 
     int totlinhas, qtdConjExemplos, c, pos, neg;
-    int  d, ipreco, idColDiferenca_i,  iY, linhai, coldif, iSaidaNB,iSaidaBLS,iSaidaSVM,iSaidaRegLog;
+    int  d, ipreco, idColDiferenca_i,  iY, linhai, coldif, iSaidaNB,iSaidaBLS,iSaidaSVM,iSaidaRegLog,iConsiderar;
 
     pos = objCorpus.pegarIndice("+1");
     neg = objCorpus.pegarIndice("-1");
@@ -57,10 +61,16 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
     ipreco = objCorpus.pegarPosAtributo(this->atributo);
     iY = objCorpus.pegarPosAtributo("y");
 
+//    int iAbertura = objCorpus.pegarPosAtributo("abertura");
+//    int iMax = objCorpus.pegarPosAtributo("maximo");
+//    int iMin = objCorpus.pegarPosAtributo("minimo");
+
     iSaidaNB = objCorpus.pegarPosAtributo("saida_nb");
     iSaidaBLS = objCorpus.pegarPosAtributo("saida_bls");
     iSaidaSVM = objCorpus.pegarPosAtributo("saida_svm");
     iSaidaRegLog = objCorpus.pegarPosAtributo("saida_reglog");
+    iConsiderar = objCorpus.pegarPosAtributo("considerar");
+
 
     for (d=0; d<janela; d++){
         diferenca_i[d] = 0;
@@ -112,6 +122,23 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
 
             objCorpus.ajustarValor(c, linhai, iY, (valor_futuro > valor_atual)?pos:neg);
 
+            float fator_sensibilidade = 0.02; //ver aqui porque possivelmente esse fator terá que ser diferente para cada ativo
+
+            int iUm, iZero;
+            iUm = objCorpus.pegarIndice("1");
+            iZero = objCorpus.pegarIndice("0");
+
+            if ((diferenca_i[0] > 0.0) && (valor_atual * fator_sensibilidade) <= diferenca_i[0])  {
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //subiu mais que o fator, considera
+            }else if ((diferenca_i[0] > 0.0) && (valor_atual * fator_sensibilidade) > diferenca_i[0]){
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //nao subiu mais que o fator, nao considera
+            }else if ((diferenca_i[0] < 0.0) && ((valor_atual * fator_sensibilidade) * -1) > diferenca_i[0]) {
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //caiu mais que o fator, considera
+            }else{
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //nao caiu mais que o fator, nao considera
+            }
+
+
             //preenche os valores das diferenças
             for (coldif=1;coldif <= janela ; coldif++){
                 std::string s;
@@ -129,6 +156,8 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
 
             }
 
+
+
             //zerando novamente as colunas de saidas dos algoritmos
             objCorpus.ajustarValor(c,linhai,iSaidaNB, objCorpus.pegarIndice("0"));
             objCorpus.ajustarValor(c,linhai,iSaidaBLS, objCorpus.pegarIndice("0"));
@@ -142,11 +171,11 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
     //nesta implementação vou usar a maior janela para o dataset não ter tamanho diferente em função da janela, não comprometendo assim a qualidade
     //da saida do modelo.
 
-    //objCorpus.gravarArquivo("#antes.txt");
+    objCorpus.gravarArquivo("../outputs/#antes.txt");
 
     removerRegistrosZerados(objCorpus, janela_max);
 
-    //objCorpus.gravarArquivo("#depois.txt");
+    objCorpus.gravarArquivo("../outputs/#depois.txt");
 
     return this->novosAtributos;
 }
