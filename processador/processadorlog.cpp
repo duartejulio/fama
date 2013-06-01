@@ -27,7 +27,7 @@ void ProcessadorLogaritmo::criarAtributos(Corpus &objCorpus){
 
 }
 
-<<<<<<< .mine
+
 void ProcessadorLogaritmo::normalizarCorpus(Corpus &objCorpus)
 {
     int qtdConjExemplos, totlinhas, linha, c, idCol;
@@ -46,13 +46,13 @@ void ProcessadorLogaritmo::normalizarCorpus(Corpus &objCorpus)
                 {
                         int  vatual= objCorpus.pegarValor(c,linha,i+idCol);
                         float valor_atual;
-                        (std::istringstream)(objCorpus.pegarSimbolo(vatual)) >> valor_atual >> std::dec;
+                        (std::istringstream)(objCorpus.pegarSimbolo(vatual)) >> valor_atual>>std::dec;
                          cout<<valor_atual<<endl;
                         //para normalizar
                             valor_atual = normalizador *(valor_atual - minvalor)/(maxvalor - minvalor);
 
                         std::stringstream out2;
-                        out2 << setprecision(3) << setiosflags(ios::fixed);
+                        out2 << setprecision(0) << setiosflags(ios::fixed);
 
                         out2 << valor_atual;
                         objCorpus.ajustarValor(c, linha, idCol+i, objCorpus.pegarIndice(out2.str()));
@@ -94,7 +94,7 @@ vector<string> ProcessadorLogaritmo::processarCorpus(Corpus &objCorpus)
                         if(valor_atual !=0 )
                         logatual = log(valor_atual)/log(b);
                         std::stringstream out2;
-                        out2 << setprecision(3) << setiosflags(ios::fixed);
+                        out2 << setprecision(0) << setiosflags(ios::fixed);
                         out2 << logatual;
                         objCorpus.ajustarValor(c, linha, idCol+i, objCorpus.pegarIndice(out2.str()));
 
