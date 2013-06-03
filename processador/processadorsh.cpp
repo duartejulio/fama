@@ -42,7 +42,7 @@ void ProcessadorSerieHistorica::criarAtributosAuxiliares(Corpus &objCorpus, int 
 
     //Este atributo controla a sensibilidade pela qual vamos trabalhar.
     //Pequenas oscilações (tanto no acréscimo quanto no decrescimo) serão desconsideradas através de um fator de sensibilidade
-    objCorpus.criarAtributo("considerar", "0");
+    //objCorpus.criarAtributo("considerar", "0");
 
     //não adiciona y nos novos Atributos (não deve ser treinado com ele)
 }
@@ -69,8 +69,9 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
     iSaidaBLS = objCorpus.pegarPosAtributo("saida_bls");
     iSaidaSVM = objCorpus.pegarPosAtributo("saida_svm");
     iSaidaRegLog = objCorpus.pegarPosAtributo("saida_reglog");
+    /*
     iConsiderar = objCorpus.pegarPosAtributo("considerar");
-
+    */
 
     for (d=0; d<janela; d++){
         diferenca_i[d] = 0;
@@ -122,21 +123,23 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
 
             objCorpus.ajustarValor(c, linhai, iY, (valor_futuro > valor_atual)?pos:neg);
 
-            float fator_sensibilidade = 0.02; //ver aqui porque possivelmente esse fator terá que ser diferente para cada ativo
+            /*
+            float fator_sensibilidade = 0.05; //ver aqui porque possivelmente esse fator terá que ser diferente para cada ativo
 
             int iUm, iZero;
             iUm = objCorpus.pegarIndice("1");
             iZero = objCorpus.pegarIndice("0");
 
             if ((diferenca_i[0] > 0.0) && (valor_atual * fator_sensibilidade) <= diferenca_i[0])  {
-                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //subiu mais que o fator, considera
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //subiu mais que o fator, considera
             }else if ((diferenca_i[0] > 0.0) && (valor_atual * fator_sensibilidade) > diferenca_i[0]){
-                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //nao subiu mais que o fator, nao considera
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //nao subiu mais que o fator, nao considera
             }else if ((diferenca_i[0] < 0.0) && ((valor_atual * fator_sensibilidade) * -1) > diferenca_i[0]) {
-                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //caiu mais que o fator, considera
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //caiu mais que o fator, considera
             }else{
-                objCorpus.ajustarValor(c, linhai, iConsiderar, iZero); //nao caiu mais que o fator, nao considera
+                objCorpus.ajustarValor(c, linhai, iConsiderar, iUm); //nao caiu mais que o fator, nao considera
             }
+            */
 
 
             //preenche os valores das diferenças
@@ -171,11 +174,11 @@ vector<string> ProcessadorSerieHistorica::processarCorpus(Corpus &objCorpus, int
     //nesta implementação vou usar a maior janela para o dataset não ter tamanho diferente em função da janela, não comprometendo assim a qualidade
     //da saida do modelo.
 
-    objCorpus.gravarArquivo("../outputs/#antes.txt");
+    //objCorpus.gravarArquivo("../outputs/#antes.txt");
 
     removerRegistrosZerados(objCorpus, janela_max);
 
-    objCorpus.gravarArquivo("../outputs/#depois.txt");
+    //objCorpus.gravarArquivo("../outputs/#depois.txt");
 
     return this->novosAtributos;
 }

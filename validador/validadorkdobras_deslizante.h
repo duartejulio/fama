@@ -13,7 +13,6 @@ class ValidadorKFoldDeslizante : public Validador
         virtual ~ValidadorKFoldDeslizante();
         vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
         vector< vector< float > > executarExperimento2( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste, int tam_janela_deslizante );
-        vector< vector< float > > executarExperimento22( Classificador *classificador, Corpus &corpus, int atributoTreino, int atributoTeste, int tam_janela_deslizante );
         vector< vector< float > > executarExperimento3( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste, int tam_treino );
 
 };
