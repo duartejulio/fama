@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include "param.h"
+#include "dados.h"
 #include "../../corpus/corpusmatrizui.h"
 #include "../../treinador/maisprovavelui.h"
 #include "../../treinador/hmmui.h"
@@ -29,13 +30,16 @@ public:
 
 private:
     Ui::Janela *ui;
+    Dados dados;
     Corpus *corpus, *corpusTeste;
-    Treinador *treinador;
+    Treinador *treinador, *treinadorAba3;
     Classificador *classificador;
     Avaliador *avaliador;
     QString s;
     Param popUp;
+    int numExperimento;
     void logicaDeAbertura();
+    bool importado; //variavel auxiliar que descreve quando um dado é importado
 
 public slots:
     void abrirArquivo();
@@ -43,16 +47,21 @@ public slots:
     void habilitarBotao( int index );
     void atributoSelecionado( int row, int column );
     void definirParametros();
-    void escolherClassificador( int index );
+    void escolherMetodo( int index );
     void escolherTreinador( int index );
-    void escolherMetodoClassificacao( int index );
+    void escolherClassificador( int index );
     void escolherAvaliador( int index );
     void definirParametrosTreinador();
+    void definirParametrosTreinadorAba3();
     void executarValidacao();
     void guardarConhecimento();
     void carregarConhecimento();
     void treinar();
     void classificar();
+    void gravarCorpus();
+    void exportarDados();
+    void importarDados();
+    void importarDadosAba3();
 };
 
 #endif // JANELA_H

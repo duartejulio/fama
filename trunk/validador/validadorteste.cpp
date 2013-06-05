@@ -15,6 +15,6 @@ vector< vector< float > > ValidadorTeste::executarExperimento( Treinador &treina
 {
     vector< vector< float > > resultado;
     treinador.executarTreinamento( corpus, atributoTreino )->executarClassificacao( *corpusTeste, atributoTeste );
-    resultado.push_back( avaliador->calcularDesempenho( corpus, atributoTreino, atributoTeste ) );
+    resultado.push_back( avaliador->calcularDesempenho( *corpusTeste, corpusTeste->pegarPosAtributo( corpus.pegarAtributo( atributoTreino ) ), atributoTeste ) );
     return resultado;
 }
