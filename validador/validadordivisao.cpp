@@ -17,7 +17,7 @@ vector< vector< float > > ValidadorDivisao::executarExperimento( Treinador &trei
     int qtd_sentencas = corpus.pegarQtdSentencas();
     vector< vector< float > > resultado;
     vector< Corpus* > vetCorpus;
-    vector< bool > vetMascara( ( int )percTeste*qtd_sentencas, true );
+    vector< bool > vetMascara( ( int )( percTeste*qtd_sentencas ), true );
     vetMascara.resize( qtd_sentencas );
 
     for( int i = 0; i < numeroIteracoes; ++i )
