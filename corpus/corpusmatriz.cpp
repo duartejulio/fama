@@ -241,6 +241,11 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
 
     int column, k;
 
+    arqout << "[atributos=";
+    for( k = 0; k < qtd_atributos - 1; ++k )
+        arqout << atributos[k] << ",";
+    arqout << atributos[k] << "] [separador=" << separador << "]" << endl;
+
     for( register int i = 0; i < qtd_sentencas; ++i )
     {
         column = frases[i].size();

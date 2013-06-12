@@ -36,7 +36,7 @@ SOURCES += main.cpp\
     ../../avaliador/Avaliador.cpp \
     ../../treinador/hmmui.cpp \
     ../../treinador/tblui.cpp \
-    dados.cpp
+    tabwidgetdados.cpp
 
 HEADERS  += janela.h \
     ../../corpus/corpusmatriz.h \
@@ -63,8 +63,7 @@ HEADERS  += janela.h \
     ../../avaliador/Avaliador.h \
     ../../treinador/hmmui.h \
     ../../treinador/tblui.h \
-    dados.h
+    tabwidgetdados.h
 
 FORMS    += janela.ui \
-    param.ui \
-    dados.ui
+    param.ui
