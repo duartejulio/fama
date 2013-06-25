@@ -88,13 +88,21 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 
     map< int, map< int, double > >::iterator linhaInt_end;
     int linhaViterbi, linhaVtbAnt, qtdPos = numPos.size(), maiorIndice = 0;
-    double matrizViterbi[2][qtdPos], maiorValor, aux_double;
+    double maiorValor, aux_double;
+
+    //double matrizViterbi[2][qtdPos];
+    double *matrizViterbi[2] = {new double[qtdPos], new double[qtdPos]};
 
     //verifica o valor da coluna mais extensa de frases[][]
     for( register int i = 0; i < row; ++i )
         if( ( aux = corpusProva.pegarQtdTokens( i ) ) > maiorIndice ) maiorIndice = aux;
-    int caminho[maiorIndice][qtdPos];
 
+    //int caminho[maiorIndice][qtdPos];
+    int **caminho;
+
+    caminho = new int*[maiorIndice];
+    for (register int i = 0; i < maiorIndice; i++)
+        caminho[i] = new int[qtdPos];
 
     linhaInt_end = tabFreqObservacoesInt.end();
     for ( register int i = 0; i < row; ++i )
@@ -168,6 +176,14 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
             maiorIndice = caminho[j][ maiorIndice ];
         }
     }
+
+
+    for (register int i = 0; i < maiorIndice; i++)
+        delete[] caminho[i];
+    delete[] caminho;
+
+    delete[] matrizViterbi[1];
+    delete[] matrizViterbi[0];
 
     return true;
 }
