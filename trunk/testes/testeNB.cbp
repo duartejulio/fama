@@ -38,6 +38,7 @@
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\classificador\classificadornb.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpus.h" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
 		<Unit filename="mainNB.cpp" />
 		<Unit filename="..\treinador\naivebayes.cpp" />

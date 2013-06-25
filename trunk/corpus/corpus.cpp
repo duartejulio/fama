@@ -159,6 +159,10 @@ int Corpus::pegarValor( int sentenca, int token, int atributo )
     return frases[sentenca][token][atributo];
 }
 
+string Corpus::operator()(int sentenca, int token, int atributo){
+    return pegarSimbolo(pegarValor(sentenca,token,atributo));
+}
+
 int Corpus::pegarQtdSentencas()
 {
     return qtd_sentencas;

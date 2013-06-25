@@ -44,6 +44,19 @@ int main()
     cout << 100.*c0/total << " / " << 100.*c1/total << endl;
     atributos = objCorpus.pegarAtributos();
 
+
+    //mostra o corpus
+    for (c = 0; c < nConjExemplos; c++){
+        cout << c << endl;
+        for (e = 0; e < (unsigned)objCorpus.pegarQtdExemplos(c); e++){
+            cout << "\t" << e << " ";
+            for (unsigned a = 0; a < atributos.size(); a++)
+                cout << objCorpus(c,e,a);
+            cout << endl;
+        }
+        cout << endl;
+    }
+
     //remove atributos que nao devem ser utilizados pelo treinamento
     for (unsigned int i=0; i < atributos.size(); i++)
         if (i!=iResposta)

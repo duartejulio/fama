@@ -42,6 +42,7 @@
 		<Unit filename="..\classificador\classificadornb.cpp" />
 		<Unit filename="..\classificador\classificadornb.h" />
 		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpus.h" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
 		<Unit filename="..\libsvm\svm.cpp" />
 		<Unit filename="..\libsvm\svm.h" />
