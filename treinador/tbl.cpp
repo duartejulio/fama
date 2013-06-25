@@ -364,7 +364,7 @@ Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
         }
 
         tam_fronteira = regrasTemporarias2.size();
-        if( tam_fronteira > numMoldeRegras*2*log( tam_fronteira ) )
+        if( tam_fronteira > numMoldeRegras*2*log( (double)tam_fronteira ) )
         {
             for( i = 0; i < row; ++i )
             {
