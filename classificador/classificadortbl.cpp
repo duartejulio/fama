@@ -26,12 +26,15 @@ ClassificadorTBL::~ClassificadorTBL()
 
 bool ClassificadorTBL::executarClassificacao( Corpus &corpusProva, int atributo )
 {
-    int atributo_chute;
-    if( ( atributo_chute = corpusProva.pegarPosAtributo( atributoChute ) ) == -1 )
+    int atributo_chute = corpusProva.criarAtributo( atributoChute );
+
+    /*if( ( atributo_chute = corpusProva.pegarPosAtributo( atributoChute ) ) == -1 )
     {
         cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
         return NULL;
-    }
+    }*/
+
+
     //Classificação inicial
     if( !classInicial->executarClassificacao( corpusProva, atributo_chute ) )
     {
@@ -87,9 +90,21 @@ bool ClassificadorTBL::executarClassificacao( Corpus &corpusProva, int atributo 
                         break;
                     }
                 if( !regraInvalida )
-                    corpusProva.ajustarValor(i,j,atributo,resp);
+                    corpusProva.ajustarValor(i,j,atributo_chute,resp);
             }
         }
+    }
+
+    //copia resposta do atributo_chute no atributo e apaga o atributo_chute
+    if( atributo_chute != atributo )
+    {
+        for( i = 0; i < row; ++i )
+        {
+            column = corpusProva.pegarQtdTokens( i );
+            for( j = 0; j < column; ++j )
+                corpusProva.ajustarValor( i, j, atributo, corpusProva.pegarValor( i, j, atributo_chute ) );
+        }
+        corpusProva.removerAtributo( atributo_chute );
     }
 
     cout << "Classificacao TBL: executada" <<endl;
