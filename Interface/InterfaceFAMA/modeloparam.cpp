@@ -3,6 +3,12 @@
 ModeloParam::ModeloParam(QObject *parent) :
     QAbstractTableModel(parent)
 {
+    comboBox_metodosTreino = new QComboBox();
+
+    comboBox_metodosTreino->addItem( "Mais Provavel" );
+    comboBox_metodosTreino->addItem( "Hidden Markov Model - HMM" );
+    //esse item só pode ser adicionado após o conhecimento do BLS tbm ser gravado no TBL
+    //comboBox_metodosTreino->addItem( "Transformation Based Learning - TBL" );
 }
 
 int ModeloParam::rowCount(const QModelIndex &parent) const
@@ -107,4 +113,9 @@ bool ModeloParam::removeRows(int row, int count, const QModelIndex &parent )
 
     endRemoveRows();
     return true;
+}
+
+QComboBox *ModeloParam::metodosTreinoDisponiveis()
+{
+    return comboBox_metodosTreino;
 }

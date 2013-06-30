@@ -29,110 +29,6 @@
        <string>Pré-processamento</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_carregarCorpus">
-         <property name="minimumSize">
-          <size>
-           <width>305</width>
-           <height>51</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>305</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Corpus</string>
-         </property>
-         <widget class="QPushButton" name="pushButton_abrir">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>20</y>
-            <width>61</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>101</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>false</italic>
-            <underline>false</underline>
-            <strikeout>false</strikeout>
-           </font>
-          </property>
-          <property name="cursor">
-           <cursorShape>ArrowCursor</cursorShape>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../imagens/folder_open.png</normaloff>../imagens/folder_open.png</iconset>
-          </property>
-          <property name="autoDefault">
-           <bool>true</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_corpus">
-          <property name="geometry">
-           <rect>
-            <x>74</x>
-            <y>20</y>
-            <width>181</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="insertPolicy">
-           <enum>QComboBox::InsertAlphabetically</enum>
-          </property>
-          <item>
-           <property name="text">
-            <string>Escolha o Corpus</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QToolButton" name="toolButton_construtor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>260</x>
-            <y>20</y>
-            <width>27</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </widget>
-       </item>
        <item row="0" column="1" rowspan="3">
         <widget class="QGroupBox" name="groupBox_atributoSelecionado">
          <property name="minimumSize">
@@ -613,6 +509,110 @@
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_carregarCorpus">
+         <property name="minimumSize">
+          <size>
+           <width>305</width>
+           <height>51</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>305</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Corpus</string>
+         </property>
+         <widget class="QPushButton" name="pushButton_abrir">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>61</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>101</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>false</italic>
+            <underline>false</underline>
+            <strikeout>false</strikeout>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>ArrowCursor</cursorShape>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../imagens/folder_open.png</normaloff>../imagens/folder_open.png</iconset>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_corpus">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>20</y>
+            <width>181</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="insertPolicy">
+           <enum>QComboBox::InsertAlphabetically</enum>
+          </property>
+          <item>
+           <property name="text">
+            <string>Escolha o Tipo de Corpus</string>
+           </property>
+          </item>
+         </widget>
+         <widget class="QToolButton" name="toolButton_construtor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>20</y>
+            <width>27</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>

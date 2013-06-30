@@ -309,9 +309,12 @@ void Janela::definirParametrosTreinador()
     Treinador *temp = treinador->construirJanela( &popUp, *corpus );
     if( temp != treinador )
     {
+        //QMessageBox::about( this, "Erro", "Tente com outro nome de atributo." );
         if( !ui->tableWidget_resultadosValidacao->pertenceTreinador( treinador ) && treinador != treinadorAba3 ) delete treinador; //verifica se treinador nao foi exportado
         treinador = temp;
+        return;
     }
+    ui->comboBox_metodo->setCurrentIndex( 0 );
 }
 
 void Janela::definirParametrosTreinadorAba3()
@@ -322,7 +325,9 @@ void Janela::definirParametrosTreinadorAba3()
     {
         if( !ui->tableWidget_resultadosValidacao->pertenceTreinador( treinadorAba3 ) && treinadorAba3 != treinador )delete treinadorAba3;
         treinadorAba3 = temp;
+        return;
     }
+    ui->comboBox_metodoTreinador->setCurrentIndex( 0 );
 }
 
 void Janela::escolherMetodo( int index )
@@ -406,6 +411,7 @@ void Janela::executarValidacao()
 {
     int numVal;
     double infoExtra;
+    string atrbDescartavel;
     //inicialização do temporizador
     clock_t t0;
 
@@ -423,10 +429,11 @@ void Janela::executarValidacao()
 
         validador = new ValidadorTreino(*avaliador);
         t0 = clock();
-        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( ctime( &tempoLocal ) ) );
+        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( atrbDescartavel = ctime( &tempoLocal ) ) );
 
         numVal = 0;
         infoExtra = .0;
+        corpus->removerAtributo( atrbDescartavel );
     }
     else if(ui->radioButton_teste->isChecked())
     {
@@ -438,10 +445,11 @@ void Janela::executarValidacao()
         validador = new ValidadorTeste( *avaliador, *corpusTeste );
 
         t0 = clock();
-        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpusTeste->criarAtributo( ctime( &tempoLocal ) ) );
+        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpusTeste->criarAtributo( atrbDescartavel = ctime( &tempoLocal ) ) );
 
         numVal = 1;
         infoExtra = .0;
+        corpusTeste->removerAtributo( atrbDescartavel );
     }
     else if(ui->radioButton_kDobras->isChecked())
     {
@@ -450,10 +458,11 @@ void Janela::executarValidacao()
 
         validador = new ValidadorKDobras(*avaliador, ui->spinBox_kDobras->value());
         t0 = clock();
-        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( ctime( &tempoLocal ) ) );
+        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( atrbDescartavel = ctime( &tempoLocal ) ) );
 
         numVal = 2;
         infoExtra = ui->spinBox_kDobras->value();
+        corpus->removerAtributo( atrbDescartavel );
     }
     else if(ui->radioButton_divisao->isChecked())
     {
@@ -476,10 +485,11 @@ void Janela::executarValidacao()
 
         validador = new ValidadorDivisao(*avaliador, sbox->value(), (float)ui->doubleSpinBox_divisao->value()/100);
         t0 = clock();
-        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( ctime( &tempoLocal ) ) );
+        resultados = validador->executarExperimento( *treinador, *corpus, corpus->pegarPosAtributo( ui->comboBox_atributoTreino->currentText().toStdString() ), corpus->criarAtributo( atrbDescartavel = ctime( &tempoLocal ) ) );
 
         numVal = 3;
         infoExtra = ui->doubleSpinBox_divisao->value();
+        corpus->removerAtributo( atrbDescartavel );
     }
 
     QTableWidgetItem *item;
@@ -567,7 +577,7 @@ void Janela::classificar()
 {
     int atributoNovo;
 
-    try
+    /*try
     {
         atributoNovo = corpus->criarAtributo( ui->lineEdit_novoAtributo->text().toStdString() );
     }
@@ -575,7 +585,9 @@ void Janela::classificar()
     {
         QMessageBox::about( this, "Erro", QString::fromStdString( e ) + "\nTente com outro nome de atributo." );
         return;
-    }
+    }*/
+
+    atributoNovo = corpus->criarAtributo( ui->lineEdit_novoAtributo->text().toStdString() );
 
     //coloca seta do mouse em espera
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
@@ -593,7 +605,7 @@ void Janela::classificar()
 
 void Janela::gravarCorpus()
 {
-    if( ( s = QFileDialog::getOpenFileName( this, "Gravar Corpus","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    if( ( s = QFileDialog::getSaveFileName( this, "Gravar Corpus","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
     {
         //coloca seta do mouse em espera
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
@@ -607,7 +619,7 @@ void Janela::gravarCorpus()
 
 void Janela::guardarConhecimento()
 {
-    if( ( s = QFileDialog::getOpenFileName( this, "Gravar Conhecimento","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    if( ( s = QFileDialog::getSaveFileName( this, "Gravar Conhecimento","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
     {
         //coloca seta do mouse em espera
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
