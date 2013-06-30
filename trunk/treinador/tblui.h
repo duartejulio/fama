@@ -2,8 +2,9 @@
 #define TBLUI_H
 
 #include "tbl.h"
-#include "../Interface/InterfaceFAMA/modeloparam.h"
+#include <QPushButton>
 #include "../Interface/InterfaceFAMA/param.h"
+#include "../Interface/InterfaceFAMA/modeloparam.h"
 
 class TBLUI : public TBL
 {

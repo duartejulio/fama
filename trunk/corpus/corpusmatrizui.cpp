@@ -56,7 +56,7 @@ Corpus* CorpusMatrizUI::construirJanela( void *popUp )
         else
         {
             int i, tam;
-            vector< string > atributos( tam = (( QSpinBox* )popUpPointer->pegarWidget( 3 ))->value() );
+            vector< string > atributos( tam = ( sbox->value() ) );
             for( i = 0; i < tam; ++i ) atributos[i] = popUpPointer->pegarString(i+4);
             corpus = new CorpusMatrizUI( atributos, popUpPointer->pegarString(0)[0], dividirExemplos );
         }

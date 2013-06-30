@@ -5,7 +5,7 @@ TBL::TBL( Classificador* classInicial, string arqMoldeRegras, string atributoChu
     this->classInicial = classInicial;
     this->toleranciaScore = toleranciaScore;
     this->atributoChute = atributoChute;
-    carregarMolde( arqMoldeRegras );
+    if( arqMoldeRegras != "" ) carregarMolde( arqMoldeRegras );
 }
 
 TBL::~TBL()
@@ -38,12 +38,12 @@ TBL::~TBL()
 
 Classificador *TBL::executarTreinamento( Corpus &corpus, int atributo )
 {
-    int atributo_chute;
-    if( ( atributo_chute = corpus.pegarPosAtributo( atributoChute ) ) == -1 )
+    int atributo_chute = corpus.criarAtributo( atributoChute );
+    /*if( ( atributo_chute = corpus.criarAtributo( atributoChute ) ) == -1 )
     {
         cout << "Erro: executarTreinamento!\nAtributo inexistente!" << endl;
         return NULL;
-    }
+    }*/
 
     //Classificação inicial do corpus
     if( !classInicial->executarClassificacao( corpus, atributo_chute ) )
