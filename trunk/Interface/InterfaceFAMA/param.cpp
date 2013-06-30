@@ -114,3 +114,27 @@ void Param::redimensionarAtributos( int tam )
     else
         m->removeRows( tab-1, -aux );
 }
+
+void Param::abrirMoldeDeRegras()
+{
+    QString nomeArq;
+
+    if( ( nomeArq = QFileDialog::getOpenFileName( this, "Abrir Molde de Regras","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    {
+        ModeloParam *m = ( ModeloParam* )ui->tableView->model();
+        //chama-se setData ao invés de inserirDados pq setData tem o emit dataChanged que é necessário
+        m->setData( m->index( 3, 1 ), QVariant( nomeArq ) );
+    }
+}
+
+void Param::carregarConhecimentoBLS()
+{
+    QString nomeArq;
+
+    if( ( nomeArq = QFileDialog::getOpenFileName( this, "Carregar Conhecimento do BLS","","Documentos de texto (*.txt);;Todos os arquivos (*.*)" ) ) != "" )
+    {
+        ModeloParam *m = ( ModeloParam* )ui->tableView->model();
+        //chama-se setData ao invés de inserirDados pq setData tem o emit dataChanged que é necessário
+        m->setData( m->index( 1, 1 ), QVariant( nomeArq ) );
+    }
+}

@@ -2,6 +2,7 @@
 #define MODELOPARAM_H
 
 #include <QTableView>
+#include <QComboBox>
 #include "param.h"
 
 class Param;
@@ -20,12 +21,14 @@ public:
     void inserirDados(int row, int column, Param &ct, QWidget *x, std::string aux = "", const QModelIndex &parent = QModelIndex() );
     bool isWidget(int row, int column);
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    QComboBox* metodosTreinoDisponiveis();
 signals:
     
 public slots:
 
 private:
     std::vector< std::vector< std::pair<bool, std::string > > > Dados;
+    QComboBox *comboBox_metodosTreino;
     
 };
 
