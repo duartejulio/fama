@@ -47,7 +47,7 @@ int main()
 
     //remove atributos que nao devem ser utilizados pelo treinamento
     for (unsigned int i=0; i < atributos.size(); i++)
-        if (atributos[i]!="resposta" && atributos[i]!="workclass" && atributos[i]!="fnlwgt")
+        if (atributos[i]!="resposta")// && atributos[i]!="workclass" && atributos[i]!="fnlwgt")
             atributosTreino.push_back(atributos[i]);
 
     DecisionStump objStump(atributosTreino, classes);
@@ -55,8 +55,6 @@ int main()
     ValidadorKDobras objValidador(objAvalAcur, 10);
     iSaida = objCorpus.criarAtributo("saida", "O");
 
-
-/*
     vector< vector< float > > v = objValidador.executarExperimento(objStump, objCorpus, iResposta, iSaida);
     float media = 0;
     for (c=0;c<10;c++){
@@ -64,7 +62,6 @@ int main()
         media +=v[c][0];
     }
     cout << "*" << media/10 << endl;
-*/
 
     Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);

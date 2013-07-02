@@ -50,7 +50,6 @@ string ClassificadorStump::descricaoConhecimento(){
     return ret.str();
 }
 
-
 DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador(){
     //guarda parametros
     atributos = atr;
@@ -59,7 +58,7 @@ DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador()
 
 Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo ){
     int indicePos, indiceNeg, nExemplos, nConjExemplos, nAtributos,
-     i, a, e, c, melhorQualidade, qualidade, iValor;
+     i, a, e, c, melhorQualidade, qualidade;
     string mAtributo, mValor, mClasse;
     map <string, bool> mapaValores;
     map <string, bool>::iterator it;
@@ -82,19 +81,18 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
         for (c=0; c < nConjExemplos; c++){
             nExemplos = corpus.pegarQtdExemplos(c);
             for (e=0; e < nExemplos; e++)
-                mapaValores[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))] = true;
+                //mapaValores[corpus.pegarSimbolo(corpus.pegarValor(c, e, i))] = true;
+                mapaValores[corpus(c, e, i)] = true;
         }
 
         //varre todos os valores possiveis
         for (it = mapaValores.begin(); it!=mapaValores.end(); it++){
-            iValor = corpus.pegarIndice(it->first);
-
             //calcula a qualidade desse atributo,valor diferenciando as classes
             qualidade = 0;
             for (c=0; c < nConjExemplos; c++){
                 nExemplos = corpus.pegarQtdExemplos(c);
                 for (e=0; e < nExemplos; e++){
-                    if (iValor == corpus.pegarValor(c, e, i)){
+                    if (it->first == corpus(c, e, i)){
                         if (corpus.pegarValor(c, e, atributo)==indicePos)
                             qualidade++;
                         else
