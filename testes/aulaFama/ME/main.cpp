@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "../../../treinador/treinador.h"
 #include "../../../classificador/classificador.h"
@@ -12,19 +13,30 @@ class ClassificadorMaisEsperto:public Classificador{
 private:
     string resposta;
 public:
-    ClassificadorMaisEsperto(string resp):Classificador(){
-        resposta = resp;
-    }
     bool executarClassificacao(Corpus &corpus, int atributo){
         int c, e;
 
         for (c = 0; c < corpus.pegarQtdConjExemplos(); c++)
             for (e = 0; e < corpus.pegarQtdExemplos(c); e++)
                 corpus(c,e,atributo,resposta);
+
         return true;
     }
-    bool gravarConhecimento( string arquivo ){return false;}
-    bool carregarConhecimento( string arquivo ){return false;};
+    bool gravarConhecimento( string arquivo ){
+        ofstream out;
+        out.open(arquivo.c_str());
+        out << resposta;
+        out.close();
+        return true;
+    }
+    bool carregarConhecimento( string arquivo ){
+        ifstream in;
+        in.open(arquivo.c_str());
+        in >> resposta;
+        in.close();
+        return true;
+    };
+    friend class TreinadorMaisEspero;
 };
 
 class TreinadorMaisEspero:public Treinador{
@@ -53,13 +65,15 @@ public:
                     cout << "Classe Estranha\n";
             }
         }
-        Classificador *cl;
+        ClassificadorMaisEsperto *cl;
         if (contador[0] > contador[1]){
-            cl = new ClassificadorMaisEsperto(negativo);
+            cl = new ClassificadorMaisEsperto;
+            cl->resposta = negativo;
             cout << "Resp:" << negativo << "\n";
         }
         else{
-            cl = new ClassificadorMaisEsperto(positivo);
+            cl = new ClassificadorMaisEsperto;
+            cl->resposta = positivo;
             cout << "Resp:" << positivo << "\n";
         }
 
@@ -72,38 +86,42 @@ int main()
 {
     vector<string> atributos;
     int atributo, novoatributo, c;
-    Classificador *cl;
+    Classificador *cl,*cl2;
 
     float media;
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ',', true, true);
     objCorpus.carregarArquivo( "../../../inputs/adult.data" );
-
     atributo = objCorpus.pegarPosAtributo("resposta");
 
     //treina
-    TreinadorMaisEspero tme("<=50K",">50K");
+    TreinadorMaisEspero tme("<=50K", ">50K");
     cl = tme.executarTreinamento(objCorpus, atributo);
+    cl->gravarConhecimento("xpto");
+
+    cl2 = new ClassificadorMaisEsperto;
+    cl2->carregarConhecimento("xpto");
 
     //classifica
     novoatributo = objCorpus.criarAtributo("me");
-    cl->executarClassificacao(objCorpus, novoatributo);
+    cl2->executarClassificacao(objCorpus, novoatributo);
 
     //avalia
     AvaliadorAcuracia objAvalAcur;
     cout << 100 * objAvalAcur.calcularDesempenho( objCorpus, atributo, novoatributo)[0] << "\n";
 
     //faz experimento
-    ValidadorKDobras objValidador(objAvalAcur, 10);
+    int ndobras = 20;
+    ValidadorKDobras objValidador(objAvalAcur, ndobras);
     vector< vector< float > > v = objValidador.executarExperimento(tme, objCorpus, atributo, novoatributo);
 
     media = 0;
-    for (c=0;c<10;c++){
+    for (c=0;c<ndobras;c++){
         cout << c << " - " << v[c][0] << "\n";
         media += v[c][0];
     }
-    cout << "*" << media/10 << "\n";
+    cout << "*" << media/ndobras << "\n";
 
     return 0;
 }
