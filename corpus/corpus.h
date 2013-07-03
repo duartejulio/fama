@@ -25,6 +25,7 @@ class Corpus
         bool removerAtributo( string atributo );
         bool removerAtributo( int indice );
         string operator()(int sentenca, int token, int atributo);
+        void operator()(int sentenca, int token, int atributo, string valor);
         int pegarValor( int sentenca, int token, int atributo );
         int pegarQtdSentencas();
         int pegarQtdConjExemplos(){return pegarQtdSentencas();}

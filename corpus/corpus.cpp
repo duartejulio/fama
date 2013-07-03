@@ -162,6 +162,10 @@ int Corpus::pegarValor( int sentenca, int token, int atributo )
     return frases[sentenca][token][atributo];
 }
 
+void Corpus::operator()(int sentenca, int token, int atributo, string valor){
+    ajustarValor(sentenca, token, atributo, pegarIndice(valor));
+}
+
 string Corpus::operator()(int sentenca, int token, int atributo){
     return pegarSimbolo(pegarValor(sentenca,token,atributo));
 }
