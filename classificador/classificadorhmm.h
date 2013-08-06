@@ -18,6 +18,7 @@ class ClassificadorHMM : public Classificador
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo );
         virtual bool gravarConhecimento( string arquivo );
         virtual bool carregarConhecimento( string arquivo );
+        string descricaoConhecimento(){return "HMM";}
 };
 
 #endif // CLASSIFICADORHMM_H
