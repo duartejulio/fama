@@ -324,6 +324,9 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
         }
     }
     cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
+    
+    objc50.alocar();
+  adicionarCasos(objc50);
     return true;
 }
 

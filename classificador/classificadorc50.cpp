@@ -16,6 +16,8 @@ ClassificadorC50::ClassificadorC50( string arquivo )
 bool ClassificadorC50::executarClassificacao( Corpus &corpusProva, int atributo, C50 &objc50 )
 {
     //corpusProva.criarAtributo( "pos", "N" );
+    objc50.InitialiseTreeData();
+    objc50.ConstructClassifiers();
     int atributo_base,att,index,valoraux,c;
 	string valor, valor_atual;
 	atributo_base = corpusProva.pegarPosAtributo( classeNome );
