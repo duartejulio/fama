@@ -1,11 +1,12 @@
 #include "classificadorc50.h"
 
-ClassificadorC50::ClassificadorC50( vector<string> att, vector<string> classes, vector< vector<string> > attValName)
+ClassificadorC50::ClassificadorC50( vector<string> att, vector<string> classes, vector< vector<string> > attValName, Tree arvore)
 {
          this->atributos = att;
         this->classes = classes;
 	this->classeNome = atributos[(atributos).size() - 1];
         this->attValName = attValName;
+        this->arvore = arvore;
 }
 
 ClassificadorC50::ClassificadorC50( string arquivo )
@@ -13,16 +14,14 @@ ClassificadorC50::ClassificadorC50( string arquivo )
     carregarConhecimento( arquivo );
 }
 
-bool ClassificadorC50::executarClassificacao( Corpus &corpusProva, int atributo, C50 &objc50 )
+bool ClassificadorC50::executarClassificacao( Corpus &corpusProva, int atributo)
 {
     //corpusProva.criarAtributo( "pos", "N" );
-    objc50.InitialiseTreeData();
-    objc50.ConstructClassifiers();
+    
     int atributo_base,att,index,valoraux,c;
 	string valor, valor_atual;
 	atributo_base = corpusProva.pegarPosAtributo( classeNome );
-	Tree arvoreaux,arvore;
-        arvore = objc50.Pruned[0];	
+	Tree arvoreaux;	
 	int qtdConjExemplos = corpusProva.pegarQtdConjExemplos();
 
 for(c=0; c<qtdConjExemplos;c++)
@@ -74,6 +73,7 @@ for(c=0; c<qtdConjExemplos;c++)
 			case BrSubset:	//caso em que há subconjuntos de valores discretos
 							index = 2;
 							int last;
+                                                        C50 objc50;
 							while(index<= arvoreaux->Forks)
 							{
 								int elementos = objc50.Elements(att, arvoreaux->Subset[index],&last);
