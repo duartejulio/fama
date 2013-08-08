@@ -18,25 +18,31 @@ bool ClassificadorC50::executarClassificacao( Corpus &corpusProva, int atributo)
 {
     //corpusProva.criarAtributo( "pos", "N" );
     
-    int atributo_base,att,index,valoraux,c;
+    int atributo_base,att,index,valoraux,c,linha;
 	string valor, valor_atual;
 	atributo_base = corpusProva.pegarPosAtributo( classeNome );
 	Tree arvoreaux;	
 	int qtdConjExemplos = corpusProva.pegarQtdConjExemplos();
-
+        index = 1;
+        
 for(c=0; c<qtdConjExemplos;c++)
 {
     arvoreaux = arvore;
-    att = arvore->Tested;
+    int totlinhas = corpusProva.pegarQtdExemplos(c);
+    for(int linha = 0; linha< totlinhas; linha++){   
+    
     while(arvoreaux->NodeType)
 	{
-		valoraux = corpusProva.pegarValor(c,0,att-1);
+                att = arvoreaux->Tested;
+                valoraux = corpusProva.pegarValor(c,linha,att-1);
 							valor = corpusProva.pegarSimbolo(valoraux);
 							
 		switch(arvoreaux->NodeType)
 		{
 			case BrDiscr: //caso com valores discretos
+                            
 							for(int i=0; i<attValName[att-1].size(); i++){
+                                                            
 								if(!valor.compare(attValName[att-1][i])){
 									index=i+2;
 									break;
@@ -52,7 +58,7 @@ for(c=0; c<qtdConjExemplos;c++)
 							{
 								float valor1;
 								(std::istringstream)valor >> valor1>>std::dec;
-								if(arvoreaux->Lower != arvore->Upper)
+								if(arvoreaux->Lower != arvoreaux->Upper)
 								{
 									if(valor1 <= arvoreaux->Lower)
 										index = 2;
@@ -76,7 +82,7 @@ for(c=0; c<qtdConjExemplos;c++)
                                                         C50 objc50;
 							while(index<= arvoreaux->Forks)
 							{
-								int elementos = objc50.Elements(att, arvoreaux->Subset[index],&last);
+								int elementos = objc50.Elements(att-1, arvoreaux->Subset[index],&last);
 								if(elementos ==1)
 								{
 									if(!valor.compare(attValName[att-1][last-2]))
@@ -95,9 +101,10 @@ for(c=0; c<qtdConjExemplos;c++)
 		}
 		arvoreaux = arvoreaux->Branch[index];
 	}
-
+    
 		string classeNovoNome = classes[arvoreaux->Leaf - 1];
-		corpusProva.ajustarValor(c,0,atributo_base,corpusProva.pegarIndice(classeNovoNome.c_str()));
+		corpusProva.ajustarValor(c,linha,atributo,corpusProva.pegarIndice(classeNovoNome.c_str()));
+}
 }
    return true;
 }
