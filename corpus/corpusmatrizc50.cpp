@@ -13,6 +13,7 @@ void aparar2(string &str){
         pos = str.find_first_not_of(' ');
         if(pos != string::npos)
             str.erase(0, pos);
+        
     }
     else
         str.erase(str.begin(), str.end());
@@ -167,26 +168,32 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
     int row = 0, column = 0, contador = -1,count = 0;
 
     // l� um caracter inicial do arquivo
-    arqin.get( ch );
-
-    while( arqin.good() ) // Enquanto n�o for fim de arquivo e a leitura n�o contiver erros
+    /*if(!arqin.eof()){
+        string b;
+        arqin>>b;
+        cout<<b<<endl;
+    }*/
+     //arqin.get( ch );
+    string buffer;
+    while( !arqin.eof() ) // Enquanto n�o for fim de arquivo e a leitura n�o contiver erros
     {
-        if ( ch != '[' && ch != '#' )
+        arqin>>buffer;
+        std::string::iterator itaux = buffer.begin();
+        if ( *itaux != '[' && *itaux != '#' )
         {
-            if( ch != '\n' ) //considera frases com distancia maior que 1 espa�o
+            if( *itaux != '\n' ) //considera frases com distancia maior que 1 espa�o
             {
                 for( register int i = 0; i < qtd_atributos; ++i )
                 {
                     // l� a palavra que ser� colocada no vector s�mbolos
-                    while( ( ch != separador || i == qtd_atributos - 1 ) && ch != '\n' && !arqin.eof() ) //torna programa mais
+                    while( ( *itaux != separador || i == qtd_atributos - 1 ) && *itaux != '\n' && itaux!=buffer.end() ) //torna programa mais
                     {                                                              //robusto em rela��o a erros '_' no corpus
-                        str.push_back( ch );
-                        arqin.get( ch );
+                        if(ch!='.')
+                        str.push_back( *itaux );
+                        itaux++;
                     }
-
                     if (apararValores)
                         aparar2(str);
-
                     if ( dicionario.find( str ) == dicionario.end() )
                     {
                         dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),
@@ -197,7 +204,13 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                     ++count;
                     frases[ row ][ column ][ i ] = dicionario[ str ];
                     str.clear();    // limpa str para armazenar a pr�xima string
-                    arqin.get( ch );
+                    //arqin.get( ch );
+                    if(itaux!=buffer.end())
+                        itaux++;
+                    else{
+                        if(i!=qtd_atributos-1)
+                        arqin>>buffer;
+                    }
                 }
             }
 
@@ -208,7 +221,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                 break;
             }
 
-            if( ch == '\n' ) //verifica se ha mudan�a de frase
+            if( *itaux == '\n' ) //verifica se ha mudan�a de frase
             {
                 if( arqin.get( ch ) && !arqin.eof() && ch != '\n') //caso em que ha nova frase
                 {
@@ -241,7 +254,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
         else
         {
             arqin.ignore( INF, '\n' );
-            arqin.get( ch );
+            //arqin.get( ch );
         }
     }
 
@@ -253,7 +266,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
     }
 
     arqin.close();
-    
+     
      objc50.MaxAtt = atributos.size();
      
      objc50.ClassAtt = objc50.MaxAtt;
@@ -299,7 +312,6 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
              objc50.AttValName[i][j]=(String ) calloc(tamAux, sizeof(String ));
              for(int k=0; k<tamAux; k++){
                  objc50.AttValName[i][j][k] = attValName[i-1][j-2][k];
-
              }
          }
     }
@@ -321,6 +333,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
         objc50.ClassName[i] = (String ) calloc((*it).length(), sizeof(String ));
         for(int j=0; j<(*it).length();j++){
        objc50.ClassName[i][j] = (*it)[j] ;
+
         }
     }
     cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
@@ -346,15 +359,15 @@ bool CorpusC50::gravarArquivo( string arquivo )
     for( k = 0; k < qtd_atributos - 1; ++k )
         arqout << atributos[k] << ",";
     arqout << atributos[k] << "] [separador=" << separador << "]" << endl;
-
+    
     for( register int i = 0; i < qtd_sentencas; ++i )
     {
-        column = frases[i].size();
+        column = frases[i].size();        
         for( register int j = 0; j < column; ++j )
         {
             for( k = 0; k < qtd_atributos - 1; ++k )
                 arqout << simbolos[ frases[i][j][k] ] << separador;
-            arqout << simbolos[ frases[i][j][k] ] << endl;
+            arqout << simbolos[ frases[i][j][k] ]<<" ." << endl;
         }
         arqout << endl;
     }
@@ -583,36 +596,36 @@ void CorpusC50::adicionarCasos(C50 &objc50)
     qtdConjExemplos = pegarQtdConjExemplos();
     for (c=0; c<qtdConjExemplos; c++){
         totlinhas = pegarQtdExemplos(c);
-
+        for(int linha = 0; linha< totlinhas; linha++){
             
-            objc50.Case[c]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
-            int  vatual= pegarValor(c,0,numatributos-1);
+            objc50.Case[c+linha]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
+            int  vatual= pegarValor(c,linha,numatributos-1);
            
-            string valor_atual,valor;
-            valor_atual = pegarSimbolo(vatual);
-            for(int i=0; i< valor_atual.size()-1;i++){
+            string valor;
+            valor = pegarSimbolo(vatual);
+           /* for(int i=0; i< valor_atual.size()-1;i++){
                 valor.push_back(valor_atual[i]);
                
-            }
+            }*/
            
             
                
-                (objc50.Case[c][0])._cont_val = 0;
+                (objc50.Case[c+linha][0])._cont_val = 0;
                 for(int i=0; i<classes.size();i++){
                     if(!valor.compare(classes[i])){
-                        (objc50.Case[c][0])._discr_val = i+1;
+                        (objc50.Case[c+linha][0])._discr_val = i+1;
                        i = objc50.MaxAttVal[objc50.ClassAtt];
                       
                     }else{
                     if(i== classes.size()-1)
-                            (objc50.Case[c][0])._discr_val = i+1;
+                            (objc50.Case[c+linha][0])._discr_val = i+1;
                     }
                 }
             
            
                 for( int j=1; j<numatributos; j++)
                 {
-                        int  vatual= pegarValor(c,0,j-1);
+                        int  vatual= pegarValor(c,linha,j-1);
                         
                         string valor_atual;
             valor_atual = pegarSimbolo(vatual);
@@ -621,23 +634,24 @@ void CorpusC50::adicionarCasos(C50 &objc50)
                               float numero;
             std::stringstream out2(valor_atual);
             out2 >> numero;
-                             (objc50.Case[c][j])._cont_val = numero;
+                             (objc50.Case[c+linha][j])._cont_val = numero;
                         }
                         else{
-                        (objc50.Case[c][j])._cont_val = 0;
+                        (objc50.Case[c+linha][j])._cont_val = 0;
                 for(int k=0; k<objc50.MaxAttVal[j];k++){
                     if(!valor_atual.compare(objc50.AttValName[j][k+2])){
-                   (objc50.Case[c][j])._discr_val = k+2;
+                   (objc50.Case[c+linha][j])._discr_val = k+2;
                    k= objc50.MaxAttVal[objc50.ClassAtt];
                     }else{
                         if(k== objc50.MaxAttVal[objc50.ClassAtt]-1)
-                            (objc50.Case[c][j])._discr_val = k+2;
+                            (objc50.Case[c+linha][j])._discr_val = k+2;
                     }
                 }
                 }
                 }
 
             }
+    }
       
 }
 

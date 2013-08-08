@@ -429,7 +429,7 @@ C50(){
 	MINITEMS=2,	/* minimum cases each side of a cut */
 		LEAFRATIO=0;	/* leaves per case for boosting */
 
-		CF=0.25,	/* confidence limit for tree pruning */
+		/* confidence limit for tree pruning */
 		SAMPLE=0.0;	/* sample training proportion */
 
 	LOCK=false;	/* sample locked */
@@ -555,7 +555,7 @@ C50(){
 		Fn[500];	/* file name */
 
  		Of=0;		/* output file */
-
+                
 StartTime  = ExecTime();
 
 }
@@ -578,6 +578,9 @@ if ( RULES )
 	RuleSet = AllocZero(a, CRuleSet);
     }
 }
-
+void setCF(float cf){
+    CF = cf;
+    printf("%f\n",CF);
+}
 };
 #endif 
