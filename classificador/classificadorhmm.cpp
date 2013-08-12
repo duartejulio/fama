@@ -19,7 +19,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     int atributo_base;
     if( ( atributo_base = corpusProva.pegarPosAtributo( atributoBase ) ) == -1 )
     {
-        cout << "Erro: executarClassificacao!\nAtributo inexistente!" << endl;
+        throw string("Erro: executarClassificacao!\nAtributo inexistente!");
         return false;
     }
 
@@ -87,15 +87,18 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     map< int, map< int, double > >::iterator linhaInt_end;
-    int linhaViterbi, linhaVtbAnt, qtdPos = numPos.size(), maiorIndice = 0;
+    int linhaViterbi, linhaVtbAnt, qtdPos = numPos.size(), maiorIndice = 0, maiorIndiceParaRemover;
     double maiorValor, aux_double;
-
-    //double matrizViterbi[2][qtdPos];
-    double *matrizViterbi[2] = {new double[qtdPos], new double[qtdPos]};
 
     //verifica o valor da coluna mais extensa de frases[][]
     for( register int i = 0; i < row; ++i )
         if( ( aux = corpusProva.pegarQtdTokens( i ) ) > maiorIndice ) maiorIndice = aux;
+    maiorIndiceParaRemover = maiorIndice;
+
+    //double matrizViterbi[2][qtdPos];
+    double *matrizViterbi[2];
+    matrizViterbi[0] = new double[qtdPos];
+    matrizViterbi[1] = new double[qtdPos];
 
     //int caminho[maiorIndice][qtdPos];
     int **caminho;
@@ -178,8 +181,10 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     }
 
 
-    for (register int i = 0; i < maiorIndice; i++)
+
+    for (register int i = 0; i < maiorIndiceParaRemover; i++){
         delete[] caminho[i];
+    }
     delete[] caminho;
 
     delete[] matrizViterbi[1];
