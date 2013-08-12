@@ -64,6 +64,6 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
     }
 
     //A principio não precisa de Unknown, sera utilizado a melhor sequencia de estados
-    cout << "A, B e Pi criados" << endl;
+    //cout << "A, B e Pi criados" << endl;
     return new ClassificadorHMM( atributoBase, vetInicial, matrizTransicao, tabFreqObservacoes );
 }
