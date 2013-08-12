@@ -3,45 +3,46 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "corpusmatriz.h"
-#include "hmm.h"
+#include "../corpus/corpusmatriz.h"
+#include "../treinador/hmm.h"
 
-#include "avaliador_acuracia.h"
-#include "classificador_maisprovavel.h"
-#include "classificadorhmm.h"
-#include "classificadortbl.h"
+#include "../avaliador/avaliador_acuracia.h"
+#include "../classificador/classificadorhmm.h"
 
-#define LIM_FREQ_UNKNOWN 3
-#define ATRBT_ANALISADO 1
-#define ATRBT_CLASSIFICADO 0
-#define ATRBT_NOVO 3
 
 using namespace std;
 
 int main()
 {
     vector<string> atributos;
+    int novoAtributo, atributo;
+
     atributos.push_back("word");
-    atributos.push_back("tpos");
-    atributos.push_back("np");
+    atributos.push_back("pos");
+    atributos.push_back("dontcare");
 
     CorpusMatriz objCorpus( atributos );
-    objCorpus.carregarArquivo( "inputs/train.txt" );
+    objCorpus.carregarArquivo( "../inputs/train.txt" );
+    atributo = objCorpus.pegarPosAtributo("pos");
 
     Classificador *objClass;
     HMM objHMM;
-    objClass = objHMM.executarTreinamento( objCorpus, ATRBT_ANALISADO );
+    objClass = objHMM.executarTreinamento( objCorpus, atributo );
     //objClass->carregarConhecimento( "inputs/conhecimentoHMM.txt" );
 
     CorpusMatriz objCorpusProva( atributos );
-    objCorpusProva.carregarArquivo( "inputs/test.txt" );
+    objCorpusProva.carregarArquivo( "../inputs/test.txt" );
 
-    objClass->executarClassificacao( objCorpusProva, ATRBT_CLASSIFICADO );
+    atributo = objCorpus.pegarPosAtributo("pos");
+    novoAtributo = objCorpusProva.criarAtributo("novopos");
+
+    objClass->executarClassificacao( objCorpusProva, novoAtributo );
+
     AvaliadorAcuracia objAvalAcur;
+    printf( "\nAcuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpusProva, atributo, novoAtributo )[ 0 ] );
+    objCorpusProva.gravarArquivo( "../outputs/corpusGravado.txt" );
+    objClass->gravarConhecimento( "../outputs/conhecimentoHMM.txt" );
 
-    printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpusProva, ATRBT_ANALISADO, ATRBT_NOVO )[ 0 ] );
-    objCorpusProva.gravarArquivo( "outputs/corpusGravado.txt" );
-    objClass->gravarConhecimento( "outputs/conhecimentoHMM.txt" );
     delete objClass;
 
 	return 0;
