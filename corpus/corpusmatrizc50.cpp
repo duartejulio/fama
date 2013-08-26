@@ -197,7 +197,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                     if ( dicionario.find( str ) == dicionario.end() )
                     {
                         dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),
-                                                                   // depois realiza-se a atribui��o
+                                 // attValName[i].push_back(str);// depois realiza-se a atribui��o
                         simbolos.push_back( str );
                         //if( i == 1 ) cout << str << endl;
                     }
@@ -322,7 +322,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
      int index = atributos.size()-1;
     int aux = attValName[index].size();
     for( i=0; i<aux; i++){
-        classes.push_back(attValName[4][i]) ;
+        classes.push_back(attValName[objc50.ClassAtt - 1][i]) ;
     }
      
     objc50.MaxClass = classes.size();
@@ -594,11 +594,12 @@ void CorpusC50::adicionarCasos(C50 &objc50)
     objc50.Case = new DataRec[objc50.MaxCase+1];
 
     qtdConjExemplos = pegarQtdConjExemplos();
+    long int index = 0;
     for (c=0; c<qtdConjExemplos; c++){
         totlinhas = pegarQtdExemplos(c);
-        for(int linha = 0; linha< totlinhas; linha++){
+        for(int linha = 0; linha< totlinhas; linha++, index++){
             
-            objc50.Case[c+linha]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
+            objc50.Case[index]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
             int  vatual= pegarValor(c,linha,numatributos-1);
            
             string valor;
@@ -610,15 +611,15 @@ void CorpusC50::adicionarCasos(C50 &objc50)
            
             
                
-                (objc50.Case[c+linha][0])._cont_val = 0;
+                (objc50.Case[index][0])._cont_val = 0;
                 for(int i=0; i<classes.size();i++){
                     if(!valor.compare(classes[i])){
-                        (objc50.Case[c+linha][0])._discr_val = i+1;
+                        (objc50.Case[index][0])._discr_val = i+1;
                        i = objc50.MaxAttVal[objc50.ClassAtt];
                       
                     }else{
                     if(i== classes.size()-1)
-                            (objc50.Case[c+linha][0])._discr_val = i+1;
+                            (objc50.Case[index][0])._discr_val = i+1;
                     }
                 }
             
@@ -634,17 +635,17 @@ void CorpusC50::adicionarCasos(C50 &objc50)
                               float numero;
             std::stringstream out2(valor_atual);
             out2 >> numero;
-                             (objc50.Case[c+linha][j])._cont_val = numero;
+                             (objc50.Case[index][j])._cont_val = numero;
                         }
                         else{
-                        (objc50.Case[c+linha][j])._cont_val = 0;
+                        (objc50.Case[index][j])._cont_val = 0;
                 for(int k=0; k<objc50.MaxAttVal[j];k++){
                     if(!valor_atual.compare(objc50.AttValName[j][k+2])){
-                   (objc50.Case[c+linha][j])._discr_val = k+2;
+                   (objc50.Case[index][j])._discr_val = k+2;
                    k= objc50.MaxAttVal[objc50.ClassAtt];
                     }else{
                         if(k== objc50.MaxAttVal[objc50.ClassAtt]-1)
-                            (objc50.Case[c+linha][j])._discr_val = k+2;
+                            (objc50.Case[index][j])._discr_val = k+2;
                     }
                 }
                 }
