@@ -2,7 +2,6 @@
 
 TreinadorC50::TreinadorC50( vector<string> atributos, vector<string> classes, vector< vector<string> > attValName,C50 objC50, float cf )
 {
-    cout<<"entrou no treinador"<<endl;
     this->atributos = atributos;
     this->classes = classes;
     this-> attValName = attValName;

@@ -30,7 +30,6 @@ int main()
     Classificador *objClass = objTreinador.executarTreinamento(objCorpus,0);  
     int x = objCorpus.criarAtributo("x");
     objClass->executarClassificacao(objCorpus,x);
-    cout<<"ok"<<endl;
     objCorpus.gravarArquivo("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\inputs\\corpusGravado3.txt");
     return 0;
 }

@@ -580,7 +580,6 @@ if ( RULES )
 }
 void setCF(float cf){
     CF = cf;
-    printf("%f\n",CF);
 }
 };
 #endif 
