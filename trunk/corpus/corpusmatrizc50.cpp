@@ -41,6 +41,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
         return false;
     }
     string str,classNome;
+    vector<int> indices;
     char ch;
 
     //verifica se atributos foram passados
@@ -96,6 +97,21 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
 
                 }else{
                     int position = at.find(":");
+                    if(position < 0 )
+                    {
+                        position = at.find(".");
+                        if(position == at.size()-1)
+                        {
+                                at.erase(at.size()-1);                               
+                        }
+                         atributos.push_back(at);
+                         indices.push_back(atributos.size()-1);
+                         attnames.push_back("");
+                         attValName.push_back(attnames);
+                         line=false;
+                        
+                    }
+                    else{
                     if(position == at.size()-1)
                     {
                         at.erase(at.size()-1);
@@ -138,7 +154,8 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                 }
                 }
                 }
-
+                }
+                
             }
             arqat.close();
 
@@ -197,7 +214,15 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                     if ( dicionario.find( str ) == dicionario.end() )
                     {
                         dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),
-                                 // attValName[i].push_back(str);// depois realiza-se a atribui��o
+                        for( int var = 0; var < indices.size(); var++ )
+                        {
+                            if(indices[var] == i )
+                            {   
+                                if(attValName[i][0].compare(""))
+                                    attValName[i].pop_back();
+                                attValName[i].push_back(str);
+                            }
+                        }
                         simbolos.push_back( str );
                         //if( i == 1 ) cout << str << endl;
                     }
