@@ -581,5 +581,21 @@ if ( RULES )
 void setCF(float cf){
     CF = cf;
 }
+void imprimir(){
+    int i,j;
+    for(i=0; i< MaxAtt; i++){
+        printf("%s\n",AttName[i]);
+    }
+   
+    for(i=0; i<MaxAtt;i++){
+        printf("\n\n %d \n\n",MaxAttVal[i]);
+        for(j=0; j<MaxAttVal[i];j++){
+             printf("%s\n",AttValName[i][j]);
+        }
+        
+    }
+   
+    
+}
 };
 #endif 

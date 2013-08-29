@@ -1,12 +1,13 @@
 #include "classificadorc50.h"
 
-ClassificadorC50::ClassificadorC50( vector<string> att, vector<string> classes, vector< vector<string> > attValName, Tree arvore)
+ClassificadorC50::ClassificadorC50( vector<string> att, vector<string> classes, vector< vector<string> > attValName, Tree arvore, C50 objc50)
 {
          this->atributos = att;
         this->classes = classes;
 	this->classeNome = atributos[(atributos).size() - 1];
         this->attValName = attValName;
         this->arvore = arvore;
+        this->objc50 = objc50;
 }
 
 ClassificadorC50::ClassificadorC50( string arquivo )
@@ -77,10 +78,11 @@ for(c=0; c<qtdConjExemplos;c++)
 							}
 							break;
 			case BrSubset:	//caso em que há subconjuntos de valores discretos
+                            
 							index = 2;
 							int last;
-                                                        C50 objc50;
-							while(index<= arvoreaux->Forks)
+                                                        //C50 objc50;
+							while(index< arvoreaux->Forks)
 							{
 								int elementos = objc50.Elements(att-1, arvoreaux->Subset[index],&last);
 								if(elementos ==1)
@@ -97,6 +99,7 @@ for(c=0; c<qtdConjExemplos;c++)
 								}
 								index++;
 							}
+                                                        
 							break;
 		}
 		arvoreaux = arvoreaux->Branch[index];

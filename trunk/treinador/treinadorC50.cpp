@@ -19,5 +19,5 @@ Classificador *TreinadorC50::executarTreinamento( Corpus &corpus, int atributo )
     objC50.setCF(cf);
     objC50.InitialiseTreeData();
     objC50.ConstructClassifiers();
-	return new ClassificadorC50( atributos, classes, attValName, objC50.Pruned[0] );
+	return new ClassificadorC50( atributos, classes, attValName, objC50.Pruned[0], objC50 );
 }

@@ -12,8 +12,9 @@ class ClassificadorC50 : public Classificador
 		string classeNome;
 		vector< vector<string> > attValName;
                 Tree arvore;
+                C50 objc50;
     public:
-        ClassificadorC50( vector<string> atributos, vector<string> classes, vector< vector<string> > attValName, Tree arvore);
+        ClassificadorC50( vector<string> atributos, vector<string> classes, vector< vector<string> > attValName, Tree arvore, C50 objc50);
         ClassificadorC50();
         ClassificadorC50( string arquivo );     
         virtual bool executarClassificacao( Corpus &corpusProva, int atributo);
