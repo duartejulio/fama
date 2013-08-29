@@ -161,7 +161,8 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
 
 
         }
-
+       
+        
         //realoca membros em fun��o de novos atributos do corpus
         qtd_atributos = atributos.size();
         for( register int i = 0; i < qtd_atributos; ++i )
@@ -211,18 +212,32 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                     }
                     if (apararValores)
                         aparar2(str);
-                    if ( dicionario.find( str ) == dicionario.end() )
-                    {
-                        dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),
-                        for( int var = 0; var < indices.size(); var++ )
+                    for( int var = 0; var < indices.size(); var++ )
                         {
                             if(indices[var] == i )
                             {   
-                                if(attValName[i][0].compare(""))
-                                    attValName[i].pop_back();
-                                attValName[i].push_back(str);
-                            }
+                                
+                                if(!attValName[i][0].size() && !attValName[i].empty()){
+                                  
+                                    attValName[i].clear();
+                                    
+                                }
+                                bool check = true;
+                                for(int varAux = 0; varAux< attValName[i].size(); varAux++)
+                                {
+                                    if(!attValName[i][varAux].compare(str))
+                                        check = false;
+                                }
+                                if(check)
+                                {
+                                    attValName[i].push_back(str);
+                                    //cout<<str<<endl;
+                                }
+                              }
                         }
+                    if ( dicionario.find( str ) == dicionario.end() )
+                    {
+                        dicionario[ str ] = ++contador; // nessa linha primeiro cria-se um elemento(ou seja, aumenta o size),
                         simbolos.push_back( str );
                         //if( i == 1 ) cout << str << endl;
                     }
@@ -334,6 +349,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
          for(int j=2; j<=aux+1; j++){
              
              int tamAux = attValName[i-1][j-2].length();
+             cout<<"attValName "<<attValName[i-1][j-2]<<endl;
              objc50.AttValName[i][j]=(String ) calloc(tamAux, sizeof(String ));
              for(int k=0; k<tamAux; k++){
                  objc50.AttValName[i][j][k] = attValName[i-1][j-2][k];
@@ -364,7 +380,10 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
     cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
     
     objc50.alocar();
+    objc50.imprimir();
   adicionarCasos(objc50);
+  cout<<"ok"<<endl;
+  //  casos(objc50);
     return true;
 }
 
@@ -623,7 +642,7 @@ void CorpusC50::adicionarCasos(C50 &objc50)
     for (c=0; c<qtdConjExemplos; c++){
         totlinhas = pegarQtdExemplos(c);
         for(int linha = 0; linha< totlinhas; linha++, index++){
-            
+           
             objc50.Case[index]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
             int  vatual= pegarValor(c,linha,numatributos-1);
            
@@ -648,7 +667,7 @@ void CorpusC50::adicionarCasos(C50 &objc50)
                     }
                 }
             
-           
+                
                 for( int j=1; j<numatributos; j++)
                 {
                         int  vatual= pegarValor(c,linha,j-1);
@@ -663,17 +682,20 @@ void CorpusC50::adicionarCasos(C50 &objc50)
                              (objc50.Case[index][j])._cont_val = numero;
                         }
                         else{
+                           
                         (objc50.Case[index][j])._cont_val = 0;
+                        
                 for(int k=0; k<objc50.MaxAttVal[j];k++){
                     if(!valor_atual.compare(objc50.AttValName[j][k+2])){
                    (objc50.Case[index][j])._discr_val = k+2;
-                   k= objc50.MaxAttVal[objc50.ClassAtt];
+                   k= objc50.MaxAttVal[j];
                     }else{
-                        if(k== objc50.MaxAttVal[objc50.ClassAtt]-1)
+                        if(k== objc50.MaxAttVal[j]-1)
                             (objc50.Case[index][j])._discr_val = k+2;
                     }
                 }
                 }
+            
                 }
 
             }
@@ -685,7 +707,7 @@ void CorpusC50::adicionarCasos(C50 &objc50)
 void CorpusC50::casos(C50 &objc50){
     
         FILE *dados;
-    dados =fopen("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\testes\\hypothyroid.data.txt","r+");
+    dados =fopen("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\testes\\MalwareDinamicos.data","r+");
     if(!dados)
  {
     printf( "Erro na abertura do arquivo");
@@ -694,7 +716,7 @@ void CorpusC50::casos(C50 &objc50){
     objc50.alocar();
 
     FILE *atributos;
-    atributos = fopen("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\testes\\hypothyroid.names.txt","r+");
+    atributos = fopen("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\testes\\MalwareDinamicos.names.txt","r+");
     if(!atributos)
  {
     printf( "Erro na abertura do arquivo");
