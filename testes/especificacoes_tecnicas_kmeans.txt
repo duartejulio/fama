@@ -1,0 +1,24 @@
+Implementação do KMeans no framework FAMA
+- Esta implementação do algoritmo KMeans no FAMA foi desenvolvida utilizando a IDE CodeBlocks, no S.O. Windows 7 64 bits.
+Para utilização desta implementação, é necessário incluir os 4 arquivos referentes às classes de treinador e classificador do KMeans
+(kmeans.h, kmeans.cpp, classificadorkmeans.h, classificadorkmeans.cpp), além do arquivo 'CImg.h', que contém os recursos gráficos
+para poder utilizar a classe 'desenhoKMeans', responsável por criar imagens com representação em um plano bidimensional dos registros
+e centroides do algoritmo. Além destes arquivos, também é necessário incluir os arquivos referentes as classes 'treinador' e 
+'classificador', já existentes no FAMA.
+
+- A biblioteca CImg (http://cimg.sourceforge.net/) foi utilizada para criação das imagens citadas pois permite um desenvolvimento
+multi plataforma, possui boa documentação e é de fácil utilização para criação de imagens.
+Para poder utilizar esta biblioteca (e, em consequência, a implementação do KMeans, pois a biblioteca é uma dependência da mesma), 
+é necessário seguir os passos abaixo:
+- Após criar um novo projeto e inserir as bibliotecas mencionadas, no CodeBlocks, ir na aba 'Projects'->'Build Options';
+- Na janela que abrirá em seguida, ir na aba 'Linker Settings', e onde está escrito 'Link libraries', clicar no botão 'add', digitar
+'gdi32' e em seguida clicar em 'Ok'.
+- Após estes passos, clicar o botão 'Ok' novamente e compilar e executar o projeto.
+
+- Neste arquivo compactado, estão anexados os arquivos contendo as classes de implementação do KMeans, divididos nas pastas 'treinador'
+e 'classificador', e um arquivo 'main.cpp', que contém um exemplo de aplicação do algoritmo sob um conjunto de dados de teste, que
+segue, também, em anexo. Basta criar um projeto no CodeBlocks, substituir o arquivo 'main' por este em anexo, incluir os arquivos
+já citados e seguir os passos para inclusão das dependências da biblioteca CImg.
+
+OBS: Apesar de ser possível realizar um desenvolvimento multi plataforma com a biblioteca CImg, a implementação do KMeans ainda não
+foi testada nos ambientes Linux, Unix, MacOs X entre outros, somente tendo sido utilizado no ambiente na qual foi desenvolvida.
