@@ -12,22 +12,19 @@
 using namespace std;
 
     //Funcao para tratar a duplicidade de classes
-    bool existeNoArray(vector<string> matriz, string palavra){
-        unsigned int contador = matriz.size();
-//        cout << palavra<<" ";
-        bool existe = false;
-        for (unsigned int j = 0; j < contador; j++) {
-                //cout <<matriz[contador-1]<<" = "<< matriz[j] << "\n";
-                if (matriz[j] == palavra) {
-                    existe = true;
-//                    cout << "ja existe";
-                }
+bool existeNoArray(vector<string> matriz, string palavra){
+    unsigned int contador = matriz.size();
+
+    bool existe = false;
+    for (unsigned int j = 0; j < contador; j++) {
+        if (matriz[j] == palavra) {
+            existe = true;
+            break;
         }
-        //Para debugar e analisar a entrada de cada classe individualmente, e verificar seu funcionamento - OK
-        //cin.get();
-        cout << "\n";
-        return existe;
     }
+
+    return existe;
+}
 
 int main()
 {
@@ -39,7 +36,7 @@ int main()
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ',', false);
-    objCorpus.carregarArquivo( "../inputs/recom/corpus_3.data" );
+    objCorpus.carregarArquivo( "../inputs/recom/corpus_10_palavras_3.data" );
 
     //indice do atributo a aprender
     iResposta = objCorpus.pegarPosAtributo("tag01");
@@ -60,9 +57,10 @@ int main()
                 }
             }
     cout << "\ntotal de tags " << classes.size() << "\n\n";
-    for (c=0;c<classes.size();c++)
-        cout << classes[c] << " - " << count[classes[c]] << endl;
+//    for (c=0;c<classes.size();c++)
+//        cout << classes[c] << " - " << count[classes[c]] << endl;
 
+//    cout << "1";
     atributos = objCorpus.pegarAtributos();
 
      //Alimenta vetor com as classes adicionais a serem avaliadas pelo avaliador de acuracia
@@ -81,6 +79,7 @@ int main()
     //
     Classificador *cl = objNB.executarTreinamento(objCorpus, iResposta);
     cl->executarClassificacao(objCorpus, iSaida);
+    cout << cl->descricaoConhecimento();
     objCorpus.gravarArquivo("#teste.txt");
 
     //
