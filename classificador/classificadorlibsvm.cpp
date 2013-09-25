@@ -3,7 +3,10 @@
 #include <cmath>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
 #include <iostream>
+
+using namespace std;
 
 ClassificadorLibSvm::ClassificadorLibSvm(vector<string> classes,
                                          vector<string> atributos,
@@ -71,6 +74,7 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
 
                 predict_label = svm_predict(mod,x_node);
 
+                /*
                 if (predict_label >= 0.5) {
                     out = pos;
                 }
@@ -79,7 +83,10 @@ bool ClassificadorLibSvm::executarClassificacao(Corpus &corpus, int atributo)
                 }
 
                 corpus.ajustarValor(c,e,atributo,out);
-
+                */
+                ostringstream str_label;
+                str_label << predict_label;
+                corpus.ajustarValor(c,e,atributo,corpus.pegarIndice(str_label.str()));
         }
     }
 
