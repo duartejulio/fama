@@ -77,6 +77,10 @@
 
 /*  Alternative random number generator  */
 
+#ifdef _WIN32
+#define drand48() (double)rand()/RAND_MAX
+#endif
+
 #define AltRandom		drand48()
 #define	AltSeed(x)		srand48(x)
 
