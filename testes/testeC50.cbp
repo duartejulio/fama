@@ -33,24 +33,106 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="..\C50\c50.cpp" />
-		<Unit filename="..\C50\c50.h" />
-		<Unit filename="..\C50\defns.h" />
+		<Unit filename="..\C50\teste\sample.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\attwinnow.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\c50.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\c50.h" />
+		<Unit filename="..\C50\treino\classify.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\confmat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\construct.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\contin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\defns.i" />
+		<Unit filename="..\C50\treino\discr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\extern.i" />
+		<Unit filename="..\C50\treino\formrules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\formtree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\getdata.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\getnames.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\global.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\implicitatt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\info.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\mcost.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\modelfiles.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\p-thresh.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\prune.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\rules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\ruletree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\siftrules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\sort.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\subset.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\text.i" />
+		<Unit filename="..\C50\treino\trees.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\update.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\utility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\C50\treino\xval.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="..\avaliador\Avaliador.cpp" />
 		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\classificador\c50classificador.cpp" />
+		<Unit filename="..\classificador\c50classificador.h" />
 		<Unit filename="..\classificador\classificador.cpp" />
-		<Unit filename="..\classificador\classificadorc50.cpp" />
-		<Unit filename="..\classificador\classificadorc50.h" />
 		<Unit filename="..\corpus\corpus.cpp" />
 		<Unit filename="..\corpus\corpus.h" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
-		<Unit filename="..\corpus\corpusmatrizc50.cpp" />
-		<Unit filename="..\corpus\corpusmatrizc50.h" />
 		<Unit filename="mainC50.cpp" />
-		<Unit filename="..\treinador\naivebayes.cpp" />
+		<Unit filename="..\treinador\c50Treinador.h" />
+		<Unit filename="..\treinador\c50treinador.cpp" />
 		<Unit filename="..\treinador\treinador.cpp" />
-		<Unit filename="..\treinador\treinadorC50.cpp" />
-		<Unit filename="..\treinador\treinadorC50.h" />
 		<Unit filename="..\validador\validador.cpp" />
 		<Unit filename="..\validador\validadorkdobras.cpp" />
 		<Extensions>

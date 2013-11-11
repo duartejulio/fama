@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include "../C50/c50.h"
 
 void aparar2(string &str){
     string::size_type pos = str.find_last_not_of(' ');
@@ -13,7 +12,6 @@ void aparar2(string &str){
         pos = str.find_first_not_of(' ');
         if(pos != string::npos)
             str.erase(0, pos);
-        
     }
     else
         str.erase(str.begin(), str.end());
@@ -31,10 +29,10 @@ vector< vector<string> > CorpusC50::pegarAttValores(){
     return attValName;
 }
 //fun��o criada para ler o arquivo do C5.0
-bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
+bool CorpusC50::carregarArquivo(string arquivo ){
 
     ifstream arqin((arquivo+".data").c_str()); // Abre arquivo para leitura em modo texto
-   
+
     if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
     {
         cout << "Erro:carregarArquivo!\nFalha na abertura do arquivo!" << endl;
@@ -82,7 +80,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                                     if(*it=='.')
                                     line=false;
                                     else {line = true;}
-                                    
+
                                     attnames.push_back(attnamesaux);
                                     attnamesaux.clear();
                                 }
@@ -91,8 +89,9 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                                 }
                             }
                             if(!line){
-                            attValName.push_back(attnames);
-                            attnames.clear();
+                                attValName.push_back(attnames);
+                                cout << "1: " << attnames[0] << endl;
+                                attnames.clear();
                             }
 
                 }else{
@@ -102,14 +101,15 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                         position = at.find(".");
                         if(position == at.size()-1)
                         {
-                                at.erase(at.size()-1);                               
+                                at.erase(at.size()-1);
                         }
                          atributos.push_back(at);
                          indices.push_back(atributos.size()-1);
                          attnames.push_back("");
                          attValName.push_back(attnames);
+                         cout << "2: " << attnames[0] << endl;
                          line=false;
-                        
+
                     }
                     else{
                     if(position == at.size()-1)
@@ -123,7 +123,7 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                         for( string::iterator it = at.begin(); it != at.end(); ){
                             if( *it == ':' )
                             {
-                                
+
                                 string attnamesaux="";
                                 for(string::iterator aux = it+1; aux!=at.end(); aux++){
                                     if(*aux==','||*aux=='.'){
@@ -141,9 +141,10 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
 
                            if(!line){
                             attValName.push_back(attnames);
+                            cout << "3: " << attnames[0] << endl;
                             attnames.clear();
                             }
-                               
+
                             at.erase( it,at.end() );
                             atributos.push_back(at);
                             it = at.end();
@@ -155,14 +156,14 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                 }
                 }
                 }
-                
+
             }
             arqat.close();
 
 
         }
-       
-        
+
+
         //realoca membros em fun��o de novos atributos do corpus
         qtd_atributos = atributos.size();
         for( register int i = 0; i < qtd_atributos; ++i )
@@ -215,12 +216,13 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                     for( int var = 0; var < indices.size(); var++ )
                         {
                             if(indices[var] == i )
-                            {   
-                                
+                            {
+
                                 if(!attValName[i][0].size() && !attValName[i].empty()){
-                                  
+                                    cout << "4: " << attValName[i][0] << endl;
                                     attValName[i].clear();
-                                    
+                                    cout << "5: " << attValName[i][0] << endl;
+
                                 }
                                 bool check = true;
                                 for(int varAux = 0; varAux< attValName[i].size(); varAux++)
@@ -230,7 +232,9 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
                                 }
                                 if(check)
                                 {
+                                    cout << "4: " << str << endl;
                                     attValName[i].push_back(str);
+                                    cout << "4: " << str << endl;
                                     //cout<<str<<endl;
                                 }
                               }
@@ -306,84 +310,10 @@ bool CorpusC50::carregarArquivo(C50 &objc50, string arquivo ){
     }
 
     arqin.close();
-     
-     objc50.MaxAtt = atributos.size();
-     
-     objc50.ClassAtt = objc50.MaxAtt;
-    
-     for(int i=0; i<objc50.MaxAtt;i++){
-        int tam = attValName[i].size();
-        if(objc50.MaxDiscrVal < tam)
-        objc50.MaxDiscrVal = tam;
-    }
-    
-    
-      int i;        
-        std::vector<string>::iterator it;
-     objc50.AttName = new String[objc50.MaxAtt+1];
-       objc50.AttName[0]= NULL;
-    for(i=1, it= atributos.begin(); i<=objc50.MaxAtt; i++, it++){
-        int tamAux = (*it).length();
-        objc50.AttName[i]=(String ) calloc(tamAux, sizeof(String *));
-        for(int j=0; j<tamAux;j++)
-           objc50.AttName[i][j] = (*it)[j];
-    }
-       
-        
 
-     
-     objc50.AttValName = (String **) calloc(objc50.MaxAtt+1, sizeof(String **));
-     objc50.MaxAttVal = new DiscrValue[objc50.MaxAtt+1];
-     
-     objc50.MaxAttVal[0] = 0;
-     objc50.AttValName[0] = NULL;
-   
-     for( i=1; i<=objc50.MaxAtt;i++){
-           if(attValName[i-1][0]!="continuous"){
-         int aux = attValName[i-1].size();
-         
-         objc50.MaxAttVal[i] = aux+1;
-         objc50.AttValName[i] =(String *) calloc(objc50.MaxAttVal[i]+2, sizeof(String *));
-         objc50.AttValName[i][0] = NULL;
-         objc50.AttValName[i][1]= "N/A";
-         for(int j=2; j<=aux+1; j++){
-             
-             int tamAux = attValName[i-1][j-2].length();
-             cout<<"attValName "<<attValName[i-1][j-2]<<endl;
-             objc50.AttValName[i][j]=(String ) calloc(tamAux, sizeof(String ));
-             for(int k=0; k<tamAux; k++){
-                 objc50.AttValName[i][j][k] = attValName[i-1][j-2][k];
-             }
-         }
-    }
-           else{
-         objc50.MaxAttVal[i]=0;
-     }
-     }
-     int index = atributos.size()-1;
-    int aux = attValName[index].size();
-    for( i=0; i<aux; i++){
-        classes.push_back(attValName[objc50.ClassAtt - 1][i]) ;
-    }
-     
-    objc50.MaxClass = classes.size();
-        objc50.ClassName = new String[objc50.MaxClass+1];
-        objc50.ClassName[0] = "?";
-    for(i=1, it= classes.begin(); i<=objc50.MaxClass;i++, it++)
-    {  
-        objc50.ClassName[i] = (String ) calloc((*it).length(), sizeof(String ));
-        for(int j=0; j<(*it).length();j++){
-       objc50.ClassName[i][j] = (*it)[j] ;
+///classes
 
-        }
-    }
-    cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
-    
-    objc50.alocar();
-    objc50.imprimir();
-  adicionarCasos(objc50);
-  cout<<"ok"<<endl;
-  //  casos(objc50);
+
     return true;
 }
 
@@ -403,10 +333,10 @@ bool CorpusC50::gravarArquivo( string arquivo )
     for( k = 0; k < qtd_atributos - 1; ++k )
         arqout << atributos[k] << ",";
     arqout << atributos[k] << "] [separador=" << separador << "]" << endl;
-    
+
     for( register int i = 0; i < qtd_sentencas; ++i )
     {
-        column = frases[i].size();        
+        column = frases[i].size();
         for( register int j = 0; j < column; ++j )
         {
             for( k = 0; k < qtd_atributos - 1; ++k )
@@ -438,7 +368,7 @@ CorpusC50::CorpusC50(vector<string> atributos, char separador,
     this->dividirExemplos = dividirExemplos;
     this->apararValores = apararValores;
 }
-bool CorpusC50::carregarArquivo( string arquivo )
+bool CorpusC50::carregarArquivo2( string arquivo )
 {
     ifstream arqin( arquivo.c_str() ); // Abre arquivo para leitura em modo texto
     if( !arqin.is_open() ) //verifica se arquivo conseguiu ser aberto
@@ -485,7 +415,7 @@ bool CorpusC50::carregarArquivo( string arquivo )
                         at = "";
                         while( str[++i] != '=' && str[i] != ']' )
                             at += str[i];
-                        cout << "*" << at << "*";
+                        //cout << "*" << at << "*";
                         if( at == "separator" || at == "separador")
                             separador = str[++i];
                     }
@@ -631,7 +561,7 @@ bool CorpusC50::carregarArquivo( string arquivo )
 
 void CorpusC50::adicionarCasos(C50 &objc50)
 {
-   
+
     objc50.MaxCase = pegarQtdSentencas()-1;
     int linha,totlinhas,numatributos,qtdConjExemplos,c;
     numatributos= pegarQtdAtributos();
@@ -642,70 +572,71 @@ void CorpusC50::adicionarCasos(C50 &objc50)
     for (c=0; c<qtdConjExemplos; c++){
         totlinhas = pegarQtdExemplos(c);
         for(int linha = 0; linha< totlinhas; linha++, index++){
-           
+
             objc50.Case[index]= (DataRec) calloc(objc50.MaxCase+1, sizeof(DataRec));
             int  vatual= pegarValor(c,linha,numatributos-1);
-           
+
             string valor;
             valor = pegarSimbolo(vatual);
            /* for(int i=0; i< valor_atual.size()-1;i++){
                 valor.push_back(valor_atual[i]);
-               
+
             }*/
-           
-            
-               
+
+
+
                 (objc50.Case[index][0])._cont_val = 0;
                 for(int i=0; i<classes.size();i++){
                     if(!valor.compare(classes[i])){
                         (objc50.Case[index][0])._discr_val = i+1;
                        i = objc50.MaxAttVal[objc50.ClassAtt];
-                      
+
                     }else{
                     if(i== classes.size()-1)
                             (objc50.Case[index][0])._discr_val = i+1;
                     }
                 }
-            
-                
+
+
                 for( int j=1; j<numatributos; j++)
                 {
                         int  vatual= pegarValor(c,linha,j-1);
-                        
+
                         string valor_atual;
-            valor_atual = pegarSimbolo(vatual);
+                        valor_atual = pegarSimbolo(vatual);
                         if(!objc50.MaxAttVal[j]){
-                            
-                              float numero;
-            std::stringstream out2(valor_atual);
-            out2 >> numero;
-                             (objc50.Case[index][j])._cont_val = numero;
+
+                            float numero;
+                            std::stringstream out2(valor_atual);
+                            out2 >> numero;
+                            (objc50.Case[index][j])._cont_val = numero;
                         }
                         else{
-                           
-                        (objc50.Case[index][j])._cont_val = 0;
-                        
-                for(int k=0; k<objc50.MaxAttVal[j];k++){
-                    if(!valor_atual.compare(objc50.AttValName[j][k+2])){
-                   (objc50.Case[index][j])._discr_val = k+2;
-                   k= objc50.MaxAttVal[j];
-                    }else{
-                        if(k== objc50.MaxAttVal[j]-1)
-                            (objc50.Case[index][j])._discr_val = k+2;
-                    }
-                }
-                }
-            
+
+                            (objc50.Case[index][j])._cont_val = 0;
+
+                            for(int k=0; k<objc50.MaxAttVal[j];k++){
+                                if(!valor_atual.compare(objc50.AttValName[j][k+2])){
+                                    (objc50.Case[index][j])._discr_val = k+2;
+                                    k= objc50.MaxAttVal[j];
+                                }
+                                else{
+                                    if(k== objc50.MaxAttVal[j]-1)
+                                        (objc50.Case[index][j])._discr_val = k+2;
+                                }
+                            }
+                        }
+
                 }
 
-            }
+        }
     }
-      
+
 }
 
 
 void CorpusC50::casos(C50 &objc50){
-    
+
         FILE *dados;
     dados =fopen("C:\\Users\\Leticia Cremasco\\Documents\\IP\\fama\\testes\\MalwareDinamicos.data","r+");
     if(!dados)
@@ -738,18 +669,18 @@ objc50.GetNames(atributos);
     for(i=0; i< objc50.MaxAtt; i++){
         printf("%s\n",objc50.AttName[i]);
     }
-   
+
     for(i=0; i<objc50.MaxAtt;i++){
         printf("\n\n %d \n\n",objc50.MaxAttVal[i]);
         for(j=0; j<objc50.MaxAttVal[i];j++){
              printf("%s\n",objc50.AttValName[i][j]);
         }
-        
+
     }
     for( j=0; j<=objc50.MaxCase; j++){
         for(i=0; i<objc50.MaxAtt; i++){
             printf("%d\n,%f\n",objc50.Case[j][i]._discr_val,objc50.Case[j][i]._cont_val);
-            
+
         }
         printf("acabou uma linha\n");
     }
@@ -759,7 +690,7 @@ objc50.GetNames(atributos);
     printf("MaxdiscrVal %d\n",objc50.MaxDiscrVal);
     for(int i=0; i< 5 ;i++){
     printf("SpecialCase %c", objc50.SpecialStatus[i]);}
-    
+
     printf("MaxClass %d\n", objc50.MaxClass);
     fclose(dados);
 }
