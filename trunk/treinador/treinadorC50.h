@@ -11,11 +11,12 @@ class TreinadorC50 : public Treinador
 		vector<string> classes;
 		vector< vector<string> > attValName;
 		C50 objC50;
-                float cf;
+        float cf;
     public:
-        TreinadorC50( vector<string> atributos, vector<string> classes, vector< vector<string> > attValName,C50 objC50, float cf );
+        TreinadorC50(float cf);
         virtual ~TreinadorC50();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo );
+        void adicionarCasos(C50 &objc50, Corpus &corpus);
 };
 
 #endif // TREINADORC50_H

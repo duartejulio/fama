@@ -1,0 +1,919 @@
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+2: 
+1: 
+33 atributos carregados com sucesso.
+4: 
+5: 
+4: 4
+4: 4
+4: 
+5: 
+4: 3
+4: 3
+4: 
+5: 
+4: 5
+4: 5
+4: 
+5: 
+4: 5
+4: 5
+4: 
+5: 
+4: 3
+4: 3
+4: 
+5: 
+4: 6
+4: 6
+4: 
+5: 
+4: 1
+4: 1
+4: 
+5: 
+4: 4
+4: 4
+4: 
+5: 
+4: 4
+4: 4
+4: 
+5: 
+4: 9
+4: 9
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 1
+4: 1
+4: 
+5: 
+4: 0
+4: 0
+4: 
+5: 
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 2
+4: 2
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 0
+4: 2
+4: 2
+4: 2
+4: 2
+4: 1
+4: 1
+4: 0
+4: 0
+4: 3
+4: 3
+4: 2
+4: 2
+4: 4
+4: 4
+4: 3
+4: 3
+4: 4
+4: 4
+4: 1
+4: 1
+4: 8
+4: 8
+4: 2
+4: 2
+4: 6
+4: 6
+4: 3
+4: 3
+4: 8
+4: 8
+4: 1
+4: 1
+4: 1
+4: 1
+4: 7
+4: 7
+4: 1
+4: 1
+4: 2
+4: 2
+4: 4
+4: 4
+4: 4
+4: 4
+4: 1
+4: 1
+4: 3
+4: 3
+4: 3
+4: 3
+4: 2
+4: 2
+4: 1
+4: 1
+4: 2
+4: 2
+4: 1
+4: 1
+4: 1
+4: 1
+4: 1
+4: 1
+4: 5
+4: 5
+4: 6
+4: 6
+4: 6
+4: 6
+4: 7
+4: 7
+4: 5
+4: 5
+4: 5
+4: 5
+4: 4
+4: 4
+4: 4
+4: 4
+4: 5
+4: 5
+4: 6
+4: 6
+4: 2
+4: 2
+4: 10
+4: 10
+4: 5
+4: 5
+4: 4
+4: 4
+4: 5
+4: 5
+4: 1
+4: 1
+4: 2
+4: 2
+4: 1
+4: 1
+4: 1
+4: 1
+4: 12
+4: 12
+4: 5
+4: 5
+4: 12
+4: 12
+4: 5
+4: 5
+4: 1
+4: 1
+4: 7
+4: 7
+4: 14
+4: 14
+4: 7
+4: 7
+4: 1
+4: 1
+4: 3
+4: 3
+4: 7
+4: 7
+4: 1
+4: 1
+4: 4
+4: 4
+4: 8
+4: 8
+4: 2
+4: 2
+4: 2
+4: 2
+4: 11
+4: 11
+4: 1
+4: 1
+4: 3
+4: 3
+4: 2
+4: 2
+4: 1
+4: 1
+4: 1
+4: 1
+4: 7
+4: 7
+4: 1
+4: 1
+4: 9
+4: 9
+4: 10
+4: 10
+4: 14
+4: 14
+4: 11
+4: 11
+4: 11
+4: 11
+4: 9
+4: 9
+4: 8
+4: 8
+4: 4
+4: 4
+4: 1
+4: 1
+4: 10
+4: 10
+4: 15
+4: 15
+4: 9
+4: 9
+4: 3
+4: 3
+4: 2
+4: 2
+4: 2
+4: 2
+4: 2
+4: 2
+4: 9
+4: 9
+4: 8
+4: 8
+4: 2
+4: 2
+4: 5
+4: 5
+4: 9
+4: 9
+4: 6
+4: 6
+4: 6
+4: 6
+4: 3
+4: 3
+4: 3
+4: 3
+4: 2
+4: 2
+4: 6
+4: 6
+4: 6
+4: 6
+4: 2
+4: 2
+4: 1
+4: 1
+4: 7
+4: 7
+4: 10
+4: 10
+4: 12
+4: 12
+4: 1
+4: 1
+4: 9
+4: 9
+4: 12
+4: 12
+4: 8
+4: 8
+4: 6
+4: 6
+4: 4
+4: 4
+4: 3
+4: 3
+4: 3
+4: 3
+4: 8
+4: 8
+4: 4
+4: 4
+4: 9
+4: 9
+4: 13
+4: 13
+4: 13
+4: 13
+4: 11
+4: 11
+4: 4
+4: 4
+4: 3
+4: 3
+4: 6
+4: 6
+4: 10
+4: 10
+4: 16
+4: 16
+4: 12
+4: 12
+4: 2
+4: 2
+4: 1
+4: 1
+4: 4
+4: 4
+4: 6
+4: 6
+4: 6
+4: 6
+4: 4
+4: 4
+4: 9
+4: 9
+4: 10
+4: 10
+4: 3
+4: 3
+4: 7
+4: 7
+4: 7
+4: 7
+4: 9
+4: 9
+4: 5
+4: 5
+4: 5
+4: 5
+4: 5
+4: 5
+4: 3
+4: 3
+4: 10
+4: 10
+4: 7
+4: 7
+4: 2
+4: 2
+4: 1
+4: 1
+4: 1
+4: 1
+4: 14
+4: 14
+4: 4
+4: 4
+4: 1
+4: 1
+4: 3
+4: 3
+4: 2
+4: 2
+4: 2
+4: 2
+4: 8
+4: 8
+4: 7
+4: 7
+4: 2
+4: 2
+4: 8
+4: 8
+4: 0
+4: 0
+4: 11
+4: 11
+4: 1
+4: 1
+4: 8
+4: 8
+4: 5
+4: 5
+4: 4
+4: 4
+4: 9
+4: 9
+4: 3
+4: 3
+4: 12
+4: 12
+4: 9
+4: 9
+4: 6
+4: 6
+4: 7
+4: 7
+4: 7
+4: 7
+4: 10
+4: 10
+4: 7
+4: 7
+4: 5
+4: 5
+4: 11
+4: 11
+4: 15
+4: 15
+4: 13
+4: 13
+4: 15
+4: 15
+4: 3
+4: 3
+4: 5
+4: 5
+4: 12
+4: 12
+4: 3
+4: 3
+4: 13
+4: 13
+4: 11
+4: 11
+4: 16
+4: 16
+4: 5
+4: 5
+4: 8
+4: 8
+4: 5
+4: 5
+4: 5
+4: 5
+4: 12
+4: 12
+4: 5
+4: 5
+4: 11
+4: 11
+4: 8
+4: 8
+4: 7
+4: 7
+4: 4
+4: 4
+4: 13
+4: 13
+4: 10
+4: 10
+4: 7
+4: 7
+4: 8
+4: 8
+4: 3
+4: 3
+4: 16
+4: 16
+4: 6
+4: 6
+4: 13
+4: 13
+4: 3
+4: 3
+4: 14
+4: 14
+4: 10
+4: 10
+4: 6
+4: 6
+4: 4
+4: 4
+4: 9
+4: 9
+4: 12
+4: 12
+4: 6
+4: 6
+4: 6
+4: 6
+4: 4
+4: 4
+4: 1
+4: 1
+4: 9
+4: 9
+4: 10
+4: 10
+4: 8
+4: 8
+4: 9
+4: 9
+4: 14
+4: 14
+4: 9
+4: 9
+4: 7
+4: 7
+4: 7
+4: 7
+4: 6
+4: 6
+4: 11
+4: 11
+4: 10
+4: 10
+4: 8
+4: 8
+4: 5
+4: 5
+4: 6
+4: 6
+4: 4
+4: 4
+4: 2
+4: 2
+4: 11
+4: 11
+4: 8
+4: 8
+4: 10
+4: 10
+4: 8
+4: 8
+4: 11
+4: 11
+
+Decision tree:
+
+NewTimeDateStampVerificado = 1: 1 (492/4)
+NewTimeDateStampVerificado = 0:
+:...logOpenMutexW in {3,2,4,5,8,6,14,7}: 1 (1058/39)
+    logOpenMutexW = 1:
+    :...logRegSetValueExW in {6,7,8,11}: 1 (0)
+    :   logRegSetValueExW = 0: 1 (462/10)
+    :   logRegSetValueExW = 9: 0 (1)
+    :   logRegSetValueExW = 2:
+    :   :...logWriteFile in {14,7,13,10,16,12,15}: 1 (0)
+    :   :   logWriteFile in {3,4,6,1,2,5,11}: 1 (16)
+    :   :   logWriteFile in {0,8,9}: 0 (20/4)
+    :   logRegSetValueExW = 5:
+    :   :...logWriteFile in {6,5,14,8,7,9,10,16,12,15,11}: 1 (0)
+    :   :   logWriteFile in {3,4,1,2}: 1 (10)
+    :   :   logWriteFile in {0,13}: 0 (3)
+    :   logRegSetValueExW = 1:
+    :   :...logRegOpenKeyW in {3,7,10,5,2,8,9,11,13}: 1 (0)
+    :   :   logRegOpenKeyW in {6,0,1,12}: 1 (14/1)
+    :   :   logRegOpenKeyW = 4: 0 (2)
+    :   logRegSetValueExW = 3:
+    :   :...logWriteFile in {4,6,1,5,14,8,7,9,13,10,16,12,15,11}: 0 (0)
+    :   :   logWriteFile in {3,0}: 0 (8/1)
+    :   :   logWriteFile = 2: 1 (3)
+    :   logRegSetValueExW = 4:
+    :   :...logRegEnumKeyExW in {6,9,1,3,2,8,7,10,11}: 1 (0)
+    :       logRegEnumKeyExW = 4: 1 (137/3)
+    :       logRegEnumKeyExW = 5: 0 (1)
+    :       logRegEnumKeyExW = 0:
+    :       :...logDeleteFileW in {8,12,5,7,4,6,3,10,9,11}: 1 (0)
+    :           logDeleteFileW = 0: 0 (5)
+    :           logDeleteFileW in {2,1}: 1 (9)
+    logOpenMutexW = 0:
+    :...logWriteProcessMemory in {8,9,10}: 1 (0)
+        logWriteProcessMemory in {1,2,3,7,4,5,6,11}: 1 (75)
+        logWriteProcessMemory = 0:
+        :...logFindWindowW in {11,7,13}: 1 (0)
+            logFindWindowW in {9,4,5}: 0 (5)
+            logFindWindowW in {12,8,10}: 1 (20)
+            logFindWindowW = 2:
+            :...logCreateFileW in {8,1,12,7,10,11,9,14,15,13,16}: 0 (0)
+            :   logCreateFileW in {5,4,3,6}: 0 (6)
+            :   logCreateFileW in {0,2}: 1 (4/1)
+            logFindWindowW = 3:
+            :...logCreateRemoteThread in {5,10,3,8,4,12,6,9,7,11}: 0 (0)
+            :   logCreateRemoteThread = 1: 1 (1)
+            :   logCreateRemoteThread in {2,0}: 0 (4)
+            logFindWindowW = 1:
+            :...logRegSetValueExW in {5,3,6,7,8,9,11}: 0 (0)
+            :   logRegSetValueExW = 4: 1 (2)
+            :   logRegSetValueExW in {2,1}: 0 (4)
+            :   logRegSetValueExW = 0:
+            :   :...logCreateRemoteThread in {5,10,3,8,4,12,6,9,7,
+            :       :                         11}: 1 (0)
+            :       logCreateRemoteThread in {1,0}: 0 (5/2)
+            :       logCreateRemoteThread = 2: 1 (3)
+            logFindWindowW = 0:
+            :...logRegSetValueExW in {7,8,9,11}: 1 (0)
+                logRegSetValueExW = 5: 1 (3/1)
+                logRegSetValueExW = 6: 0 (4/1)
+                logRegSetValueExW = 1:
+                :...logOpenServiceW in {4,2,6,3,7,5,10,9}: 1 (0)
+                :   logOpenServiceW = 0: 1 (49/4)
+                :   logOpenServiceW = 1: 0 (2)
+                logRegSetValueExW = 4:
+                :...logRegOpenKeyW in {1,10,2,8,9,12,11,13}: 0 (0)
+                :   logRegOpenKeyW in {6,4,5}: 1 (39/1)
+                :   logRegOpenKeyW in {0,3}: 0 (5)
+                :   logRegOpenKeyW = 7:
+                :   :...logWriteFile in {3,4,6,2,5,14,8,7,9,13,16,12,15,
+                :       :                11}: 0 (0)
+                :       logWriteFile in {0,10}: 0 (3)
+                :       logWriteFile = 1: 1 (2)
+                logRegSetValueExW = 3:
+                :...logCreateFileW in {2,8,1,6,12,11,9,14,15,13,
+                :   :                  16}: 0 (0)
+                :   logCreateFileW in {0,4,7,10}: 0 (16)
+                :   logCreateFileW = 3: 1 (2)
+                :   logCreateFileW = 5:
+                :   :...logCreateMutexW in {0,2,1,6,9,8,7,10}: 1 (0)
+                :       logCreateMutexW in {4,5}: 0 (3/1)
+                :       logCreateMutexW = 3: 1 (2)
+                logRegSetValueExW = 2:
+                :...logReadProcessMemory in {5,11,1,9,10,2,4,13,12,7,14,
+                :   :                        8}: 0 (0)
+                :   logReadProcessMemory in {3,6}: 1 (7)
+                :   logReadProcessMemory = 0:
+                :   :...logRegEnumValueW in {4,2,3,8,6,9,5,10,12}: 0 (0)
+                :       logRegEnumValueW = 7: 0 (1)
+                :       logRegEnumValueW = 1: 1 (6)
+                :       logRegEnumValueW = 0:
+                :       :...logRegOpenKeyW in {6,1,3,10,8,9,12,11,
+                :           :                  13}: 0 (0)
+                :           logRegOpenKeyW in {0,4,7,5}: 0 (62/6)
+                :           logRegOpenKeyW = 2: 1 (2)
+                logRegSetValueExW = 0:
+                :...logRegOpenKeyW in {9,12,11}: 1 (0)
+                    logRegOpenKeyW in {1,10,8,13}: 1 (30/2)
+                    logRegOpenKeyW = 2: 0 (10/2)
+                    logRegOpenKeyW = 6:
+                    :...logReadFile in {3,14,11,9,8,10,12,13,16}: 1 (0)
+                    :   logReadFile in {5,2,4,7,15}: 1 (18/1)
+                    :   logReadFile in {0,6,1}: 0 (12/1)
+                    logRegOpenKeyW = 7:
+                    :...logReadFile in {3,1,11,15,9,10,12,13,16}: 1 (0)
+                    :   logReadFile in {5,2,4,6,7,14,8}: 1 (31)
+                    :   logReadFile = 0: 0 (3)
+                    logRegOpenKeyW = 3:
+                    :...logCreateMutexW in {1,5,6,9,8,7,10}: 1 (0)
+                    :   logCreateMutexW = 4: 0 (5)
+                    :   logCreateMutexW in {0,2}: 1 (5/1)
+                    :   logCreateMutexW = 3:
+                    :   :...logDeleteFileW in {8,12,5,7,4,6,3,10,9,
+                    :       :                  11}: 1 (0)
+                    :       logDeleteFileW = 0: 1 (86/1)
+                    :       logDeleteFileW in {2,1}: 0 (4/1)
+                    logRegOpenKeyW = 5:
+                    :...logCreateRemoteThread in {5,10,3,8,4,12,6,9,7,
+                    :   :                         11}: 1 (0)
+                    :   logCreateRemoteThread = 2: 0 (9/1)
+                    :   logCreateRemoteThread = 0: 1 (27/1)
+                    :   logCreateRemoteThread = 1:
+                    :   :...logCreateMutexW in {4,2,1,6,9,8,7,10}: 1 (0)
+                    :       logCreateMutexW = 0: 0 (2)
+                    :       logCreateMutexW in {3,5}: 1 (5/1)
+                    logRegOpenKeyW = 4:
+                    :...logWriteFile in {4,6,1,14,8,7,9,13,10,16,12,15,
+                    :   :                11}: 0 (0)
+                    :   logWriteFile in {3,5}: 0 (2)
+                    :   logWriteFile = 2: 1 (4)
+                    :   logWriteFile = 0:
+                    :   :...logCreateMutexW in {4,2,1,9,8,7,10}: 0 (0)
+                    :       logCreateMutexW in {0,5}: 0 (7/1)
+                    :       logCreateMutexW = 6: 1 (1)
+                    :       logCreateMutexW = 3:
+                    :       :...logCreateFileW in {5,4,8,6,12,10,11,9,14,15,13,
+                    :           :                  16}: 0 (0)
+                    :           logCreateFileW in {0,2,3}: 0 (8/1)
+                    :           logCreateFileW = 7: 1 (1)
+                    :           logCreateFileW = 1:
+                    :           :...logCreateRemoteThread in {5,10,3,8,4,12,6,
+                    :               :                         9,7,
+                    :               :                         11}: 0 (0)
+                    :               logCreateRemoteThread in {1,2}: 0 (7/2)
+                    :               logCreateRemoteThread = 0: 1 (2)
+                    logRegOpenKeyW = 0:
+                    :...logCreateRemoteThread in {8,4,12,11}: 1 (0)
+                        logCreateRemoteThread in {2,5,10,3,6,9,
+                        :                         7}: 1 (44/2)
+                        logCreateRemoteThread = 1:
+                        :...logDeleteFileW in {8,2,12,5,7,4,6,10,9,
+                        :   :                  11}: 1 (0)
+                        :   logDeleteFileW in {0,3}: 1 (90/2)
+                        :   logDeleteFileW = 1: 0 (3/1)
+                        logCreateRemoteThread = 0:
+                        :...logCreateFileW = 14: 1 (0)
+                            logCreateFileW in {5,8,12,11,15,13,
+                            :                  16}: 1 (32/3)
+                            logCreateFileW in {6,10,9}: 0 (6/2)
+                            logCreateFileW = 4:
+                            :...logDeleteFileW in {8,12,5,7,6,3,10,9,
+                            :   :                  11}: 1 (0)
+                            :   logDeleteFileW in {0,1}: 1 (16/4)
+                            :   logDeleteFileW in {2,4}: 0 (5/1)
+                            logCreateFileW = 7:
+                            :...logReadFile in {5,3,2,4,6,7,1,14,11,15,9,8,12,
+                            :   :               16}: 0 (0)
+                            :   logReadFile = 0: 1 (3/1)
+                            :   logReadFile in {10,13}: 0 (3/1)
+                            logCreateFileW = 2:
+                            :...logWriteFile in {7,9,10,16,12,
+                            :   :                11}: 1 (0)
+                            :   logWriteFile in {3,1,5,14,8,13,
+                            :   :                15}: 1 (69/3)
+                            :   logWriteFile in {4,6,2}: 0 (9/3)
+                            :   logWriteFile = 0:
+                            :   :...logReadFile in {5,7,14,11,9,8,10,12,
+                            :       :               13}: 1 (0)
+                            :       logReadFile in {0,2,4,6,1,15,
+                            :       :               16}: 1 (104/8)
+                            :       logReadFile = 3: 0 (3)
+                            logCreateFileW = 3:
+                            :...logReadFile in {6,14,11,9,10,12,13,
+                            :   :               16}: 1 (0)
+                            :   logReadFile in {5,3,2,4,7,1,8}: 1 (41/1)
+                            :   logReadFile = 15: 0 (1)
+                            :   logReadFile = 0:
+                            :   :...logCreateMutexW in {5,6,9,8,7,
+                            :       :                   10}: 1 (0)
+                            :       logCreateMutexW in {4,0,1}: 1 (24/5)
+                            :       logCreateMutexW = 2: 0 (1)
+                            :       logCreateMutexW = 3:
+                            :       :...logWriteFile in {4,6,1,5,14,8,7,9,13,
+                            :           :                10,16,12,15,
+                            :           :                11}: 0 (0)
+                            :           logWriteFile in {3,0}: 0 (14/5)
+                            :           logWriteFile = 2: 1 (3)
+                            logCreateFileW = 1:
+                            :...logReadFile in {7,11,9,8,10,12,
+                            :   :               13}: 1 (0)
+                            :   logReadFile in {5,3,4,6,14,15,
+                            :   :               16}: 1 (19/3)
+                            :   logReadFile = 2:
+                            :   :...logCreateMutexW in {4,2,1,5,6,9,8,7,
+                            :   :   :                   10}: 0 (0)
+                            :   :   logCreateMutexW = 0: 1 (3)
+                            :   :   logCreateMutexW = 3: 0 (3)
+                            :   logReadFile = 1:
+                            :   :...logCreateMutexW in {4,2,5,6,9,8,7,
+                            :   :   :                   10}: 1 (0)
+                            :   :   logCreateMutexW in {0,3}: 1 (8)
+                            :   :   logCreateMutexW = 1: 0 (1)
+                            :   logReadFile = 0:
+                            :   :...logWriteFile in {3,6,14,7,9,13,10,12,15,
+                            :       :                11}: 1 (0)
+                            :       logWriteFile in {0,1,8,16}: 1 (96/20)
+                            :       logWriteFile in {4,5}: 0 (4)
+                            :       logWriteFile = 2:
+                            :       :...logCreateMutexW in {4,2,1,5,6,9,8,7,
+                            :           :                   10}: 1 (0)
+                            :           logCreateMutexW = 0: 0 (3/1)
+                            :           logCreateMutexW = 3: 1 (2)
+                            logCreateFileW = 0:
+                            :...logWriteFile in {14,8,13,16,
+                                :                12}: 1 (0)
+                                logWriteFile in {3,4,6,1,5,7,9,10,
+                                :                11}: 0 (44/6)
+                                logWriteFile = 15: 1 (2)
+                                logWriteFile = 2:
+                                :...logCreateMutexW in {4,2,1,5,6,9,8,7,
+                                :   :                   10}: 0 (0)
+                                :   logCreateMutexW = 0: 0 (24/2)
+                                :   logCreateMutexW = 3: 1 (3/1)
+                                logWriteFile = 0:
+                                :...logReadFile in {5,7,11,8,10,12,
+                                    :               13}: 1 (0)
+                                    logReadFile = 3: 0 (2/1)
+                                    logReadFile in {2,4,6,14,15,9,
+                                    :               16}: 1 (20/1)
+                                    logReadFile = 1:
+                                    :...logCreateMutexW in {4,2,1,5,6,9,8,7,
+                                    :   :                   10}: 0 (0)
+                                    :   logCreateMutexW = 0: 0 (17/2)
+                                    :   logCreateMutexW = 3: 1 (5)
+                                    logReadFile = 0:
+                                    :...logCreateMutexW in {5,6,9,8,7,
+                                        :                   10}: 1 (0)
+                                        logCreateMutexW in {4,3,
+                                        :                   1}: 1 (408/106)
+                                        logCreateMutexW = 2: 0 (1)
+                                        logCreateMutexW = 0: [S1]
+
+SubTree [S1]
+
+NewNumberOfRVAandSizesVerificado = 1: 0 (20/1)
+NewNumberOfRVAandSizesVerificado = 0:
+:...logReadProcessMemory in {11,1,9,10,4,3,13,12,7,14,6,8}: 1 (0)
+    logReadProcessMemory in {0,2}: 1 (2090/886)
+    logReadProcessMemory = 5: 0 (1)
+construiu o classificador
+criou o atributo
+terminou a classificacao
+Arquivo <#corpusGravado3.txt> gravado com sucesso!
+Acuracia:   71.363 %
+

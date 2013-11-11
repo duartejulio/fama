@@ -22,8 +22,8 @@ class CorpusC50 : public Corpus
         CorpusC50( vector<string> atributos = vector<string>(),
                       char separador = '_', bool dividirExemplos = false,
                       bool apararValores = false);
-        bool carregarArquivo(C50 &objc50, string arquivo );
         bool carregarArquivo(string arquivo );
+        bool carregarArquivo2(string arquivo );
         bool gravarArquivo( string arquivo );
         void adicionarCasos(C50 &objc50);
         void casos(C50 &objc50);

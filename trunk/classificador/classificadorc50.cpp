@@ -2,12 +2,12 @@
 
 ClassificadorC50::ClassificadorC50( vector<string> att, vector<string> classes, vector< vector<string> > attValName, Tree arvore, C50 objc50)
 {
-         this->atributos = att;
-        this->classes = classes;
+    this->atributos = att;
+    this->classes = classes;
 	this->classeNome = atributos[(atributos).size() - 1];
-        this->attValName = attValName;
-        this->arvore = arvore;
-        this->objc50 = objc50;
+    this->attValName = attValName;
+    this->arvore = arvore;
+    this->objc50 = objc50;
 }
 
 ClassificadorC50::ClassificadorC50( string arquivo )
@@ -18,32 +18,32 @@ ClassificadorC50::ClassificadorC50( string arquivo )
 bool ClassificadorC50::executarClassificacao( Corpus &corpusProva, int atributo)
 {
     //corpusProva.criarAtributo( "pos", "N" );
-    
+
     int atributo_base,att,index,valoraux,c,linha;
 	string valor, valor_atual;
 	atributo_base = corpusProva.pegarPosAtributo( classeNome );
-	Tree arvoreaux;	
+	Tree arvoreaux;
 	int qtdConjExemplos = corpusProva.pegarQtdConjExemplos();
-        index = 1;
-        
+    index = 1;
+
 for(c=0; c<qtdConjExemplos;c++)
 {
     arvoreaux = arvore;
     int totlinhas = corpusProva.pegarQtdExemplos(c);
-    for(int linha = 0; linha< totlinhas; linha++){   
-    
+    for(int linha = 0; linha< totlinhas; linha++){
+
     while(arvoreaux->NodeType)
 	{
                 att = arvoreaux->Tested;
                 valoraux = corpusProva.pegarValor(c,linha,att-1);
 							valor = corpusProva.pegarSimbolo(valoraux);
-							
+
 		switch(arvoreaux->NodeType)
 		{
 			case BrDiscr: //caso com valores discretos
-                            
+
 							for(int i=0; i<attValName[att-1].size(); i++){
-                                                            
+
 								if(!valor.compare(attValName[att-1][i])){
 									index=i+2;
 									break;
@@ -78,7 +78,7 @@ for(c=0; c<qtdConjExemplos;c++)
 							}
 							break;
 			case BrSubset:	//caso em que há subconjuntos de valores discretos
-                            
+
 							index = 2;
 							int last;
                                                         //C50 objc50;
@@ -99,12 +99,12 @@ for(c=0; c<qtdConjExemplos;c++)
 								}
 								index++;
 							}
-                                                        
+
 							break;
 		}
 		arvoreaux = arvoreaux->Branch[index];
 	}
-    
+
 		string classeNovoNome = classes[arvoreaux->Leaf - 1];
 		corpusProva.ajustarValor(c,linha,atributo,corpusProva.pegarIndice(classeNovoNome.c_str()));
 }
@@ -137,7 +137,7 @@ bool ClassificadorC50::gravarConhecimento( string arquivo )
         }
         arqout<<"FimAtributo"<<endl;
      }
-    
+
         arqout.close();
     cout << "Arquivo <" << arquivo << "> gravado com sucesso!" << endl;
     return true;
