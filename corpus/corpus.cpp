@@ -368,3 +368,34 @@ Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
 
     return subCorpus;
 }
+
+bool Corpus::discreto(int atributo, vector<string> &possiveisValores){
+    float f;
+    string val;
+    int e, c, qtdExemplos;
+    map<string, int> valores;
+    map<string, int>::iterator iter;
+
+    possiveisValores.clear();
+
+    for (c=0; c<qtd_sentencas; c++){
+        qtdExemplos = frases[c].size();
+        for (e=0; e<qtdExemplos; e++){
+            val = pegarSimbolo(pegarValor(c, e, atributo));
+            stringstream ss(val);
+            ss >> f;
+            if (!ss.fail())
+                return false;
+            valores[val] = 1;
+        }
+    }
+
+    for(iter = valores.begin(); iter != valores.end(); ++iter)
+        possiveisValores.push_back(iter->first);
+
+    return true;
+}
+
+bool Corpus::discreto(string atributo, vector<string> &possiveisValores){
+    return discreto(pegarPosAtributo(atributo), possiveisValores);
+}

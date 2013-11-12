@@ -11,12 +11,12 @@ C50Classificador::C50Classificador()
 bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
 {
     //gerar .data e .names
-    int c, a, numeroClasses, numeroAtributos, e;
     ofstream names, data;
     ifstream tree, out;
     vector<int> indexes;
-    vector<string> linhasArquivo;
+    vector<string> linhasArquivo, valores;
     string linha;
+    int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
 
@@ -33,8 +33,19 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
 
     numeroAtributos = atributos.size();
     for (a=0;a<numeroAtributos;a++){
-        names << atributos[a];
-        names << ": continuous." << endl;
+        names << atributos[a] << ": ";
+        if (corpus.discreto(atributos[a],valores)){
+            numeroValores = valores.size();
+            for (v=0;v<numeroValores;v++){
+                names << valores[v];
+                if (v!=numeroValores-1)
+                    names << ", ";
+                else
+                    names << "." << endl;
+            }
+        }
+        else
+            names << "continuous." << endl;
         indexes.push_back(corpus.pegarPosAtributo(atributos[a]));
     }
 
@@ -61,12 +72,13 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
 
     for (c=0;c<corpus.pegarQtdConjExemplos();c++)
         for (e=0;e<corpus.pegarQtdExemplos(c);e++){
-            out >> linha;
+            getline(out,linha);
             corpus(c,e,atributo, linha);
             //cout << linha << endl;
         }
     out.close();
 
+    return true;
 }
 
 bool C50Classificador::gravarConhecimento( string arquivo )

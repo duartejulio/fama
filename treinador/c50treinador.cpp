@@ -18,12 +18,12 @@ C50Treinador::~C50Treinador()
 
 Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
 {
-    int c, a, numeroClasses, numeroAtributos, e;
-    ofstream names, data;
-    ifstream tree;
-    vector<int> indexes;
-    vector<string> linhasArquivo;
     string linha;
+    ifstream tree;
+    ofstream names, data;
+    vector<int> indexes;
+    vector<string> linhasArquivo, valores;
+    int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
     names.open("c50temp.names");
@@ -39,8 +39,19 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
 
     numeroAtributos = atributos.size();
     for (a=0;a<numeroAtributos;a++){
-        names << atributos[a];
-        names << ": continuous." << endl;
+        names << atributos[a] << ": ";
+        if (corpus.discreto(atributos[a],valores)){
+            numeroValores = valores.size();
+            for (v=0;v<numeroValores;v++){
+                names << valores[v];
+                if (v!=numeroValores-1)
+                    names << ", ";
+                else
+                    names << "." << endl;
+            }
+        }
+        else
+            names << "continuous." << endl;
         indexes.push_back(corpus.pegarPosAtributo(atributos[a]));
     }
 
