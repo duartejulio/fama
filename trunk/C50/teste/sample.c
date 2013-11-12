@@ -139,13 +139,12 @@ int c50classif(char *baseFileName)
 {
     FILE		*F, *out;
     DataRec		Case;
-    int			CaseNo=0, MaxClassLen=5, o, TotalRules=0,
+    int			MaxClassLen=5, o, TotalRules=0,
 			StartList, CurrentPosition;
     ClassNo		Predict, c;
     Boolean		XRefForm=false, RULESUSED=false;
 
     char outputFileName[256];
-    extern String	OptArg, Option;
     void		ShowRules(int);
 
     /*  Read information on attribute names, values, and classes  */
