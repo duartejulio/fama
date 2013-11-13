@@ -17,8 +17,9 @@ int main()
 
     atributos = objCorpus.pegarAtributos();
     atributos.erase(atributos.end());
+    atributos.erase(atributos.begin()+1);//testando a remoção de um atributo
 
-    C50Treinador objTreinador(25, atributos, classes);
+    C50Treinador objTreinador(100, atributos, classes);
     int at = objCorpus.pegarPosAtributo("play");
     int x = objCorpus.criarAtributo("classe");
 
