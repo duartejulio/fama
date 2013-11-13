@@ -133,6 +133,10 @@ void FreeGlobals()
     free(GCEnv);
 }
 
+void printTree(char *baseFileName){
+
+
+}
 
 int c50classif(char *baseFileName)
 /*  ----  */
@@ -179,6 +183,9 @@ int c50classif(char *baseFileName)
 	    TotalRules += RuleSet[Trial]->SNRules;
 	}
 
+
+
+
 	if ( RULESUSED )
 	{
 	    GCEnv->RulesUsed = Alloc(TotalRules + TRIALS, RuleNo);
@@ -188,8 +195,11 @@ int c50classif(char *baseFileName)
     }
     else
     {
+
 	CheckFile(".tree", false);
+
 	Pruned = AllocZero(TRIALS+1, Tree);
+
 
 	ForEach(Trial, 0, TRIALS-1)
 	{

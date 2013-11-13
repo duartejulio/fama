@@ -1,8 +1,35 @@
 #include "c50classificador.h"
 
 #include <fstream>
+#include <sstream>
 
 extern "C" int c50classif(char* baseFileName);
+extern "C" void printTree(char* baseFileName);
+
+string removeVirgula(string val){
+    int i, tam;
+    bool vazio = true;
+    string retorno = val;
+
+    tam = retorno.size();
+
+    for (i=0;i<tam;i++){
+        if (retorno[i]==',')
+            retorno[i] = ';';
+        if (retorno[i]=='.')
+            retorno[i] = '!';
+        if (retorno[i]==':')
+            retorno[i] = '{';
+
+        if (retorno[i]!=' ')
+            vazio = false;
+    }
+    if (vazio)
+        for (i=0;i<tam;i++)
+            retorno[i] = '?';
+    return retorno;
+
+}
 
 C50Classificador::C50Classificador()
 {
@@ -15,7 +42,7 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
     ifstream tree, out;
     vector<int> indexes;
     vector<string> linhasArquivo, valores;
-    string linha;
+    string linha,val;
     int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
@@ -37,7 +64,10 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
         if (corpus.discreto(atributos[a],valores)){
             numeroValores = valores.size();
             for (v=0;v<numeroValores;v++){
-                names << valores[v];
+                if (valores[v]=="")
+                    names << "?";
+                else
+                    names << removeVirgula(valores[v]);
                 if (v!=numeroValores-1)
                     names << ", ";
                 else
@@ -55,8 +85,13 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
     data.open("c50temp.cases");
     for (c=0;c<corpus.pegarQtdConjExemplos();c++)
         for (e=0;e<corpus.pegarQtdExemplos(c);e++){
-            for (a=0;a<numeroAtributos;a++)
-                data << corpus(c,e,a) << ", ";
+            for (a=0;a<numeroAtributos;a++){
+                val = corpus(c,e,indexes[a]);
+                if (val=="")
+                    data << "?, ";
+                else
+                    data << removeVirgula(val) << ", ";
+            }
             data << "?" << endl;
         }
     data.close();
@@ -66,7 +101,6 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
 
     //chamar funcao see
     c50classif("c50temp");
-
     //carregar valores encontrados
     out.open("c50temp.out");
 
@@ -74,7 +108,6 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
         for (e=0;e<corpus.pegarQtdExemplos(c);e++){
             getline(out,linha);
             corpus(c,e,atributo, linha);
-            //cout << linha << endl;
         }
     out.close();
 
@@ -113,4 +146,15 @@ bool C50Classificador::carregarConhecimento( string arquivo )
     tree.close();
 
     return true;
+}
+
+string C50Classificador::descricaoConhecimento(){
+    stringstream tree;
+    int tam, i;
+
+    tam = linhasArquivo.size();
+    for (i=1; i<tam; i++)
+        tree << linhasArquivo[i] << endl;
+
+    return tree.str();
 }

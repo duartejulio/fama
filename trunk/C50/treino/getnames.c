@@ -208,6 +208,7 @@ void GetNames(FILE *Nf)
 	ClassThresh = Alloc(ClassCeiling, ContValue);
 	MaxClass = 0;
 
+
 	do
 	{
 	    ReadName(Nf, Buffer, 1000, ':');
@@ -232,7 +233,6 @@ void GetNames(FILE *Nf)
 	}
 	while ( Delimiter == ',' );
     }
-
     /*  Get attribute and attribute value names from names file  */
 
     AttName	  = AllocZero(AttCeiling, String);
@@ -412,7 +412,6 @@ void GetNames(FILE *Nf)
     ClassName[0] = "?";
 
     fclose(Nf);
-
     if ( ErrMsgs > 0 ) Goodbye(1);
 }
 
@@ -728,6 +727,6 @@ int InChar(FILE *f)
 
 	LineNo++;
     }
-	
+
     return (int) *LBp++;
 }

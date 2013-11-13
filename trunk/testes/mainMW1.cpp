@@ -7,6 +7,7 @@
 #include "../avaliador/avaliador_acuracia.h"
 #include "../validador/validadorkdobras.h"
 #include "../stump/stump.h"
+#include "../treinador/c50treinador.h"
 
 using namespace std;
 
@@ -16,8 +17,8 @@ int main()
     int nConjExemplos, e, c0, c1, c2, c, iResposta, iSaida, total;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(atributos, ';', true);
-    objCorpus.carregarArquivo( "../inputs/malware_din_est.txt" );
+    CorpusMatriz objCorpus(atributos, ',', true,true);
+    objCorpus.carregarArquivo( "../inputs/MalwareDadosTotais.data" );
 
     //indice do atributo a aprender
     iResposta = objCorpus.pegarPosAtributo("Maligno");
@@ -54,26 +55,30 @@ int main()
         if (i!=iResposta)
             atributosTreino.push_back(atributos[i]);
 
+    Treinador* treinador;
+    C50Treinador objC50(90, atributosTreino, classes);
     DecisionStump objStump(atributosTreino, classes);
     AvaliadorAcuracia objAvalAcur;
     ValidadorKDobras objValidador(objAvalAcur, 10);
     iSaida = objCorpus.criarAtributo("saida", "O");
 
-    vector< vector< float > > v = objValidador.executarExperimento(objStump, objCorpus, iResposta, iSaida);
+    treinador = &objC50;
+    /*
+    vector< vector< float > > v = objValidador.executarExperimento(*treinador, objCorpus, iResposta, iSaida);
+
     float media = 0;
     for (c=0;c<10;c++){
         cout << c << " - " << v[c][0] << endl;
         media +=v[c][0];
     }
     cout << "*" << media/10 << endl;
+*/
 
-
-    Classificador *objClass = objStump.executarTreinamento(objCorpus, iResposta);
+    Classificador *objClass = treinador->executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
     printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iSaida)[0]);
-
+    //cout << objClass->descricaoConhecimento();
     delete objClass;
-
     return 0;
 }
