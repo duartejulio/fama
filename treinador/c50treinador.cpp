@@ -18,7 +18,7 @@ C50Treinador::~C50Treinador()
 
 Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
 {
-    string linha;
+    string linha,val;
     ifstream tree;
     ofstream names, data;
     vector<int> indexes;
@@ -43,7 +43,10 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
         if (corpus.discreto(atributos[a],valores)){
             numeroValores = valores.size();
             for (v=0;v<numeroValores;v++){
-                names << valores[v];
+                if (valores[v]=="")
+                    names << "?";
+                else
+                    names << removeVirgula(valores[v]);
                 if (v!=numeroValores-1)
                     names << ", ";
                 else
@@ -61,8 +64,13 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
     data.open("c50temp.data");
     for (c=0;c<corpus.pegarQtdConjExemplos();c++)
         for (e=0;e<corpus.pegarQtdExemplos(c);e++){
-            for (a=0;a<numeroAtributos;a++)
-                data << corpus(c,e,a) << ", ";
+            for (a=0;a<numeroAtributos;a++){
+                val = corpus(c,e,indexes[a]);
+                if (val=="")
+                    data << "?, ";
+                else
+                    data << removeVirgula(val) << ", ";
+            }
             data << corpus(c,e,atributo) << endl;
         }
     data.close();
@@ -75,7 +83,7 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
     while (!tree.eof()){
         getline(tree,linha);
         linhasArquivo.push_back(linha);
-        //cout << linha << endl;
+
     }
     tree.close();
 

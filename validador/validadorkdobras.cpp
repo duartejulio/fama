@@ -32,7 +32,9 @@ vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &trei
 
         vetCorpus = corpus.splitCorpus( vetMascara );
         classificador = treinador.executarTreinamento( *vetCorpus[0], atributoTreino );
+
         classificador->executarClassificacao( *vetCorpus[1], atributoTeste );
+
         resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[1], atributoTreino, atributoTeste ) );
 
         delete vetCorpus[0];

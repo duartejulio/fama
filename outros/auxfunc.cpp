@@ -24,3 +24,5 @@ void inplace_sigmoid(float z[], int m){
         z[i] = 1.0/(1.0 + exp(-z[i]));
 }
 
+
+

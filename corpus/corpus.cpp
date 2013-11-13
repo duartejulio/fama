@@ -1,5 +1,14 @@
 #include "corpus.h"
 
+bool eh_numero(string val){
+    int i, tam;
+    tam = val.size();
+    for (i=0;i<tam;i++)
+        if (val[i]!='.' && (val[i]<'0' || val[i] > '9'))
+            return false;
+    return true;
+}
+
 Corpus::Corpus( vector<string> atributos )
     : atributos( atributos )
 {
@@ -372,23 +381,27 @@ Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
 bool Corpus::discreto(int atributo, vector<string> &possiveisValores){
     float f;
     string val;
+    bool continuo;
     int e, c, qtdExemplos;
     map<string, int> valores;
     map<string, int>::iterator iter;
 
     possiveisValores.clear();
 
+    continuo = true;
+
     for (c=0; c<qtd_sentencas; c++){
         qtdExemplos = frases[c].size();
         for (e=0; e<qtdExemplos; e++){
             val = pegarSimbolo(pegarValor(c, e, atributo));
-            stringstream ss(val);
-            ss >> f;
-            if (!ss.fail())
-                return false;
+            if (!eh_numero(val))
+                continuo = false;
             valores[val] = 1;
         }
     }
+
+    if (continuo)
+        return false;
 
     for(iter = valores.begin(); iter != valores.end(); ++iter)
         possiveisValores.push_back(iter->first);

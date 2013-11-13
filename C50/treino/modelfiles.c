@@ -127,7 +127,9 @@ void CheckFile(String Extension, Boolean Write)
 	{
 	    ReadFilePrefix(Extension);
 	}
+
     }
+
 }
 
 
@@ -896,7 +898,7 @@ String RemoveQuotes(String S)
     char	*p, *Start;
 
     p = Start = S;
-    
+
     for ( S++ ; *S != '"' ; S++ )
     {
 	if ( *S == '\\' ) S++;
