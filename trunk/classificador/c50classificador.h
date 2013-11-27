@@ -9,7 +9,9 @@ string removeVirgula(string val);
 class C50Classificador : public Classificador
 {
         vector<string> linhasArquivo;
+        vector< vector<string> > valoresPossiveis;
         vector<string> atributos, classes;
+        bool gravarArvore(string arquivo);
     public:
         friend class C50Treinador;
         C50Classificador();
