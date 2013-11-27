@@ -56,7 +56,7 @@ int main()
             atributosTreino.push_back(atributos[i]);
 
     Treinador* treinador;
-    C50Treinador objC50(90, atributosTreino, classes);
+    C50Treinador objC50(100, atributosTreino, classes);
     DecisionStump objStump(atributosTreino, classes);
     AvaliadorAcuracia objAvalAcur;
     ValidadorKDobras objValidador(objAvalAcur, 10);

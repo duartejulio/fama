@@ -23,6 +23,7 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
     ofstream names, data;
     vector<int> indexes;
     vector<string> linhasArquivo, valores;
+    vector< vector<string> > valoresPossiveis;
     int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
@@ -53,8 +54,12 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
                     names << "." << endl;
             }
         }
-        else
+        else{
             names << "continuous." << endl;
+            valores.clear();
+            valores.push_back("continuous");
+        }
+        valoresPossiveis.push_back(valores);
         indexes.push_back(corpus.pegarPosAtributo(atributos[a]));
     }
 
@@ -90,6 +95,7 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
     C50Classificador *cl = new C50Classificador();
     cl->linhasArquivo = linhasArquivo;
     cl->atributos = atributos;
+    cl->valoresPossiveis = valoresPossiveis;
     cl->classes = classes;
 
     return cl;
