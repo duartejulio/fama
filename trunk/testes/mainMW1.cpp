@@ -17,14 +17,21 @@ int main()
     int nConjExemplos, e, c0, c1, c2, c, iResposta, iSaida, total;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(atributos, ',', true,true);
-    objCorpus.carregarArquivo( "../inputs/MalwareDadosTotais.data" );
-
-    //indice do atributo a aprender
-    iResposta = objCorpus.pegarPosAtributo("Maligno");
+    CorpusMatriz objCorpus(atributos, ';', true,true);
+    objCorpus.carregarArquivo( "../inputs/malware.dat" );
 
     //quantidade de conjuntos de exemplos
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";
+
+    for (c = 0; c < nConjExemplos; c++)
+        for (e = 0; e < objCorpus.pegarQtdExemplos(c); e++)
+            for (int a = 0; a < 82; a++)
+                cout  << objCorpus(c, e, a) << endl;
+
+    return 1;
+
+    //indice do atributo a aprender
+    iResposta = objCorpus.pegarPosAtributo("Maligno");
 
     //indica classes alvo
     classes.push_back("0");

@@ -65,17 +65,14 @@ public:
                     cout << "Classe Estranha\n";
             }
         }
-        ClassificadorMaisEsperto *cl;
-        if (contador[0] > contador[1]){
-            cl = new ClassificadorMaisEsperto;
+
+        ClassificadorMaisEsperto *cl = new ClassificadorMaisEsperto;
+        if (contador[0] > contador[1])
             cl->resposta = negativo;
-            cout << "Resp:" << negativo << "\n";
-        }
-        else{
-            cl = new ClassificadorMaisEsperto;
+        else
             cl->resposta = positivo;
-            cout << "Resp:" << positivo << "\n";
-        }
+
+        cout << "Resp:" << cl->resposta << "\n";
 
         return cl;
     }
@@ -109,7 +106,7 @@ int main()
 
     //avalia
     AvaliadorAcuracia objAvalAcur;
-    cout << 100 * objAvalAcur.calcularDesempenho( objCorpus, atributo, novoatributo)[0] << "\n";
+    cout << 100 * objAvalAcur.calcularDesempenho(objCorpus, atributo, novoatributo)[0] << "\n";
 
     //faz experimento
     int ndobras = 20;
