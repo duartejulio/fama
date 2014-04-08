@@ -187,7 +187,6 @@ DataRec GetDataRec(FILE *Df, Boolean Train)
     ContValue	Cv;
     Boolean	FirstValue=true;
 
-
     if ( ReadName(Df, Name, 1000, '\00') )
     {
 	Case[MaxCase] = DVec = NewCase();
@@ -337,6 +336,7 @@ DataRec GetDataRec(FILE *Df, Boolean Train)
 
 		CheckValue(DVec, Att);
 	    }
+
 	}
 
 	if ( ClassAtt )
