@@ -183,9 +183,6 @@ int c50classif(char *baseFileName)
 	    TotalRules += RuleSet[Trial]->SNRules;
 	}
 
-
-
-
 	if ( RULESUSED )
 	{
 	    GCEnv->RulesUsed = Alloc(TotalRules + TRIALS, RuleNo);
@@ -284,6 +281,7 @@ int c50classif(char *baseFileName)
 //		    ClassName[Predict], GCEnv->Confidence);
 	    CurrentPosition = 54;
 	}
+
 	fprintf(out,"%s\n",ClassName[Predict]);
 
 	if ( RULESUSED ) ShowRules(StartList - CurrentPosition);
