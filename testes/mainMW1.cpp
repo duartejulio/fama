@@ -9,6 +9,8 @@
 #include "../stump/stump.h"
 #include "../treinador/c50treinador.h"
 
+#define NFOLDS 10
+
 using namespace std;
 
 int main()
@@ -18,24 +20,24 @@ int main()
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ';', true,true);
-    objCorpus.carregarArquivo( "../inputs/malware.dat" );
+    objCorpus.carregarArquivo( "../inputs/malware2.dat" );
 
     //quantidade de conjuntos de exemplos
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";
-
+/*
     for (c = 0; c < nConjExemplos; c++)
         for (e = 0; e < objCorpus.pegarQtdExemplos(c); e++)
             for (int a = 0; a < 82; a++)
                 cout  << objCorpus(c, e, a) << endl;
 
     return 1;
-
+*/
     //indice do atributo a aprender
-    iResposta = objCorpus.pegarPosAtributo("Maligno");
+    iResposta = objCorpus.pegarPosAtributo("Malware");
 
     //indica classes alvo
-    classes.push_back("0");
-    classes.push_back("1");
+    classes.push_back("maligno");
+    classes.push_back("benigno");
 
     //calcula priori das classes
     c2 = c0 = c1 = total = 0;
@@ -47,7 +49,6 @@ int main()
             if (objCorpus.pegarIndice(classes[1]) == objCorpus.pegarValor(c, e, iResposta))
                 c1++;
             else{
-                cout << c << "," << e <<"**" << objCorpus.pegarSimbolo(objCorpus.pegarValor(c, e, iResposta)) << "**" << endl;
                 c2++;
             }
             total++;
@@ -63,23 +64,25 @@ int main()
             atributosTreino.push_back(atributos[i]);
 
     Treinador* treinador;
-    C50Treinador objC50(100, atributosTreino, classes);
+    C50Treinador objC50(75, atributosTreino, classes);
     DecisionStump objStump(atributosTreino, classes);
     AvaliadorAcuracia objAvalAcur;
-    ValidadorKDobras objValidador(objAvalAcur, 10);
-    iSaida = objCorpus.criarAtributo("saida", "O");
+    ValidadorKDobras objValidador(objAvalAcur, NFOLDS);
+    iSaida = objCorpus.criarAtributo("saida", "0");
 
     treinador = &objC50;
-    /*
+    //treinador = &objStump;
+
+
     vector< vector< float > > v = objValidador.executarExperimento(*treinador, objCorpus, iResposta, iSaida);
 
     float media = 0;
-    for (c=0;c<10;c++){
-        cout << c << " - " << v[c][0] << endl;
+    for (c=0;c<NFOLDS;c++){
+        cout << c << " - " << 100.*v[c][0] << endl;
         media +=v[c][0];
     }
-    cout << "*" << media/10 << endl;
-*/
+    cout << "Media: " << 100.*media/NFOLDS << endl;
+
 
     Classificador *objClass = treinador->executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
