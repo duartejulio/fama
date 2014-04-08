@@ -472,7 +472,7 @@ void Error(int ErrNo, String S1, String S2)
     }
 
     fprintf(Of, Buffer);
-	
+
     if ( ! WarningOnly ) ErrMsgs++;
 
     if ( ErrMsgs == 10 )
@@ -919,7 +919,7 @@ void Cleanup()
 		FreeRule(Rule[r]);
 	    }
 	    Free(Rule);					Rule = Nil;
-	}						
+	}
 
 	FreeUnlessNil(RuleSet);				RuleSet = Nil;
 	FreeUnlessNil(LogCaseNo);			LogCaseNo = Nil;
