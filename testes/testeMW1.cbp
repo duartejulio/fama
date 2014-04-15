@@ -122,6 +122,8 @@
 		</Unit>
 		<Unit filename="..\avaliador\Avaliador.cpp" />
 		<Unit filename="..\avaliador\avaliador_acuracia.cpp" />
+		<Unit filename="..\avaliador\avaliadormatrizconfusao.cpp" />
+		<Unit filename="..\avaliador\avaliadormatrizconfusao.h" />
 		<Unit filename="..\classificador\c50classificador.cpp" />
 		<Unit filename="..\classificador\c50classificador.h" />
 		<Unit filename="..\classificador\classificador.cpp" />
