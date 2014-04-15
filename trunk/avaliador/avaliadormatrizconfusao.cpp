@@ -1,5 +1,7 @@
 #include "avaliadormatrizconfusao.h"
 
+#include <iomanip>
+
 AvaliadorMatrizConfusao::AvaliadorMatrizConfusao(vector<string> classes):classes(classes)
 {
     //ctor
@@ -54,6 +56,48 @@ vector<float> AvaliadorMatrizConfusao::calcularDesempenho( Corpus &corpus, int a
         }
     }
 
+    ultimaMatriz = vectorMatriz;
     return vectorMatriz;
 }
 
+bool AvaliadorMatrizConfusao::imprimirMatrizConfusao(){
+    cout << "========= Matriz de Confusão =========" << endl << endl;
+    if (!ultimaMatriz.size()){
+        cout << "Não há matriz de confusão calculada" << endl;
+        return false;
+    }
+
+    unsigned int numeroClasses = classes.size(), v, r, tamanho = 9;//9 é o tamanho de "Vrd \\ Rsp"
+
+    for (v=0; v<numeroClasses; v++){
+        if (classes[v].length() > tamanho)
+            tamanho = classes[v].length();
+    }
+
+    cout << setw(tamanho) << "Vrd \\ Rsp" << " | ";
+    for (v=0; v<numeroClasses; v++){
+        cout << setw(tamanho) << classes[v];
+        if (v < numeroClasses-1)
+            cout << " | ";
+    }
+    cout << endl;
+
+    for (v=0; v<tamanho*3+6; v++)
+        cout << "-";
+    cout << endl;
+
+    for (v=0; v<numeroClasses; v++){
+        cout << setw(tamanho) << classes[v] << " | ";
+        for (r=0; r<numeroClasses; r++){
+            cout << setw(tamanho) << ultimaMatriz[v*numeroClasses+r];
+            if (r < numeroClasses-1)
+             cout << " | ";
+        }
+        cout << endl;
+    }
+    for (v=0; v<tamanho*3+6; v++)
+        cout << "-";
+    cout << endl;
+
+    return true;
+}

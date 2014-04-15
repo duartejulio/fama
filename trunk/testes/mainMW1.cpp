@@ -93,42 +93,11 @@ int main()
      iResposta, iSaida)[0]);
     //cout << objClass->descricaoConhecimento();
 
-    vector<float> mc = objAvalMatrizConfusao.calcularDesempenho( objCorpus,
-     iResposta, iSaida);
+    objAvalMatrizConfusao.calcularDesempenho(objCorpus, iResposta, iSaida);
 
     //imprime matriz
-    cout << "========= Matriz de Confusão =========" << endl << endl;
-    unsigned int numeroClasses = classes.size(), tamanho = 9;
+    objAvalMatrizConfusao.imprimirMatrizConfusao();
 
-    for (unsigned int v=0; v<numeroClasses; v++){
-        if (classes[v].length() > tamanho)
-            tamanho = classes[v].length();
-    }
-
-    cout << setw(tamanho) << "Vrd \\ Rsp" << " | ";
-    for (unsigned int v=0; v<numeroClasses; v++){
-        cout << setw(tamanho) << classes[v];
-        if (v < numeroClasses-1)
-            cout << " | ";
-    }
-    cout << endl;
-
-    for (unsigned int v=0; v<tamanho*3+6; v++)
-        cout << "-";
-    cout << endl;
-
-    for (unsigned int v=0; v<numeroClasses; v++){
-        cout << setw(tamanho) << classes[v] << " | ";
-        for (unsigned int r=0; r<numeroClasses; r++){
-            cout << setw(tamanho) << mc[v*numeroClasses+r];
-            if (r < numeroClasses-1)
-             cout << " | ";
-        }
-        cout << endl;
-    }
-    for (unsigned int v=0; v<tamanho*3+6; v++)
-        cout << "-";
-    cout << endl;
 
     delete objClass;
     return 0;
