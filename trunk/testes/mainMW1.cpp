@@ -2,9 +2,11 @@
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
+#include <iomanip>
 
 #include "../corpus/corpusmatriz.h"
 #include "../avaliador/avaliador_acuracia.h"
+#include "../avaliador/avaliadormatrizconfusao.h"
 #include "../validador/validadorkdobras.h"
 #include "../stump/stump.h"
 #include "../treinador/c50treinador.h"
@@ -60,20 +62,21 @@ int main()
 
     //remove atributos que nao devem ser utilizados pelo treinamento
     for (unsigned int i=0; i < atributos.size(); i++)
-        if (i!=iResposta)
+        if (((int)i)!=iResposta)
             atributosTreino.push_back(atributos[i]);
 
     Treinador* treinador;
-    C50Treinador objC50(75, atributosTreino, classes);
+    C50Treinador objC50(25, atributosTreino, classes);
     DecisionStump objStump(atributosTreino, classes);
     AvaliadorAcuracia objAvalAcur;
+    AvaliadorMatrizConfusao objAvalMatrizConfusao(classes);
     ValidadorKDobras objValidador(objAvalAcur, NFOLDS);
     iSaida = objCorpus.criarAtributo("saida", "0");
 
     treinador = &objC50;
     //treinador = &objStump;
 
-
+/*
     vector< vector< float > > v = objValidador.executarExperimento(*treinador, objCorpus, iResposta, iSaida);
 
     float media = 0;
@@ -83,12 +86,50 @@ int main()
     }
     cout << "Media: " << 100.*media/NFOLDS << endl;
 
-
+*/
     Classificador *objClass = treinador->executarTreinamento(objCorpus, iResposta);
     objClass->executarClassificacao(objCorpus, iSaida);
     printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iSaida)[0]);
     //cout << objClass->descricaoConhecimento();
+
+    vector<float> mc = objAvalMatrizConfusao.calcularDesempenho( objCorpus,
+     iResposta, iSaida);
+
+    //imprime matriz
+    cout << "========= Matriz de Confusão =========" << endl << endl;
+    unsigned int numeroClasses = classes.size(), tamanho = 9;
+
+    for (unsigned int v=0; v<numeroClasses; v++){
+        if (classes[v].length() > tamanho)
+            tamanho = classes[v].length();
+    }
+
+    cout << setw(tamanho) << "Vrd \\ Rsp" << " | ";
+    for (unsigned int v=0; v<numeroClasses; v++){
+        cout << setw(tamanho) << classes[v];
+        if (v < numeroClasses-1)
+            cout << " | ";
+    }
+    cout << endl;
+
+    for (unsigned int v=0; v<tamanho*3+6; v++)
+        cout << "-";
+    cout << endl;
+
+    for (unsigned int v=0; v<numeroClasses; v++){
+        cout << setw(tamanho) << classes[v] << " | ";
+        for (unsigned int r=0; r<numeroClasses; r++){
+            cout << setw(tamanho) << mc[v*numeroClasses+r];
+            if (r < numeroClasses-1)
+             cout << " | ";
+        }
+        cout << endl;
+    }
+    for (unsigned int v=0; v<tamanho*3+6; v++)
+        cout << "-";
+    cout << endl;
+
     delete objClass;
     return 0;
 }
