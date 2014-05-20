@@ -129,8 +129,13 @@
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
+		<Unit filename="..\id3\dtree.cpp" />
+		<Unit filename="..\id3\dtree.h" />
+		<Unit filename="..\id3\treeno.cpp" />
+		<Unit filename="..\id3\treeno.h" />
 		<Unit filename="..\stump\stump.cpp" />
 		<Unit filename="mainMW1.cpp" />
+		<Unit filename="..\treinador\c50Treinador.h" />
 		<Unit filename="..\treinador\c50treinador.cpp" />
 		<Unit filename="..\treinador\treinador.cpp" />
 		<Unit filename="..\validador\validador.cpp" />

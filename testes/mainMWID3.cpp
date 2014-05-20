@@ -8,6 +8,7 @@
 
 #include "../corpus/corpusmatriz.h"
 #include "../avaliador/avaliador_acuracia.h"
+#include "../id3/dtree.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ int main()
     objCorpus.ajustarSeparador(',');
     objCorpus.carregarArquivo( "../inputs/treinamento.data" );
     iResposta = objCorpus.pegarPosAtributo("Classe");
-    
+
     system("cls");
     cout << "atributo alvo: " << iResposta << endl;
     cout << (nExemplos = objCorpus.pegarQtdTokens(0)) << " exemplos\n";
@@ -30,7 +31,7 @@ int main()
     classes.push_back("maligno");
     classes.push_back("benigno");
     c0 = c1 = 0;
-        
+
     for (e=0; e < nExemplos; e++){
         if (objCorpus.pegarIndice(classes[0]) == objCorpus.pegarValor(0, e, iResposta))
             c0++;
@@ -39,9 +40,9 @@ int main()
     }
 
     cout << c0 << "maligno / " << c1 << " benigno / " <<endl;
-    
+
     cout << 100.*c0/nExemplos << " / " << 100.*c1/nExemplos << endl;
- 
+
     atributos = objCorpus.pegarAtributos();
 
     for (unsigned int i=0; i < atributos.size(); i++) {
@@ -51,12 +52,12 @@ int main()
     }
 
     DecisionTree objTree(atributosTreino, classes);
- 
+
     Classificador *objClass = objTree.executarTreinamento(objCorpus, iResposta);
 
     objCorpus.criarAtributo("algoritmo", "O");
     objClass->executarClassificacao(objCorpus, iResposta+1);
-   
+
 	cout << endl << "Press any key to quit..." << endl;
 	getch();
 
@@ -68,7 +69,7 @@ int main()
 
 	cout << endl << "Press any key to quit..." << endl;
 	getch();
-   
+
     delete objClass;
 
     return 0;

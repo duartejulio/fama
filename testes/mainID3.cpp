@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "../id3/dtree.h"
 #include "../corpus/corpusmatriz.h"
 #include "../avaliador/avaliador_acuracia.h"
 
