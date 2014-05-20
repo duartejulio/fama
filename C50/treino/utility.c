@@ -527,9 +527,16 @@ String CaseLabel(CaseNo N)
 FILE *GetFile(String Extension, String RW)
 /*    --------  */
 {
+    FILE *f;
+
     strcpy(Fn, FileStem);
     strcat(Fn, Extension);
-    return fopen(Fn, RW);
+
+    f = fopen(Fn, RW);
+    if (!f)
+        perror("ErroG:");
+
+    return f;
 }
 
 

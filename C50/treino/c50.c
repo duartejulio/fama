@@ -213,7 +213,6 @@ int c50train(char* baseFileName, float cfvalue)
 */
 
     /*  Get information on training data  */
-
     if ( ! (F = GetFile(".names", "r")) ) Error(NOFILE, "", "");
     GetNames(F);
 
@@ -249,7 +248,7 @@ int c50train(char* baseFileName, float cfvalue)
     {
 	fprintf(Of, T_CWtAtt);
     }
-
+    NOCOSTS = true;
     if ( ! NOCOSTS && (F = GetFile(".costs", "r")) )
     {
 	GetMCosts(F);
@@ -339,5 +338,7 @@ int c50train(char* baseFileName, float cfvalue)
 #ifdef VerbOpt
     Cleanup();
 #endif
+    CheckClose(Of);
+    CheckClose(Uf);
     return 0;
 }
