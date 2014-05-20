@@ -67,19 +67,17 @@ bool AvaliadorMatrizConfusao::imprimirMatrizConfusao(){
         return false;
     }
 
-    unsigned int numeroClasses = classes.size(), v, r, tamanho = 9;//9 é o tamanho de "Vrd \\ Rsp"
+    string header = "Vrd\\Rsp";
+    unsigned int numeroClasses = classes.size(), v, r,
+     tamanho = header.length();
 
-    for (v=0; v<numeroClasses; v++){
+    for (v=0; v<numeroClasses; v++)
         if (classes[v].length() > tamanho)
             tamanho = classes[v].length();
-    }
 
-    cout << setw(tamanho) << "Vrd \\ Rsp" << " | ";
-    for (v=0; v<numeroClasses; v++){
-        cout << setw(tamanho) << classes[v];
-        if (v < numeroClasses-1)
-            cout << " | ";
-    }
+    cout << setw(tamanho) << header;
+    for (v=0; v<numeroClasses; v++)
+        cout  << " | " << setw(tamanho) << classes[v];
     cout << endl;
 
     for (v=0; v<tamanho*3+6; v++)
@@ -87,12 +85,9 @@ bool AvaliadorMatrizConfusao::imprimirMatrizConfusao(){
     cout << endl;
 
     for (v=0; v<numeroClasses; v++){
-        cout << setw(tamanho) << classes[v] << " | ";
-        for (r=0; r<numeroClasses; r++){
-            cout << setw(tamanho) << ultimaMatriz[v*numeroClasses+r];
-            if (r < numeroClasses-1)
-             cout << " | ";
-        }
+        cout << setw(tamanho) << classes[v];
+        for (r=0; r<numeroClasses; r++)
+            cout  << " | " << setw(tamanho) << ultimaMatriz[v*numeroClasses+r];
         cout << endl;
     }
     for (v=0; v<tamanho*3+6; v++)
