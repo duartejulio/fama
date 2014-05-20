@@ -27,7 +27,7 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
     int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
-    names.open("c50temp.names");
+    names.open("c50tempT.names");
 
     numeroClasses = classes.size();
     for (c=0;c<numeroClasses;c++){
@@ -62,11 +62,10 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
         valoresPossiveis.push_back(valores);
         indexes.push_back(corpus.pegarPosAtributo(atributos[a]));
     }
-
     names.close();
 
     //gera data
-    data.open("c50temp.data");
+    data.open("c50tempT.data");
     for (c=0;c<corpus.pegarQtdConjExemplos();c++)
         for (e=0;e<corpus.pegarQtdExemplos(c);e++){
             for (a=0;a<numeroAtributos;a++){
@@ -79,12 +78,11 @@ Classificador *C50Treinador::executarTreinamento( Corpus &corpus, int atributo )
             data << corpus(c,e,atributo) << endl;
         }
     data.close();
-
     //chama função
-    c50train("c50temp", cf);
+    c50train("c50tempT", cf);
 
     //carrega .tree
-    tree.open("c50temp.tree");
+    tree.open("c50tempT.tree");
     while (!tree.eof()){
         getline(tree,linha);
         linhasArquivo.push_back(linha);

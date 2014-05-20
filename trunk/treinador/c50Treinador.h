@@ -12,6 +12,7 @@ class C50Treinador : public Treinador
         float cf;
     public:
         C50Treinador(float cf, vector<string> atributos, vector<string> classes);
+        void ajustarAtributos(vector<string> atr){atributos = atr;}
         virtual ~C50Treinador();
         virtual Classificador *executarTreinamento( Corpus &corpus, int atributo );
 };
