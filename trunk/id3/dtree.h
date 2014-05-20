@@ -1,5 +1,6 @@
 #include "../corpus/corpusmatriz.h"
 
+#include "../treinador/c50treinador.h"
 #include "../treinador/treinador.h"
 #include "../classificador/classificador.h"
 #include "treeno.h"
@@ -31,11 +32,12 @@ class DecisionTree:public Treinador{
 };
 
 class RandomForest:public Treinador{
-        DecisionTree *arvoreBase;
+        Treinador *arvoreBase;
         vector <string> atributos;
-        unsigned int quantidadeMembros, numeroAtributos;
+        unsigned int quantidadeMembros, numeroAtributos, modo;
     public:
         RandomForest(DecisionTree*, vector <string>, unsigned int, unsigned int);
+        RandomForest(C50Treinador*, vector <string>, unsigned int, unsigned int);
         Classificador* executarTreinamento( Corpus &corpus, int atributo );
 };
 
@@ -46,4 +48,5 @@ class ComiteClassificador:public Classificador{
         bool executarClassificacao( Corpus &corpusProva, int atributo);
         bool gravarConhecimento( string arquivo ){return true;}
         bool carregarConhecimento( string arquivo ){return true;}
+        string descricaoConhecimento ();
 };

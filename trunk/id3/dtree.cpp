@@ -50,6 +50,12 @@ bool ComiteClassificador::executarClassificacao( Corpus &corpus, int atributo){
 
     }
 
+    for (i=0; i < quantidadeMembros; i++){
+        ostringstream nomeVoto;
+        nomeVoto << "voto" << i;
+        corpus.removerAtributo(nomeVoto.str());
+    }
+
     return true;
 }
 
@@ -58,7 +64,24 @@ RandomForest::RandomForest(DecisionTree *dt, vector <string> atr, unsigned int n
     atributos = atr;
     quantidadeMembros = n;
     numeroAtributos = nAtr;
+    modo = 0;
 }
+
+RandomForest::RandomForest(C50Treinador *dt, vector <string> atr, unsigned int n, unsigned int nAtr){
+    arvoreBase = dt;
+    atributos = atr;
+    quantidadeMembros = n;
+    numeroAtributos = nAtr;
+    modo = 1;
+}
+
+string ComiteClassificador::descricaoConhecimento (){
+    string tudo = "";
+    for (unsigned i=0; i<comite.size(); i++)
+        tudo += comite[i]->descricaoConhecimento() + "\n";
+    return tudo;
+}
+
 
 Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo ){
     vector <string> atributosBase(atributos);
@@ -70,14 +93,29 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
     srand ( unsigned ( time (NULL) ) );
 
     atributoAlvo = corpus.pegarAtributo(atributo);
-
+/*
 //    cout << endl << "valor de atributo alvo: " << atributo << endl;
+    cout << "\nAtributosBase1:";
+    for (unsigned int i=0; i < atributosBase.size(); i++)
+        cout << atributosBase[i] << " ";
+    cout << endl;
 
     //remove atributoalvo
-    for (i=0; i < atributosBase.size();i++)
+    for (i=0; i < atributosBase.size();i++){
+        cout << atributosBase[i] << " - " << atributoAlvo << endl;
         if (atributosBase[i]==atributoAlvo)
             break;
-    atributosBase.erase(atributosBase.begin() + i);
+    }
+    if (i!=atributosBase.size())
+        atributosBase.erase(atributosBase.begin() + i);
+    cout << "\nAtributosBase2:";
+    for (unsigned int i=0; i < atributosBase.size(); i++)
+        cout << atributosBase[i] << " ";
+    cout << endl;
+*/
+
+
+
 
     for (i=0; i<quantidadeMembros; i++){
         vector <string> atributosAtuais(atributosBase);
@@ -92,14 +130,18 @@ Classificador* RandomForest::executarTreinamento( Corpus &corpus, int atributo )
             atributosAtuais.pop_back();
         }
 
-        //readiciona atributo alvo
-        atributosAtuais.push_back(atributoAlvo);
+        //readiciona atributo alvo no ID3
+        if (modo==0)
+            atributosAtuais.push_back(atributoAlvo);
 
 
 //        atributo = numeroAtributos;
 //        cout << endl << "valor de atributo alvo: " << atributo << endl;
 
-        arvoreBase->ajustarAtributos(atributosAtuais);
+        if (modo==0)
+            ((DecisionTree*)arvoreBase)->ajustarAtributos(atributosAtuais);
+        else
+            ((C50Treinador*)arvoreBase)->ajustarAtributos(atributosAtuais);
 
         comite.push_back(arvoreBase->executarTreinamento(corpus, atributo));
 
