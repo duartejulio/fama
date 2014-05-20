@@ -43,7 +43,6 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
     int c, a, numeroClasses, numeroAtributos, e, v, numeroValores;
 
     //gera arquivo .names
-
     names.open("c50temp.names");
 
     numeroClasses = classes.size();
@@ -75,7 +74,6 @@ bool C50Classificador::executarClassificacao( Corpus &corpus, int atributo)
 
         indexes.push_back(corpus.pegarPosAtributo(atributos[a]));
     }
-
     names.close();
 
     //gera cases
