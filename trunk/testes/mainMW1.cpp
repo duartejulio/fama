@@ -96,9 +96,9 @@ int main()
 
     RandomForest objForest(&objC50, atributosTreino, 101, 5);//número de árvores, quantidade de atributos
 
-    //treinador = &objC50;
+    treinador = &objC50;
     //treinador = &objStump;
-    treinador = &objForest;
+    //treinador = &objForest;
 
 
     vector< vector< float > > v = objValidador.executarExperimento(*treinador, objCorpus, iResposta, iSaida);

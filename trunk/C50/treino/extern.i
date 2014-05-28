@@ -166,5 +166,5 @@ extern	int		KRInit,
 extern	FILE		*TRf;
 extern	char		Fn[500];
 
-extern	FILE  		*Of;
+extern	FILE  		*Of, *Uf;
 
