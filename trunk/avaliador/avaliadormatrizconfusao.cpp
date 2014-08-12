@@ -48,7 +48,7 @@ vector<float> AvaliadorMatrizConfusao::calcularDesempenho( Corpus &corpus, int a
 
             }
             if (posVerdadeiro == -1 || posResposta == -1 ){
-                cout << "Classe não encontrada";
+                cout << "Classe não encontrada, uma exceção será gerada.";
                 throw "Classe não encontrada pela matriz de confusão";
             }
 
