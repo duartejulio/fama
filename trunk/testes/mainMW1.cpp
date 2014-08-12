@@ -96,8 +96,8 @@ int main()
 
     RandomForest objForest(&objC50, atributosTreino, 101, 5);//número de árvores, quantidade de atributos
 
-    treinador = &objC50;
-    //treinador = &objStump;
+    //treinador = &objC50;
+    treinador = &objStump;
     //treinador = &objForest;
 
 
@@ -109,20 +109,21 @@ int main()
         media +=v[c][0];
     }
     cout << "Media: " << 100.*media/NFOLDS << endl;
-    return 0;
-
+//    return 0;
+/*
     Classificador *objClass = treinador->executarTreinamento(objCorpus, iResposta);
     cout << "Treinou\n";
     objClass->executarClassificacao(objCorpus, iSaida);
     printf( "Acuracia: %.2f%%\n", 100 * objAvalAcur.calcularDesempenho( objCorpus,
      iResposta, iSaida)[0]);
-    //cout << objClass->descricaoConhecimento();
+    cout << objClass->descricaoConhecimento();
+    delete objClass;
+*/
     objCorpus.gravarArquivo("#temp.txt");
     //cout << objClass->descricaoConhecimento();
     objAvalMatrizConfusao.calcularDesempenho(objCorpus, iResposta, iSaida);
     objAvalMatrizConfusao.imprimirMatrizConfusao();
 
-    delete objClass;
 
     //imprime matriz
 
