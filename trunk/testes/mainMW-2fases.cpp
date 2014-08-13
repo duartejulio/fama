@@ -125,8 +125,8 @@ int main()
     iSaidaFase2 = objCorpus.criarAtributo("saidaFase2", "0");
 
     treinador = &objStump2;
-    //treinador = &objC50;
-    //treinador = &objForest;
+    treinador = &objC502;
+    //treinador = &objForest2;
 
     vector< vector< float > > v2 = objValidador2.executarExperimento(*treinador, objCorpus, iRespostaFase2, iSaidaFase2);
 
