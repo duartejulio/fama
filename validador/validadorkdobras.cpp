@@ -53,9 +53,8 @@ vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &trei
                 j++;
             }
 
-
-        delete vetCorpus[0];
         delete vetCorpus[1];
+        delete vetCorpus[0];
         delete classificador;
     }
 
