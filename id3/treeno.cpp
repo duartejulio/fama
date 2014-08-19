@@ -122,6 +122,7 @@ void TreeNo::pegarValoresNo (Corpus &corpus, vector<string> atr, int atributo, i
 }
 
 
+
 // retorna o nome do atributo que aparece com mais frequencia e da frequencia
 void TreeNo::pegarValorMaiorFreq (Corpus &corpus, int atributo) {
         map <string, int> mapaValoresMaior;
