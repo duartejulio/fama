@@ -14,6 +14,8 @@
 
 #define NFOLDS 10
 
+#define FASE 2
+
 using namespace std;
 
 int main()
@@ -23,28 +25,28 @@ int main()
     char escolha;
 
     //carrega conjunto de dados
-    CorpusMatriz objCorpus(atributos, ';', true,true);
-    objCorpus.carregarArquivo( "../inputs/experimentoI.dat" );
+    CorpusMatriz objCorpus(atributos, ';', true, true);
+    if (FASE==1)
+        objCorpus.carregarArquivo( "../inputs/experimento.dat" );
+    else
+        objCorpus.carregarArquivo( "#experimento_fase1.txt");
 
+    atributos = objCorpus.pegarAtributos();
 
-    //faz o merge dos corpora
-    CorpusMatriz objCorpus2(atributos, ';', true,true);
-    objCorpus2.carregarArquivo( "../inputs/experimentoII.dat" );
-
-    int iAtributo1 = objCorpus.criarAtributo("ClasseMalware","O"),
-        iAtributo2 = objCorpus2.pegarPosAtributo("ClassesMal");
-
-    cout << iAtributo1 << "-" << iAtributo2 << endl;
-    for (int c=0;c<objCorpus.pegarQtdConjExemplos();c++)
-        for (int e=0;e<objCorpus.pegarQtdExemplos(c);e++)
-            objCorpus(c,e,iAtributo1,objCorpus2(c,e,iAtributo2));
+    //quantidade de atributos
+    cout << (atributos.size()) << " atributos\n";
 
     //quantidade de conjuntos de exemplos
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";
 
     //indice do atributo a aprender
     iResposta = objCorpus.pegarPosAtributo("Malware");
-    iRespostaFase2 = objCorpus.pegarPosAtributo("ClasseMalware");
+    iRespostaFase2 = objCorpus.pegarPosAtributo("ClassesMal");
+    if (FASE==1)
+        iSaidaFase1 = objCorpus.criarAtributo("saida", "O");
+    else
+        iSaidaFase1 = objCorpus.pegarPosAtributo("saida");
+
 
     //indica classes alvo
     classes.push_back("maligno");
@@ -61,7 +63,6 @@ int main()
     classesDeMalware.push_back("spyware");
 
     //cout << c0 << " / " << c1 << " / " << c2 << endl;
-    atributos = objCorpus.pegarAtributos();
 
     cout << "(e) para estático, (d) para dinâmico, ou todos:";
     escolha='e';
@@ -71,7 +72,7 @@ int main()
 
     //remove atributos que nao devem ser utilizados pelo treinamento
     for (unsigned int i=0; i < atributos.size(); i++)
-        if (((int)i)!=iResposta && ((int)i)!=iRespostaFase2){
+        if (((int)i)!=iResposta && ((int)i)!=iRespostaFase2 && ((int)i)!=iSaidaFase1){
             if (escolha=='D' && atributos[i][0]=='D')
                 atributosTreino.push_back(atributos[i]);
             else
@@ -85,18 +86,18 @@ int main()
     AvaliadorAcuracia objAvalAcur;
     Treinador* treinador;
 
+if (FASE==1){
     //Fase 1
 
     DecisionStump objStump(atributosTreino, classes);
-    C50Treinador objC50(25, atributosTreino, classes);
-    RandomForest objForest(&objC50, atributosTreino, 101, 5);//número de árvores, quantidade de atributos
+    C50Treinador objC50(60, atributosTreino, classes);
+    RandomForest objForest(&objC50, atributosTreino, 10, 6);//número de árvores, quantidade de atributos
 
     AvaliadorMatrizConfusao objAvalMatrizConfusao(classes);
     ValidadorKDobras objValidador(objAvalAcur, NFOLDS);
-    iSaidaFase1 = objCorpus.criarAtributo("saida", "0");
 
-    treinador = &objStump;
-    //treinador = &objC50;
+    //treinador = &objStump;
+    treinador = &objC50;
     //treinador = &objForest;
 
     vector< vector< float > > v = objValidador.executarExperimento(*treinador, objCorpus, iResposta, iSaidaFase1);
@@ -108,29 +109,30 @@ int main()
     }
     cout << endl << "Media: " << 100.*media/NFOLDS << endl;
 
+    objCorpus.gravarArquivo("#experimento_fase1.txt");
     objAvalMatrizConfusao.calcularDesempenho(objCorpus, iResposta, iSaidaFase1);
     objAvalMatrizConfusao.imprimirMatrizConfusao();
-
-
+}
+else{
     //Fase 2
     cout << "Fase 2\n";
     atributosTreino.push_back("saida");
 
     DecisionStump objStump2(atributosTreino, classesDeMalware);
     C50Treinador objC502(25, atributosTreino, classesDeMalware);
-    RandomForest objForest2(&objC50, atributosTreino, 101, 5);//número de árvores, quantidade de atributos
+    RandomForest objForest2(&objC502, atributosTreino, 101, 5);//número de árvores, quantidade de atributos
 
     AvaliadorMatrizConfusao objAvalMatrizConfusaoFase2(classesDeMalware);
     ValidadorKDobras objValidador2(objAvalAcur, NFOLDS);
     iSaidaFase2 = objCorpus.criarAtributo("saidaFase2", "0");
 
-    treinador = &objStump2;
+    //treinador = &objStump2;
     treinador = &objC502;
     //treinador = &objForest2;
 
     vector< vector< float > > v2 = objValidador2.executarExperimento(*treinador, objCorpus, iRespostaFase2, iSaidaFase2);
 
-    media = 0;
+    float media = 0;
     for (c=0;c<NFOLDS;c++){
         cout << c << " - " << 100.*v2[c][0] << "; ";
         media +=v2[c][0];
@@ -139,7 +141,7 @@ int main()
 
     objAvalMatrizConfusaoFase2.calcularDesempenho(objCorpus, iRespostaFase2, iSaidaFase2);
     objAvalMatrizConfusaoFase2.imprimirMatrizConfusao();
-
+}
 
   return 0;
 }
