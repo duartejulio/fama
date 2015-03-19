@@ -1,0 +1,17 @@
+inserindo classes de treinamento e classificacao do adaboost classico, alem
+de classes intermediarias pra poder fazer o algoritmo, e o decision stump
+
+--Esta linha, e as abaixo, serão ignoradas--
+
+A    classificador/classificador_adaboost.cpp
+A    classificador/classificador_adaboost.h
+A    classificador/classificador_duasclasses.cpp
+A    classificador/classificador_duasclasses.h
+A    classificador/classificador_stump.cpp
+A    classificador/classificador_stump.h
+A    treinador/treinador_adaboost.cpp
+A    treinador/treinador_adaboost.h
+A    treinador/treinador_distribuicao.cpp
+A    treinador/treinador_distribuicao.h
+A    treinador/treinador_stump.cpp
+A    treinador/treinador_stump.h
