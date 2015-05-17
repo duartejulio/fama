@@ -1,4 +1,6 @@
 #include "corpus.h"
+#include <stdlib.h> //retrocompatibilidade
+#include <time.h>
 
 bool eh_numero(string val){
     int i, tam;
@@ -411,4 +413,48 @@ bool Corpus::discreto(int atributo, vector<string> &possiveisValores){
 
 bool Corpus::discreto(string atributo, vector<string> &possiveisValores){
     return discreto(pegarPosAtributo(atributo), possiveisValores);
+}
+
+Corpus* Corpus::reamostrar (vector<double>* distribuicao, bool porFrase) {
+    Corpus* alvo = this->clone();
+    if (distribuicao == NULL)
+        return alvo;
+    alvo->frases.clear();
+
+    if (!porFrase) {
+        vector<double>* novo = new vector<double>(this->qtd_sentencas);
+        double soma; int k = 0;
+        for (int i = 0; i < this->qtd_sentencas; i++) {
+            soma = 0.0;
+            for(int j = 0; j < this->pegarQtdTokens(i); j++)
+                soma += distribuicao->at(k++);
+            novo->at(i) = soma;
+        }
+        distribuicao = novo;
+    }
+
+    srand(time(NULL));
+
+    //Calcular qual exemplo vai cair
+    double random;
+    int total = this->pegarQtdTotalExemplos();
+    for (int i = 0; i < this->qtd_sentencas; i++) {
+        //Por limitaçoes do rand, calcular quantas vezes for possivel para que a soma possa chegar no ultimo elemento
+        random = 0.0;
+        for (int j = 0; j < total/RAND_MAX; j++)
+            random += (double)rand();
+        //Normalizando random
+        random /= total;
+        //Aqui calcula qual exemplo pegar
+        //Vai diminuindo o random do peso do exemplo iterado, e, se o valor do random for menor ou igual a zero, significa
+        //que ele o exemplo da iteraçao atual deve entrar
+        int exemplo = 0;
+        for (;random>0;random -= distribuicao->at(exemplo++));
+        alvo->frases.push_back(this->frases.at(exemplo));
+    }
+
+    if (!porFrase)
+        delete distribuicao;
+
+    return alvo;
 }
