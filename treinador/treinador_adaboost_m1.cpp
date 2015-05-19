@@ -7,6 +7,7 @@ TreinadorAdaboostM1::TreinadorAdaboostM1(Treinador *weak, bool aceitaDist, int i
     iterations = it;
     novoAtributo = -1;
     atributoTeste = atributo;
+    desconhecido = unknown;
     if (aceitaDist)
         base = new AcessoAoTreinador(dynamic_cast<TreinadorDistribuicao*>(weak));
     else
@@ -30,6 +31,8 @@ Classificador* TreinadorAdaboostM1::executarTreinamento( Corpus &corpus, int atr
         }
     }
     valores.push_back(desconhecido);
+
+    base->atualizarDistribuicao(NULL);
 
     //Preparar corpus
     try {

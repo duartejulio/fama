@@ -11,7 +11,7 @@ class TreinadorAdaboostM1 : public Treinador
         TreinadorDistribuicao *weak;
     public:
         AcessoAoTreinador() {}
-        explicit AcessoAoTreinador(TreinadorDistribuicao *weak) {this->weak = weak;}
+        explicit AcessoAoTreinador(TreinadorDistribuicao *weak) : weak(weak) {}
         virtual ~AcessoAoTreinador() {delete weak;}
         virtual Classificador* treinar(Corpus &corpus, int atributo) {
             return weak->executarTreinamento(corpus, atributo);
@@ -31,7 +31,7 @@ class TreinadorAdaboostM1 : public Treinador
         Treinador *weak;
         vector<double> *distribuicao;
     public:
-        explicit AcessoAoTreinadorProxy(Treinador *weak) {this->weak = weak;}
+        explicit AcessoAoTreinadorProxy(Treinador *weak) : weak(weak), distribuicao(NULL) {}
         virtual ~AcessoAoTreinadorProxy() {delete weak;}
         virtual Classificador* treinar(Corpus &corpus, int atributo) {
             Corpus *redistribuicao = corpus.reamostrar(distribuicao, true);

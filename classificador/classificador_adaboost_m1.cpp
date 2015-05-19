@@ -1,6 +1,5 @@
 #include "classificador_adaboost_m1.h"
 #include <cmath>
-#include <limits>
 
 
 ClassificadorAdaboostM1::~ClassificadorAdaboostM1()
@@ -10,7 +9,7 @@ ClassificadorAdaboostM1::~ClassificadorAdaboostM1()
 }
 
 bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int atributo ) {
-    vector<vector<double> > exemplos(corpusProva.pegarQtdConjExemplos(), vector<double>(valores.size(), -std::numeric_limits<double>::max()));
+    vector<vector<double> > exemplos(corpusProva.pegarQtdTotalExemplos(), vector<double>(valores.size(), 0.0d));
     int k, indice;
     for (int t = 0; t < classificadores.size(); t++) {
         (classificadores[t])->executarClassificacao(corpusProva, atributo);
@@ -37,7 +36,7 @@ bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int at
             maxBeta = exemplos[k][valores.size()-1];
             maxAtr = valores.size() - 1;
             for (int a = 0; a < valores.size() - 1; a++) {
-                if (maxBeta >= exemplos[k][a]) {
+                if (maxBeta <= exemplos[k][a]) {
                     maxBeta = exemplos[k][a];
                     maxAtr = a;
                 }
