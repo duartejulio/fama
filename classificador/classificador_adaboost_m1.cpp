@@ -1,6 +1,9 @@
 #include "classificador_adaboost_m1.h"
+#include "classificador/classificador_stump.h"
 #include <cmath>
-
+#include <typeinfo>
+#include <fstream>
+#include <sstream>
 
 ClassificadorAdaboostM1::~ClassificadorAdaboostM1()
 {
@@ -48,11 +51,90 @@ bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int at
 }
 
 bool ClassificadorAdaboostM1::gravarConhecimento( string arquivo ) {
-    return false;
+    //return false;
+    ofstream saida(arquivo.c_str());
+
+    if(!saida.is_open()) {
+        return false;
+    }
+
+    for (int i = 0; i < valores.size() - 1; i++)
+        saida << '"' << valores[i] << "\" ";
+    saida << '"' << valores[valores.size() - 1] << '"' << endl;
+
+    int iteracoes = betas.size();
+
+    saida << iteracoes << ' ';
+    for (int i = 0; i < iteracoes - 1; i++) {
+        saida << betas[i] << ' ';
+    }
+
+    saida << betas[iteracoes-1] << endl;
+
+    saida << typeid(*(classificadores[0])).name();
+
+    string extensao = arquivo.substr(arquivo.rfind("."),arquivo.length());
+    arquivo = arquivo.substr(0, arquivo.rfind("."));
+
+    for (int i = 0; i < iteracoes; i++) {
+        ostringstream os;
+        os << arquivo << i << extensao;
+        classificadores[i]->gravarConhecimento(os.str());
+    }
+
+    return true;
 }
 
 bool ClassificadorAdaboostM1::carregarConhecimento( string arquivo ) {
-    return false;
+    //return false;
+    ifstream entrada(arquivo.c_str());
+
+    if(!entrada.is_open()) {
+        return false;
+    }
+
+    string valor = "";
+    char ch;
+    bool continua = false;
+
+    while ((ch = entrada.get()) != '\n') {
+        if (ch == '"') {
+            continua = !continua;
+            if (!valor.empty())
+                valores.push_back(valor);
+            valor = "";
+        } else {
+            if (continua) {
+                valor += ch;
+            }
+        }
+    }
+
+    int iteracoes = betas.size();
+
+    entrada >> iteracoes;
+    betas.resize(iteracoes, 0);
+    classificadores.resize(iteracoes, NULL);
+    for (int i = 1; i < iteracoes; i++) {
+        entrada >> betas[i];
+    }
+
+    string tipo;
+
+    entrada >> tipo;
+
+    string extensao = arquivo.substr(arquivo.rfind("."),arquivo.length());
+    arquivo = arquivo.substr(0, arquivo.rfind("."));
+
+    for (int i = 0; i < iteracoes; i++) {
+        ostringstream os;
+        os << arquivo << i << extensao;
+        if (tipo.find("ClassificadorStump"))
+            classificadores[i] = new ClassificadorStump();
+        (classificadores[i])->carregarConhecimento(os.str());
+    }
+
+    return true;
 }
 
 string ClassificadorAdaboostM1::descricaoConhecimento () {

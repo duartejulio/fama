@@ -134,12 +134,12 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
     {
         if ( ch != '[' && ch != '#' )
         {
-            if( ch != '\n' ) //considera frases com distancia maior que 1 espaço
+            if( ch != '\n' && ch != '\r') //considera frases com distancia maior que 1 espaço
             {
                 for( register int i = 0; i < qtd_atributos; ++i )
                 {
                     // lê a palavra que será colocada no vector símbolos
-                    while( ( ch != separador || i == qtd_atributos - 1 ) && ch != '\n' && !arqin.eof() ) //torna programa mais
+                    while( ( ch != separador || i == qtd_atributos - 1 ) && ch != '\n' && ch != '\r' && !arqin.eof() ) //torna programa mais
                     {                                                              //robusto em relação a erros '_' no corpus
                         str.push_back( ch );
                         arqin.get( ch );
@@ -202,6 +202,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
         else
         {
             arqin.ignore( INF, '\n' );
+            arqin.ignore( INF, '\r');
             arqin.get( ch );
         }
     }

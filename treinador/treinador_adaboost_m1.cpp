@@ -22,15 +22,10 @@ Classificador* TreinadorAdaboostM1::executarTreinamento( Corpus &corpus, int atr
 
     for (int i = 0; i < corpus.pegarQtdSentencas(); i++) {
         for (int j = 0; j < corpus.pegarQtdExemplos(i); j++) {
-            bool aceita = true;
-            for(int k = 0; k < valores.size(); k++)
-                if (valores[k] == corpus(i, j, atributo))
-                    aceita = false;
-            if (aceita)
-                valores.push_back(corpus(i, j, atributo));
+            valores.insert(corpus(i, j, atributo));
         }
     }
-    valores.push_back(desconhecido);
+    valores.insert(desconhecido);
 
     base->atualizarDistribuicao(NULL);
 
@@ -69,7 +64,7 @@ Classificador* TreinadorAdaboostM1::executarTreinamento( Corpus &corpus, int atr
 
     base->atualizarDistribuicao(NULL);
 
-    return new ClassificadorAdaboostM1(valores, classificadores, betas);
+    return new ClassificadorAdaboostM1(vector<string>(valores.begin(), valores.end()), classificadores, betas);
 }
 
 vector<bool>* TreinadorAdaboostM1::calcularVetorErro(Classificador* classificador, Corpus& corpus, int atributo) {
