@@ -3,6 +3,7 @@
 
 #include "treinador.h"
 #include "treinador/treinador_distribuicao.h"
+#include <set>
 
 class TreinadorAdaboostM1 : public Treinador
 {
@@ -58,7 +59,7 @@ class TreinadorAdaboostM1 : public Treinador
     int novoAtributo;
     int iterations;
     string atributoTeste;
-    vector<string> valores;
+    set<string> valores;
     string desconhecido;
 public:
     TreinadorAdaboostM1(Treinador *weak, bool aceitaDist, int it = 10, string atributo = "resposta", string unknown = "desconhecido");

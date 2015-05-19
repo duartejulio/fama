@@ -3,10 +3,12 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <typeinfo>
 
 ClassificadorAdaBoost::~ClassificadorAdaBoost()
 {
-
+    for(int k = 0; k < baseClassifier.size(); k++)
+        delete baseClassifier.at(k);
 }
 
 bool ClassificadorAdaBoost::executarClassificacao(Corpus &corpusProva, int atributo) {
@@ -68,12 +70,14 @@ bool ClassificadorAdaBoost::gravarConhecimento(string arquivo) {
 
     int iteracoes = alpha.size();
 
-    saida << iteracoes;
-    for (int i = 1; i < iteracoes - 1; i++) {
+    saida << iteracoes << ' ';
+    for (int i = 0; i < iteracoes - 1; i++) {
         saida << alpha[i] << ' ';
     }
 
     saida << alpha[iteracoes-1] << endl;
+
+    saida << typeid(*(baseClassifier[0])).name() << endl;
 
     string extensao = arquivo.substr(arquivo.rfind("."),arquivo.length());
     arquivo = arquivo.substr(0, arquivo.rfind("."));
@@ -88,20 +92,23 @@ bool ClassificadorAdaBoost::gravarConhecimento(string arquivo) {
 }
 
 bool ClassificadorAdaBoost::carregarConhecimento(string arquivo) {
-    ifstream saida(arquivo.c_str());
+    ifstream entrada(arquivo.c_str());
 
-    if(!saida.is_open()) {
+    if(!entrada.is_open()) {
         return false;
     }
 
     int iteracoes = alpha.size();
 
-    saida >> iteracoes;
+    entrada >> iteracoes;
     alpha.resize(iteracoes, 0);
     baseClassifier.resize(iteracoes, NULL);
-    for (int i = 1; i < iteracoes; i++) {
-        saida >> alpha[i];
+    for (int i = 0; i < iteracoes; i++) {
+        entrada >> alpha[i];
     }
+
+    string tipo;
+    entrada >> tipo;
 
     string extensao = arquivo.substr(arquivo.rfind("."),arquivo.length());
     arquivo = arquivo.substr(0, arquivo.rfind("."));
@@ -109,7 +116,8 @@ bool ClassificadorAdaBoost::carregarConhecimento(string arquivo) {
     for (int i = 0; i < iteracoes; i++) {
         ostringstream os;
         os << arquivo << i << extensao;
-        baseClassifier[i] = new ClassificadorStump();
+        if (tipo.find("ClassificadorStump"))
+            baseClassifier[i] = new ClassificadorStump();
         (baseClassifier[i])->carregarConhecimento(os.str());
     }
 
