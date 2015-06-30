@@ -47,7 +47,7 @@ Classificador* DecisionStump::executarTreinamento(Corpus& corpus, int atributo)
     vector<double> *pMaisV, *pMenosV, *maxMaisV, *maxMenosV;
     int maxAtr = 0, numAtr; double maxGanho = 0.0, ganho;
     for (int att = 0; att < corpus.pegarQtdAtributos(); att++) {
-        if (att == atributo)
+        if (att == atributo || (desconsiderar.find(corpus.pegarAtributo(att)) != desconsiderar.end()))
             continue;
         values = new map<string, int>;
         pMaisV = new vector<double>;

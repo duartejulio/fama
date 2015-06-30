@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <exception>
+#include <iomanip>
+
+#include "../classificador/classificador_provavel.h"
+#include "../corpus/corpusmatriz.h"
+#include "../treinador/treinador_provavel.h"
+#include "../avaliador/avaliador_prob.h"
+#include "../validador/validadorkdobras.h"
+
+using namespace std;
+
+int main()
+{
+	string entrada1, entrada2, path = "../inputs/";
+	vector<string> opcoes;
+	vector<string>::iterator it;
+	int tab;
+    try
+    {
+        cout << "Primeira implementação do FAMA... Criando corpus.\nDigite o nome do arquivo do corpus: ";
+        cin >> entrada1;
+        CorpusMatriz objCorpus(vector<string>(), ';', true, true);
+        objCorpus.carregarArquivo(path.append(entrada1).c_str());
+        cout << "Corpus criado!\n" << endl;
+
+        opcoes = objCorpus.pegarAtributos();
+
+        cout << "Criar treinador, e pegar posicao que vai ser testada. Possíveis atributos: \n";
+        for (it = opcoes.begin(), tab = 0; it != opcoes.end(); ++it, ++tab)
+        {
+			cout << *it ;
+			if (tab % 10 && tab)
+				cout << '\n';
+			else
+				cout << '\t';
+		}
+		cout << "Opcao: ";
+        cin >> entrada2;
+        TreinadorProvavel treinador;
+        int gabarito = objCorpus.pegarPosAtributo(entrada2);
+
+        Classificador *objClass;
+
+        cout << "Executando treinamento...\n";
+        objClass = treinador.executarTreinamento(objCorpus, gabarito);
+        objClass->gravarConhecimento("know.txt");
+        cout << "Treinamento executado, agora vamos para a prova.\n" << endl;
+
+        int minha_resposta = objCorpus.criarAtributo("resposta", "Desconhecido");
+
+        cout << "Classificando...\n";
+        objClass->executarClassificacao(objCorpus, minha_resposta);
+        entrada1 += ".copy";
+        objCorpus.gravarArquivo(entrada1.c_str());
+        cout << "Classificado com sucesso. Veja o resultado no arquivo iris2.\n" << endl;
+
+        cout << "Executar avaliacao...\n";
+        AvaliadorProvavel vf;
+        vector<float> percentual = vf.calcularDesempenho(objCorpus, gabarito, minha_resposta);
+
+        cout << "Avaliacao executada, agora vamos aos resultados.\n";
+        /*for (unsigned int i = 1; i < percentual.size(); ++i)
+        {
+            cout << "Frase " << i << ": " << 100*percentual[i] << endl;
+        }*/
+        cout << "RESULTADO: " << setprecision(4) << 100*percentual[0] << "%." << endl;
+
+        cout << "\nExecutar a validação. Validador K-Dobras.\nDigite o número de experimentos: ";
+        cin >> tab;
+        ValidadorKDobras valid(vf, tab);
+        vector<vector<float> > dobras = valid.executarExperimento(treinador, objCorpus, gabarito, minha_resposta);
+        for (int i = 0; i < tab; i++)
+        {
+			cout << "Dobra " << i << ": " << setprecision(4) << 100*dobras[0][0] << "%." << endl;
+        }
+    }
+    catch (string e)
+    {
+        cout << "ERRO: " << e << endl;
+    }
+    catch (exception& e)
+    {
+        cout << e.what() << endl;
+    }
+    return 0;
+}

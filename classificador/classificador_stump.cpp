@@ -4,7 +4,7 @@
 bool ClassificadorStump::executarClassificacao(Corpus &corpusProva, int atributo) {
     int atrBase = corpusProva.pegarPosAtributo(this->atrResposta);
     if (atrBase == atributo) {
-		cout << "ERRO! Não pode ser igual";
+        cout << "ERRO! Não pode ser igual!" << endl;
 		return false;
     }
     string valor;
