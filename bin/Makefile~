@@ -1,0 +1,35 @@
+#Variaveis e diretórios
+
+CXX=g++
+LIBS=-lm
+
+OBJ_DIR=dir/
+
+CLASS_DIR=../classificador
+TREIN_DIR=../treinador
+CORPU_DIR=../corpus
+AVALI_DIR=../avaliador
+VALID_DIR=../validador
+TESTE_DIR=../testes
+
+#Arquivos
+
+CLASS_NAMES=classificador classificador_adaboost_m1 classificadorhmm
+TREIN_NAMES=treinador treinador_adaboost_m1 hmm
+CORPU_NAMES=corpus corpusmatriz
+AVALI_NAMES=Avaliador avaliador_prob
+VALID_NAMES=validador validadorkdobras
+TESTE_NAMES="AdaBoostM1 com HMM"
+
+ALL_FILES=$(CLASS_NAMES) $(TREIN_NAMES) $(CORPU_NAMES) $(AVALI_NAMES) $(VALID_NAMES) $(TESTE_NAMES)
+
+#Regras
+
+all: teste
+
+teste: $(addprefix $(dir), (addsuffix .o, $(ALL_FILES)))
+	$(CXX) -o $@ $^ $(LIBS)
+	
+
+$(addsuffix .o, $(CLASS_NAMES)): $(addsuffix .c, $(CLASS_NAMES))
+	

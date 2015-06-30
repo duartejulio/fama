@@ -8,6 +8,8 @@
 #include "../treinador/treinador_provavel.h"
 #include "../avaliador/avaliador_prob.h"
 #include "../validador/validadorkdobras.h"
+#include "../treinador/hmm.h"
+#include "../classificador/classificadorhmm.h"
 
 using namespace std;
 
