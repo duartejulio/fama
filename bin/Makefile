@@ -3,25 +3,32 @@
 CXX=g++
 LIBS=-lm
 
-OBJ_DIR=dir/
+OBJ_DIR=obj/
 
-CLASS_DIR=../classificador
-TREIN_DIR=../treinador
-CORPU_DIR=../corpus
-AVALI_DIR=../avaliador
-VALID_DIR=../validador
-TESTE_DIR=../testes
+CLASS_DIR=../classificador/
+TREIN_DIR=../treinador/
+CORPU_DIR=../corpus/
+AVALI_DIR=../avaliador/
+VALID_DIR=../validador/
+TESTE_DIR=../testes/
 
 #Arquivos
 
-CLASS_NAMES=classificador classificador_adaboost_m1 classificadorhmm
-TREIN_NAMES=treinador treinador_adaboost_m1 hmm
+CLASS_NAMES=classificador classificador_adaboost_m1 classificadorhmm classificador_duasclasses classificador_stump
+TREIN_NAMES=treinador treinador_adaboost_m1 hmm treinador_distribuicao treinador_stump
 CORPU_NAMES=corpus corpusmatriz
 AVALI_NAMES=Avaliador avaliador_prob
 VALID_NAMES=validador validadorkdobras
-TESTE_NAMES="AdaBoostM1 com HMM"
+TESTE_NAMES=AdaBoostM1_com_HMM
 
 ALL_FILES=$(addsuffix .o, $(CLASS_NAMES) $(TREIN_NAMES) $(CORPU_NAMES) $(AVALI_NAMES) $(VALID_NAMES) $(TESTE_NAMES))
+
+_CLASSIFICADOR = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(CLASS_NAMES)))
+_CORPUS = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(CORPU_NAMES)))
+_TREINADOR = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(TREIN_NAMES)))
+_AVALIADOR = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(AVALI_NAMES)))
+_VALIDADOR = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(VALID_NAMES)))
+_TESTE = $(addprefix $(OBJ_DIR),$(addsuffix .o, $(TESTE_NAMES)))
 
 #Regras
 
@@ -31,28 +38,28 @@ teste: $(addprefix $(OBJ_DIR), $(ALL_FILES))
 	$(CXX) -o $@ $^ $(LIBS)
 	
 # Compila os arquivos do Corpus
-$(OBJ_DIR)/$(addsuffix .o, $(CORPU_NAMES)): $(addprefix $(CORPU_DIR),$(addsuffix .cpp, $(CORPU_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(CORPU_DIR)
+$(_CORPUS): obj/%.o: $(addprefix $(CORPU_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(CORPU_DIR)
 
 # Compila os arquivos do Treinador
-$(OBJ_DIR)/$(addsuffix .o, $(TREIN_NAMES)): $(addprefix $(TREIN_DIR),$(addsuffix .cpp, $(TREIN_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(CORPU_DIR) -I$(CLASS_DIR) -I$(TREIN_DIR)
+$(_TREINADOR): obj/%.o: $(addprefix $(TREIN_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(CORPU_DIR) -I$(CLASS_DIR) -I$(TREIN_DIR)
 
 # Compila os arquivos do Classificador
-$(OBJ_DIR)/$(addsuffix .o, $(CLASS_NAMES)): $(addprefix $(CLASS_DIR),$(addsuffix .cpp, $(CLASS_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(CORPU_DIR) -I$(CLASS_DIR)
+$(_CLASSIFICADOR): obj/%.o: $(addprefix $(CLASS_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(CORPU_DIR) -I$(CLASS_DIR) -I$(TREIN_DIR)
 
 # Compila os arquivos do Avaliador
-$(OBJ_DIR)/$(addsuffix .o, $(AVALI_NAMES)): $(addprefix $(AVALI_DIR),$(addsuffix .cpp, $(AVALI_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(AVALI_DIR) -I$(CORPU_DIR)
+$(_AVALIADOR): obj/%.o: $(addprefix $(AVALI_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(AVALI_DIR) -I$(CORPU_DIR)
 
 # Compila os arquivos do Validador
-$(OBJ_DIR)/$(addsuffix .o, $(VALID_NAMES)): $(addprefix $(VALID_DIR),$(addsuffix .cpp, $(VALID_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(VALID_DIR) -I$(CORPU_DIR) -I$(AVALI_DIR)
+$(_VALIDADOR): obj/%.o: $(addprefix $(VALID_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(VALID_DIR) -I$(CORPU_DIR) -I$(AVALI_DIR)
 
 # Compila os arquivos de teste
-$(OBJ_DIR)/$(addsuffix .o, $(TESTE_NAMES)): $(addprefix $(TESTE_DIR),$(addsuffix .cpp, $(TESTE_NAMES)))
-	$(CXX) -c -o $@ $^ -I$(TREIN_DIR) -I$(CLASS_DIR) -I$(VALID_DIR) -I$(CORPU_DIR) -I$(AVALI_DIR)
+$(_TESTE): obj/%.o: $(addprefix $(TESTE_DIR), %.cpp)
+	$(CXX) -c -o $@ $< -I$(TREIN_DIR) -I$(CLASS_DIR) -I$(VALID_DIR) -I$(CORPU_DIR) -I$(AVALI_DIR)
 
 clean:
 	rm -f $(ODIR)/*.o *~

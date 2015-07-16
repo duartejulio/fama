@@ -2,7 +2,6 @@
 #define CLASSIFICADOR_STUMP_H
 
 #include "classificador.h"
-#include "classificador_duasclasses.h"
 
 class ClassificadorStump : public ClassificadorDuasClasses {
 protected:

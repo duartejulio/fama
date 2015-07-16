@@ -2,7 +2,7 @@
 #define VALIDADOR_H
 
 #include "../corpus/corpus.h"
-#include "../avaliador/Avaliador.h"
+#include "../avaliador/avaliador.h"
 #include "../treinador/treinador.h"
 
 class Validador

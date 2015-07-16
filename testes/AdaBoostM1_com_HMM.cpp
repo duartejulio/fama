@@ -3,13 +3,13 @@
 #include <exception>
 #include <iomanip>
 
-#include "../classificador/classificador_provavel.h"
 #include "../corpus/corpusmatriz.h"
-#include "../treinador/treinador_provavel.h"
 #include "../avaliador/avaliador_prob.h"
 #include "../validador/validadorkdobras.h"
 #include "../treinador/hmm.h"
 #include "../classificador/classificadorhmm.h"
+#include "treinador_adaboost_m1.h"
+#include "classificador_adaboost_m1.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ int main()
 {
     try
     {
-    	int gabarito, minha_resposta;
+    	int gabarito, minha_resposta, tab;
     	
     	CorpusMatriz objCorpus;
     	
@@ -25,10 +25,10 @@ int main()
     	gabarito = objCorpus.pegarPosAtributo("pos");
     	minha_resposta = objCorpus.criarAtributo("gabarito", "desconhecido");
     	
-    	TreinadorAdaBoostM1 treinador(new HMM("word"), true, 10, "gabarito", "desconhecido");
+    	TreinadorAdaboostM1 treinador(new HMM("word"), true, 10, "gabarito", "desconhecido");
     	Classificador* objClass = treinador.executarTreinamento( objCorpus, gabarito );
     	
-    	objClass->executarClassificacao( objCorpusProva, minha_resposta );
+    	objClass->executarClassificacao( objCorpus, minha_resposta );
     
        	AvaliadorProvavel vf;
         vector<float> percentual = vf.calcularDesempenho(objCorpus, gabarito, minha_resposta);
@@ -44,10 +44,9 @@ int main()
         cin >> tab;
         ValidadorKDobras valid(vf, tab);
         vector<vector<float> > dobras = valid.executarExperimento(treinador, objCorpus, gabarito, minha_resposta);
-        for (int i = 0; i <
         for (int i = 0; i < tab; i++)
         {
-			cout << "Dobra " << i << ": " << setprecision(4) << 100*dobras[0][0] << "%." << endl;
+			cout << "Dobra " << i << ": " << setprecision(4) << 100*dobras[i][0] << "%." << endl;
         }
     }
     catch (string e)

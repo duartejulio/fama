@@ -1,4 +1,4 @@
-#include "treinador_distribuicao.h"
+#include "=treinador_distribuicao.h"
 
 TreinadorDistribuicao::~TreinadorDistribuicao()
 {

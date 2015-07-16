@@ -1,8 +1,8 @@
 #ifndef TREINADORADABOOSTM1_H
 #define TREINADORADABOOSTM1_H
 
-#include "treinador.h"
-#include "treinador_distribuicao.h"
+#include "./treinador.h"
+#include "./treinador_distribuicao.h"
 #include <set>
 
 class TreinadorAdaboostM1 : public Treinador

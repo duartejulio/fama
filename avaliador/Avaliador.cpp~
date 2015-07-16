@@ -1,4 +1,4 @@
-#include "Avaliador.h"
+#include "avaliador.h"
 
 Avaliador::Avaliador()
 {
