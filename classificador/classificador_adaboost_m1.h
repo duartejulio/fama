@@ -1,6 +1,6 @@
 #include "classificador.h"
-#include "treinador.h"
-#include "treinador_adaboost_m1.h"
+#include "treinador/treinador.h"
+#include "treinador/treinador_adaboost_m1.h"
 
 #ifndef CLASSIFICADORADABOOSTM1_H
 #define CLASSIFICADORADABOOSTM1_H

@@ -1,7 +1,7 @@
 #ifndef TREINADOR_STUMP_H
 #define TREINADOR_STUMP_H
 
-#include "treinador_distribuicao.h"
+#include "treinador/treinador_distribuicao.h"
 #include <set>
 
 class DecisionStump : public TreinadorDistribuicao {

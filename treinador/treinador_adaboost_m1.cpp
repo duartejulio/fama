@@ -1,6 +1,6 @@
 #include "treinador_adaboost_m1.h"
 #include "treinador.h"
-#include "classificador_adaboost_m1.h"
+#include "classificador/classificador_adaboost_m1.h"
 
 TreinadorAdaboostM1::TreinadorAdaboostM1(Treinador *weak, bool aceitaDist, int it, string atributo, string unknown)
 {

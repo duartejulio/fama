@@ -1,5 +1,5 @@
 #include "classificador_adaboost_m1.h"
-#include "classificador_stump.h"
+#include "classificador/classificador_stump.h"
 #include <cmath>
 #include <typeinfo>
 #include <fstream>
@@ -130,7 +130,7 @@ bool ClassificadorAdaboostM1::carregarConhecimento( string arquivo ) {
         ostringstream os;
         os << arquivo << i << extensao;
         if (tipo.find("ClassificadorStump"))
-            classificadores[i] = (Classificador*)new ClassificadorStump();
+            classificadores[i] = new ClassificadorStump();
         (classificadores[i])->carregarConhecimento(os.str());
     }
 

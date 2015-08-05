@@ -1,4 +1,5 @@
 #include "treinador.h"
+#include <exception>
 
 Treinador::Treinador()
 {

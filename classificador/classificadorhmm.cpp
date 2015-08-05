@@ -101,11 +101,10 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
     matrizViterbi[1] = new double[qtdPos];
 
     //int caminho[maiorIndice][qtdPos];
-    int **caminho;
+    vector<vector<int> > caminho(maiorIndice);
 
-    caminho = new int*[maiorIndice];
     for (register int i = 0; i < maiorIndice; i++)
-        caminho[i] = new int[qtdPos];
+        caminho[i] = vector<int>(qtdPos, 0);
 
     linhaInt_end = tabFreqObservacoesInt.end();
     for ( register int i = 0; i < row; ++i )
@@ -166,6 +165,7 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
         }
 
         maiorValor = 0.0;
+        maiorIndice = 0;
         for( register int m = 0; m < qtdPos; ++m )
             if( ( aux_double = matrizViterbi[linhaVtbAnt][m] ) >= maiorValor )
             {
@@ -182,10 +182,10 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 
 
 
-    for (register int i = 0; i < maiorIndiceParaRemover; i++){
+    /*for (register int i = 0; i < maiorIndiceParaRemover; i++){
         delete[] caminho[i];
     }
-    delete[] caminho;
+    delete[] caminho;*/
 
     delete[] matrizViterbi[1];
     delete[] matrizViterbi[0];

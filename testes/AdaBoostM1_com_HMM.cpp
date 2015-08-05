@@ -3,13 +3,13 @@
 #include <exception>
 #include <iomanip>
 
-#include "../corpus/corpusmatriz.h"
-#include "../avaliador/avaliador_prob.h"
-#include "../validador/validadorkdobras.h"
-#include "../treinador/hmm.h"
-#include "../classificador/classificadorhmm.h"
-#include "treinador_adaboost_m1.h"
-#include "classificador_adaboost_m1.h"
+#include "corpus/corpusmatriz.h"
+#include "avaliador/avaliador_prob.h"
+#include "validador/validadorkdobras.h"
+#include "treinador/hmm.h"
+#include "classificador/classificadorhmm.h"
+#include "treinador/treinador_adaboost_m1.h"
+#include "classificador/classificador_adaboost_m1.h"
 
 using namespace std;
 
@@ -19,13 +19,18 @@ int main()
     {
     	int gabarito, minha_resposta, tab;
     	
-    	CorpusMatriz objCorpus;
-    	
-    	objCorpus.carregarArquivo( "../inputs/train.txt" );
-    	gabarito = objCorpus.pegarPosAtributo("pos");
+        CorpusMatriz objCorpus;
+        objCorpus.ajustarSeparador('_');
+
+        objCorpus.carregarArquivo( "../inputs/corpusProva.txt" );
+
+        cout << "Arquivo carregado com sucesso!" << endl;
+
+        gabarito = objCorpus.pegarPosAtributo("pos");
     	minha_resposta = objCorpus.criarAtributo("gabarito", "desconhecido");
     	
-    	TreinadorAdaboostM1 treinador(new HMM("word"), true, 10, "gabarito", "desconhecido");
+        //HMM treinador("word");
+        TreinadorAdaboostM1 treinador(new HMM("word"), false, 10, "gabarito", "desconhecido");
     	Classificador* objClass = treinador.executarTreinamento( objCorpus, gabarito );
     	
     	objClass->executarClassificacao( objCorpus, minha_resposta );

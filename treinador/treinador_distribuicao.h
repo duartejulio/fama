@@ -29,7 +29,7 @@ class TreinadorDistribuicao : public Treinador
          *  @param val Nova distribuição.
          *  @
 		 */
-        void setarDistribuicao(vector<double> *val) { delete distribuicao; distribuicao = val; }
+        void setarDistribuicao(vector<double> *val) { /*delete distribuicao;*/ distribuicao = val; }
 		virtual Classificador *executarTreinamento( Corpus &corpus, int atributo ) = 0;
 	protected:
 		vector<double> *distribuicao; //!< Member variable "distribuicao"

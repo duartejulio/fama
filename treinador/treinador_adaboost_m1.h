@@ -2,7 +2,7 @@
 #define TREINADORADABOOSTM1_H
 
 #include "treinador.h"
-#include "treinador_distribuicao.h"
+#include "treinador/treinador_distribuicao.h"
 #include <set>
 
 class TreinadorAdaboostM1 : public Treinador
@@ -33,7 +33,7 @@ class TreinadorAdaboostM1 : public Treinador
         vector<double> *distribuicao;
     public:
         explicit AcessoAoTreinadorProxy(Treinador *weak) : weak(weak), distribuicao(NULL) {}
-        virtual ~AcessoAoTreinadorProxy() {delete weak;}
+        ~AcessoAoTreinadorProxy() {delete weak; delete distribuicao;}
         virtual Classificador* treinar(Corpus &corpus, int atributo) {
             Corpus *redistribuicao = corpus.reamostrar(distribuicao, true);
             Classificador *retorno = weak->executarTreinamento(*redistribuicao, atributo);
