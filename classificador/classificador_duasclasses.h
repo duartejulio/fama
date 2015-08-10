@@ -1,7 +1,7 @@
 #ifndef CLASSIFICADORDUASCLASSES_H
 #define CLASSIFICADORDUASCLASSES_H
 
-#include "classificador/classificador.h"
+#include "classificador.h"
 
 class ClassificadorDuasClasses : public Classificador {
 protected:

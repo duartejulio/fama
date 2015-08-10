@@ -1,6 +1,6 @@
 #include "treinador_adaboost_m1.h"
 #include "treinador.h"
-#include "classificador/classificador_adaboost_m1.h"
+#include "../classificador/classificador_adaboost_m1.h"
 
 TreinadorAdaboostM1::TreinadorAdaboostM1(Treinador *weak, bool aceitaDist, int it, string atributo, string unknown)
 {
@@ -39,23 +39,28 @@ Classificador* TreinadorAdaboostM1::executarTreinamento( Corpus &corpus, int atr
     //Itera
     for (int z = 0; z < iterations; z++) {
         classificadores.push_back(base->treinar(corpus, atributo));
+
+        string tempfile = (string)"#temp" + (char)('0'+z) + ".txt";
+        cout << "gravado:" << tempfile << endl;
+
+        corpus.gravarArquivo(tempfile.c_str());
         dist = base->pegarDistribuicao();
         ultimoResultado = calcularVetorErro(classificadores.back(), corpus, atributo);
         ultimoBeta = calcularBeta(ultimoResultado, dist);
         betas.push_back(ultimoBeta);
-        if (betas.back() > 1.0d) {
+        if (betas.back() > 1.0) {
             delete ultimoResultado;
             break;
         }
         //Atualizar distribuição
-        double norm = 0.0d;
-        for (int k = 0; k < dist->size(); k++) {
+        double norm = 0.0;
+        for (unsigned int k = 0; k < dist->size(); k++) {
             if (ultimoResultado->at(k)) {
                 dist->at(k) *= ultimoBeta;
             }
             norm += dist->at(k);
         }
-        for (int k = 0; k < dist->size(); k++) {
+        for (unsigned int k = 0; k < dist->size(); k++) {
             dist->at(k) /= norm;
         }
         //base->atualizarDistribuicao(dist);
@@ -83,8 +88,8 @@ vector<bool>* TreinadorAdaboostM1::calcularVetorErro(Classificador* classificado
 }
 
 double TreinadorAdaboostM1::calcularBeta(vector<bool> *acertos, vector<double> *dist) {
-    double acerto = 0.0d, erro = 0.0d;
-    for (int k = 0; k < dist->size(); k++) {
+    double acerto = 0.0, erro = 0.0;
+    for (unsigned int k = 0; k < dist->size(); k++) {
         if (acertos->at(k))
             acerto += dist->at(k);
         else

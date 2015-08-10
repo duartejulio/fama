@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="..\..\..\avaliador\Avaliador.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificador.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificador.h" open="0" top="0" tabpos="6">
+		<Cursor position="269" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificadoradaboost.cpp" open="1" top="1" tabpos="4">
+		<Cursor position="323" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificadoradaboost.h" open="1" top="0" tabpos="5">
+		<Cursor position="94" topLine="0" />
+	</File>
+	<File name="..\..\..\corpus\corpus.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="12857" topLine="409" />
+	</File>
+	<File name="..\..\..\corpus\corpus.h" open="0" top="0" tabpos="5">
+		<Cursor position="1117" topLine="8" />
+	</File>
+	<File name="..\..\..\corpus\corpusmatriz.cpp" open="0" top="0" tabpos="13">
+		<Cursor position="8724" topLine="222" />
+	</File>
+	<File name="..\..\..\stump\stump.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="2518" topLine="34" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1773" topLine="45" />
+	</File>
+	<File name="..\..\..\treinador\adaboost.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="974" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\adaboost.h" open="1" top="0" tabpos="3">
+		<Cursor position="91" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\treinador.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="299" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\treinador.h" open="0" top="0" tabpos="9">
+		<Cursor position="452" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

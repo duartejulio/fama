@@ -50,7 +50,7 @@ string ClassificadorStump::descricaoConhecimento(){
     return ret.str();
 }
 
-DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador(){
+DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):TreinadorDistribuicao(){
     //guarda parametros
     atributos = atr;
     classes = cla;
@@ -58,7 +58,8 @@ DecisionStump::DecisionStump(vector<string> atr, vector<string> cla):Treinador()
 
 Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo ){
     int indicePos, indiceNeg, nExemplos, nConjExemplos, nAtributos,
-     i, a, e, c, melhorQualidade, qualidade;
+     i, a, e, c;
+    double qualidade, melhorQualidade;
     string mAtributo, mValor, mClasse;
     map <string, bool> mapaValores;
     map <string, bool>::iterator it;
@@ -70,6 +71,14 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
     //determina números de conjuntos de exemplos e atributos
     nConjExemplos = corpus.pegarQtdConjExemplos();
     nAtributos = atributos.size();
+
+    //verifica se existe distribuicao
+    if (!dist.size())
+        for (c=0;c<nConjExemplos;c++)
+            dist.push_back(1);
+    else
+    if (dist.size()!=(unsigned)nConjExemplos)
+        throw (string)"Distribuição de pesos de tamanho incorreta passada\n";
 
 
     melhorQualidade = -1;
@@ -94,15 +103,15 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
                 for (e=0; e < nExemplos; e++){
                     if (it->first == corpus(c, e, i)){
                         if (corpus.pegarValor(c, e, atributo)==indicePos)
-                            qualidade++;
+                            qualidade += dist[c];
                         else
-                            qualidade--;
+                            qualidade -= dist[c];
                     }
                     else{
                         if (corpus.pegarValor(c, e, atributo)==indiceNeg)
-                            qualidade++;
+                            qualidade += dist[c];
                         else
-                            qualidade--;
+                            qualidade -= dist[c];
                     }
                 }
             }
@@ -112,14 +121,14 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
                 mAtributo = atributos[a];
                 mValor = it->first;
                 mClasse = (qualidade<0)?classes[0]:classes[1];
-                melhorQualidade = (int)fabs(qualidade);
+                melhorQualidade = fabs(qualidade);
                 //cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
             }
             //cout << i << " - " << a << " - " << atributos[a] << " - " << it->first << " - " << ((qualidade<0)?classes[0]:classes[1])
             // << " - " << qualidade << " - " << melhorQualidade << endl;
         }
     }
-
+    //cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
     //retorna um novo classificador com os parametros encontrados
     return new ClassificadorStump(classes, mAtributo, mValor, mClasse);
 }

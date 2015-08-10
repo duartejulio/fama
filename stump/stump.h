@@ -15,7 +15,7 @@ class ClassificadorStump:public Classificador{
 };
 
 //prototipo do treinador
-class DecisionStump:public Treinador{
+class DecisionStump:public TreinadorDistribuicao{
     vector <string> atributos, classes;
     public:
         DecisionStump(vector<string>, vector<string>);

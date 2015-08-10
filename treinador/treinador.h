@@ -13,4 +13,13 @@ class Treinador
         virtual Treinador* construirJanela( void *popUp, Corpus &corpus );
 };
 
+class TreinadorDistribuicao : public Treinador{
+    protected:
+        vector<double> dist;
+    public:
+        void ajustarDistribuicao(vector<double> dist){
+            this->dist = dist;
+        }
+};
+
 #endif // TREINADOR_H

@@ -1,8 +1,8 @@
 #ifndef CLASSIFICADOR_STUMP_H
 #define CLASSIFICADOR_STUMP_H
 
-#include "classificador/classificador.h"
-#include "classificador/classificador_duasclasses.h"
+#include "classificador.h"
+#include "classificador_duasclasses.h"
 
 class ClassificadorStump : public ClassificadorDuasClasses {
 protected:

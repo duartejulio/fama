@@ -2,6 +2,8 @@
 #include <fstream>
 
 #include "../../../treinador/treinador.h"
+#include "../../../treinador/adaboost.h"
+#include "../../../stump/stump.h"
 #include "../../../classificador/classificador.h"
 #include "../../../corpus/corpusmatriz.h"
 #include "../../../avaliador/avaliador_acuracia.h"
@@ -9,109 +11,52 @@
 
 using namespace std;
 
-class ClassificadorMaisEsperto:public Classificador{
-private:
-    string resposta;
-public:
-    bool executarClassificacao(Corpus &corpus, int atributo){
-        int c, e;
-
-        for (c = 0; c < corpus.pegarQtdConjExemplos(); c++)
-            for (e = 0; e < corpus.pegarQtdExemplos(c); e++)
-                corpus(c,e,atributo,resposta);
-
-        return true;
-    }
-    bool gravarConhecimento( string arquivo ){
-        ofstream out;
-        out.open(arquivo.c_str());
-        out << resposta;
-        out.close();
-        return true;
-    }
-    bool carregarConhecimento( string arquivo ){
-        ifstream in;
-        in.open(arquivo.c_str());
-        in >> resposta;
-        in.close();
-        return true;
-    };
-    friend class TreinadorMaisEspero;
-};
-
-class TreinadorMaisEspero:public Treinador{
-private:
-    string positivo, negativo;
-public:
-    TreinadorMaisEspero(string pos, string neg){
-        positivo = pos;
-        negativo = neg;
-    }
-
-    Classificador *executarTreinamento( Corpus &corpus, int atributo ){
-        int c, e;
-        int contador[2] = {0,0};
-        string val;
-
-        for (c = 0; c < corpus.pegarQtdConjExemplos(); c++){
-            for (e = 0; e < corpus.pegarQtdExemplos(c); e++){
-                val = corpus(c,e,atributo);
-                if (val==positivo)
-                    contador[1]++;
-                else
-                if (val==negativo)
-                    contador[0]++;
-                else
-                    cout << "Classe Estranha\n";
-            }
-        }
-
-        ClassificadorMaisEsperto *cl = new ClassificadorMaisEsperto;
-        if (contador[0] > contador[1])
-            cl->resposta = negativo;
-        else
-            cl->resposta = positivo;
-
-        cout << "Resp:" << cl->resposta << "\n";
-
-        return cl;
-    }
-
-};
 
 int main()
 {
-    vector<string> atributos;
+    vector<string> atributos, classes;
     int atributo, novoatributo, c;
-    Classificador *cl,*cl2;
+    Classificador *cl;//,*cl2;
 
     float media;
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ',', true, true);
-    objCorpus.carregarArquivo( "../../../inputs/adult.data" );
+    objCorpus.carregarArquivo( "../../../inputs/adult.data.medium" );
     atributo = objCorpus.pegarPosAtributo("resposta");
 
+    classes.push_back("<=50K");
+    classes.push_back(">50K");
+
+    atributos = objCorpus.pegarAtributos();
+    atributos.pop_back();
+
     //treina
-    TreinadorMaisEspero tme("<=50K", ">50K");
-    cl = tme.executarTreinamento(objCorpus, atributo);
+    DecisionStump stump(atributos,classes);
+    TreinadorAdaboost adab(stump, classes, 30);
+
+    cl = adab.executarTreinamento(objCorpus, atributo);
+    cout << cl->descricaoConhecimento() << endl;
     cl->gravarConhecimento("xpto");
 
-    cl2 = new ClassificadorMaisEsperto;
-    cl2->carregarConhecimento("xpto");
+//    cl2 = new ClassificadorMaisEsperto;
+    cl->carregarConhecimento("xpto");
 
     //classifica
     novoatributo = objCorpus.criarAtributo("me");
-    cl2->executarClassificacao(objCorpus, novoatributo);
+//    cl2->executarClassificacao(objCorpus, novoatributo);
+    cl->executarClassificacao(objCorpus, novoatributo);
+
+    objCorpus.gravarArquivo("#testeout.txt");
 
     //avalia
     AvaliadorAcuracia objAvalAcur;
-    cout << 100 * objAvalAcur.calcularDesempenho(objCorpus, atributo, novoatributo)[0] << "\n";
+    cout << 100 * objAvalAcur.calcularDesempenho(objCorpus, atributo, novoatributo)[0] << "%\n";
 
     //faz experimento
-    int ndobras = 20;
+    int ndobras = 10;
     ValidadorKDobras objValidador(objAvalAcur, ndobras);
-    vector< vector< float > > v = objValidador.executarExperimento(tme, objCorpus, atributo, novoatributo);
+    vector< vector< float > > v = objValidador.executarExperimento(adab, objCorpus, atributo, novoatributo);
 
     media = 0;
     for (c=0;c<ndobras;c++){

@@ -1,5 +1,5 @@
 #include "classificador_adaboost_m1.h"
-#include "classificador/classificador_stump.h"
+#include "../classificador/classificador_stump.h"
 #include <cmath>
 #include <typeinfo>
 #include <fstream>
@@ -7,20 +7,20 @@
 
 ClassificadorAdaboostM1::~ClassificadorAdaboostM1()
 {
-    for (int i = 0; i < classificadores.size(); i++)
+    for (unsigned int i = 0; i < classificadores.size(); i++)
         delete classificadores[i];
 }
 
 bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int atributo ) {
-    vector<vector<double> > exemplos(corpusProva.pegarQtdTotalExemplos(), vector<double>(valores.size(), 0.0d));
+    vector<vector<double> > exemplos(corpusProva.pegarQtdTotalExemplos(), vector<double>(valores.size(), 0.0));
     int k, indice;
-    for (int t = 0; t < classificadores.size(); t++) {
+    for (unsigned int t = 0; t < classificadores.size(); t++) {
         (classificadores[t])->executarClassificacao(corpusProva, atributo);
         k = 0;
         for (int i = 0; i < corpusProva.pegarQtdSentencas(); i++) {
             for (int j = 0; j < corpusProva.pegarQtdExemplos(i); j++) {
                 indice = -1;
-                for (int a = 0; a < valores.size() - 1; a++)
+                for (unsigned int a = 0; a < valores.size() - 1; a++)
                     if (valores[a] == corpusProva(i, j, atributo)) {
                         indice = a;
                         a = valores.size();
@@ -38,7 +38,7 @@ bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int at
         for (int j = 0; j < corpusProva.pegarQtdExemplos(i); j++) {
             maxBeta = exemplos[k][valores.size()-1];
             maxAtr = valores.size() - 1;
-            for (int a = 0; a < valores.size() - 1; a++) {
+            for (unsigned int a = 0; a < valores.size() - 1; a++) {
                 if (maxBeta <= exemplos[k][a]) {
                     maxBeta = exemplos[k][a];
                     maxAtr = a;
@@ -48,6 +48,7 @@ bool ClassificadorAdaboostM1::executarClassificacao( Corpus &corpusProva, int at
             k++;
         }
     }
+    return true;
 }
 
 bool ClassificadorAdaboostM1::gravarConhecimento( string arquivo ) {
@@ -58,7 +59,7 @@ bool ClassificadorAdaboostM1::gravarConhecimento( string arquivo ) {
         return false;
     }
 
-    for (int i = 0; i < valores.size() - 1; i++)
+    for (unsigned int i = 0; i < valores.size() - 1; i++)
         saida << '"' << valores[i] << "\" ";
     saida << '"' << valores[valores.size() - 1] << '"' << endl;
 

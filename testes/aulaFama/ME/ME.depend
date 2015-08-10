@@ -1,0 +1,72 @@
+# depslib dependency file v1.0
+1438713262 source:c:\users\duarte\documents\github\fama\avaliador\avaliador.cpp
+	"avaliador.h"
+
+1438713262 c:\users\duarte\documents\github\fama\avaliador\avaliador.h
+	"../corpus/corpus.h"
+
+1438713262 c:\users\duarte\documents\github\fama\corpus\corpus.h
+	<iostream>
+	<vector>
+	<map>
+	<cstdio>
+	<cstdlib>
+	<sstream>
+
+1438713262 source:c:\users\duarte\documents\github\fama\avaliador\avaliador_acuracia.cpp
+	"avaliador_acuracia.h"
+
+1438713262 c:\users\duarte\documents\github\fama\avaliador\avaliador_acuracia.h
+	"avaliador.h"
+
+1438713262 source:c:\users\duarte\documents\github\fama\classificador\classificador.cpp
+	"classificador.h"
+
+1438713262 c:\users\duarte\documents\github\fama\classificador\classificador.h
+	"../corpus/corpus.h"
+
+1438793725 source:c:\users\duarte\documents\github\fama\corpus\corpus.cpp
+	"corpus.h"
+	<stdlib.h>
+	<time.h>
+
+1439040458 source:c:\users\duarte\documents\github\fama\corpus\corpusmatriz.cpp
+	"corpusmatriz.h"
+
+1438713262 c:\users\duarte\documents\github\fama\corpus\corpusmatriz.h
+	<fstream>
+	"corpus.h"
+
+1438713263 source:c:\users\duarte\documents\github\fama\treinador\treinador.cpp
+	"treinador.h"
+
+1438949465 c:\users\duarte\documents\github\fama\treinador\treinador.h
+	"../corpus/corpus.h"
+	"../classificador/classificador.h"
+
+1438713263 source:c:\users\duarte\documents\github\fama\validador\validador.cpp
+	"validador.h"
+
+1438713263 c:\users\duarte\documents\github\fama\validador\validador.h
+	"../corpus/corpus.h"
+	"../avaliador/avaliador.h"
+	"../treinador/treinador.h"
+
+1438713263 source:c:\users\duarte\documents\github\fama\validador\validadorkdobras.cpp
+	"validadorkdobras.h"
+
+1438713263 c:\users\duarte\documents\github\fama\validador\validadorkdobras.h
+	"validador.h"
+	<cstdlib>
+	<ctime>
+	<algorithm>
+
+1439207135 source:c:\users\duarte\documents\github\fama\testes\aulafama\me\mainme.cpp
+	<iostream>
+	<fstream>
+	"../../../treinador/treinador.h"
+	"../../../classificador/classificador.h"
+	"../../../corpus/corpusmatriz.h"
+	"../../../avaliador/avaliador_acuracia.h"
+	"../../../validador/validadorkdobras.h"
+

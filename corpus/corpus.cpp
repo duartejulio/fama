@@ -381,7 +381,6 @@ Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
 }
 
 bool Corpus::discreto(int atributo, vector<string> &possiveisValores){
-    float f;
     string val;
     bool continuo;
     int e, c, qtdExemplos;

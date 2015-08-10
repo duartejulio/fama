@@ -116,8 +116,9 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
             cout << "Aviso:carregarArquivo!\nNão foi possível carregar atributos!" << endl;
             return false;
         }
-        else
-            cout << qtd_atributos << " atributos carregados com sucesso." << endl;
+        else{
+            //cout << qtd_atributos << " atributos carregados com sucesso." << endl;
+        }
     }
 
     qtd_sentencas = 1;
@@ -215,7 +216,7 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
     }
 
     arqin.close();
-    cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
+    //cout << "Arquivo <" << arquivo << "> carregado com sucesso!" << endl;
     return true;
 }
 
@@ -261,7 +262,7 @@ bool CorpusMatriz::gravarArquivo( string arquivo )
 
     arqout.close();
 
-    cout << "Arquivo <" << arquivo << "> gravado com sucesso!" << endl;
+    //cout << "Arquivo <" << arquivo << "> gravado com sucesso!" << endl;
 
     return true;
 }

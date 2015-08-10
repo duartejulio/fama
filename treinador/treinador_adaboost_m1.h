@@ -2,7 +2,7 @@
 #define TREINADORADABOOSTM1_H
 
 #include "treinador.h"
-#include "treinador/treinador_distribuicao.h"
+#include "treinador_distribuicao.h"
 #include <set>
 
 class TreinadorAdaboostM1 : public Treinador
@@ -38,7 +38,7 @@ class TreinadorAdaboostM1 : public Treinador
             Corpus *redistribuicao = corpus.reamostrar(distribuicao, true);
             Classificador *retorno = weak->executarTreinamento(*redistribuicao, atributo);
             if (distribuicao == NULL)
-                distribuicao = new vector<double>(redistribuicao->pegarQtdTotalExemplos(), 1.0d/(double)redistribuicao->pegarQtdTotalExemplos());
+                distribuicao = new vector<double>(redistribuicao->pegarQtdTotalExemplos(), 1.0/(double)redistribuicao->pegarQtdTotalExemplos());
             delete redistribuicao;
             return retorno;
         }
