@@ -13,11 +13,11 @@
 	<File name="..\..\..\classificador\classificadoradaboost.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\classificador\classificadoradaboost.h" open="0" top="0" tabpos="5">
-		<Cursor position="94" topLine="0" />
+	<File name="..\..\..\classificador\classificadoradaboost.h" open="1" top="0" tabpos="5">
+		<Cursor position="326" topLine="0" />
 	</File>
-	<File name="..\..\..\corpus\corpus.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="12857" topLine="409" />
+	<File name="..\..\..\corpus\corpus.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="12591" topLine="0" />
 	</File>
 	<File name="..\..\..\corpus\corpus.h" open="1" top="0" tabpos="2">
 		<Cursor position="301" topLine="0" />
@@ -35,10 +35,10 @@
 		<Cursor position="129" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="1063" topLine="0" />
+		<Cursor position="502" topLine="0" />
 	</File>
-	<File name="..\..\..\treinador\adaboost.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="576" topLine="0" />
+	<File name="..\..\..\treinador\adaboost.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="1507" topLine="6" />
 	</File>
 	<File name="..\..\..\treinador\adaboost.h" open="0" top="0" tabpos="3">
 		<Cursor position="91" topLine="0" />
