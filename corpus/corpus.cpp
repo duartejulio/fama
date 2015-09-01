@@ -218,7 +218,8 @@ bool Corpus::ajustarValor( int sentenca, int token, int atributo, int valor )
         erro << "Erro: ajustarValor!\nInsercao cancelada: posicao inexistente ( "
          << sentenca << " / " << (int)qtd_sentencas << " ) ( "
          << token << " / " << (int)frases[sentenca].size() << " ) ( "
-         << atributo << " / " << (int)qtd_atributos << " )!";
+         << atributo << " / " << (int)qtd_atributos << " ) ( "
+         << valor << "-" << pegarSimbolo(valor) << "!";
         throw erro.str();
     }
     frases[ sentenca ][ token ][ atributo ] = valor;
@@ -414,46 +415,66 @@ bool Corpus::discreto(string atributo, vector<string> &possiveisValores){
     return discreto(pegarPosAtributo(atributo), possiveisValores);
 }
 
-Corpus* Corpus::reamostrar (vector<double>* distribuicao, bool porFrase) {
+Corpus* Corpus::reamostrar (vector<double> distribuicao) {
     Corpus* alvo = this->clone();
-    if (distribuicao == NULL)
+    vector<double>::iterator it;
+    double soma;
+
+    int n = distribuicao.size();
+
+    if (!n)
         return alvo;
+
+    if (n!=pegarQtdConjExemplos()){
+        ostringstream erro;
+        erro << "Distribuição inválida para reamostragem (" << n << ", " << pegarQtdConjExemplos() << ")";
+        throw erro.str();
+    }
     alvo->frases.clear();
 
-    if (!porFrase) {
-        vector<double>* novo = new vector<double>(this->qtd_sentencas);
-        double soma; int k = 0;
-        for (int i = 0; i < this->qtd_sentencas; i++) {
-            soma = 0.0;
-            for(int j = 0; j < this->pegarQtdTokens(i); j++)
-                soma += distribuicao->at(k++);
-            novo->at(i) = soma;
-        }
-        distribuicao = novo;
+
+    //normaliza dist
+    soma = 0.0;
+    for(it=distribuicao.begin();it!=distribuicao.end();it++)
+        soma += *it;
+    if (!soma){
+        ostringstream erro;
+        erro << "Distribuição inválida para reamostragem - soma zero";
+        throw erro.str();
     }
 
-    srand(time(NULL));
+    for(it=distribuicao.begin();it!=distribuicao.end();it++)
+        *it /= soma;
 
     //Calcular qual exemplo vai cair
     double random;
-    int total = this->pegarQtdTotalExemplos();
     for (int i = 0; i < this->qtd_sentencas; i++) {
         //Por limitaçoes do rand, calcular quantas vezes for possivel para que a soma possa chegar no ultimo elemento
-        random = 0.0;
-        for (int j = 0; j < total/RAND_MAX; j++)
-            random += (double)rand();
-        //Normalizando random
-        random /= total;
+        random = rand()/(1.0+(double)RAND_MAX);
+
         //Aqui calcula qual exemplo pegar
         //Vai diminuindo o random do peso do exemplo iterado, e, se o valor do random for menor ou igual a zero, significa
         //que ele o exemplo da iteraçao atual deve entrar
-        int exemplo = 0;
-        for (;random>0;random -= distribuicao->at(exemplo++));
+        int exemplo = -1;
+        double g = random;
+        //cout << random << "-";
+        try{
+            for (;random>=0;){
+                random -= distribuicao.at(++exemplo);
+            }
+        }
+        catch(...){
+            ostringstream erro;
+            erro << "Problema na reamostragem do corpus\n";
+/*            for(it=distribuicao.begin();it!=distribuicao.end();it++)
+                cout << *it << " - ";
+            cout << endl << g << "/" << soma << endl;
+*/
+            throw erro.str();
+        }
+        //cout << exemplo << endl;
         alvo->frases.push_back(this->frases.at(exemplo));
     }
-
-    if (!porFrase)
-        delete distribuicao;
 
     return alvo;
 }

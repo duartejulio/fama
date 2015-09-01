@@ -43,7 +43,7 @@ class Corpus
         Corpus* gerarSubCorpus( vector< vector< bool > > vetMascara );
         bool discreto(int, vector<string>& );
         bool discreto(string, vector<string>& );
-        virtual Corpus* reamostrar(vector<double>* distribuicao, bool porFrase);
+        virtual Corpus* reamostrar(vector<double> distribuicao);
     protected:
         map<string,int> posAtributos;
         vector<string> atributos;
