@@ -63,6 +63,7 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
     string mAtributo, mValor, mClasse;
     map <string, bool> mapaValores;
     map <string, bool>::iterator it;
+    bool existeDistribuicao;
 
     //determina valores das classes no dicionario
     indicePos = corpus.pegarIndice(classes[1]);
@@ -73,12 +74,17 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
     nAtributos = atributos.size();
 
     //verifica se existe distribuicao
-    if (!dist.size())
+    existeDistribuicao = dist.size();
+    if (!existeDistribuicao)
         for (c=0;c<nConjExemplos;c++)
             dist.push_back(1);
-    else
-    if (dist.size()!=(unsigned)nConjExemplos)
-        throw (string)"Distribuição de pesos de tamanho incorreta passada\n";
+    else{
+        if (dist.size()!=(unsigned)nConjExemplos){
+            ostringstream erro;
+            erro << "Distribuição de pesos de tamanho incorreta passada:" << dist.size() << ", " << nConjExemplos;
+            throw erro.str();
+        }
+    }
 
 
     melhorQualidade = -1;
@@ -128,6 +134,9 @@ Classificador* DecisionStump::executarTreinamento( Corpus &corpus, int atributo 
             // << " - " << qualidade << " - " << melhorQualidade << endl;
         }
     }
+
+    if (!existeDistribuicao)
+            dist.clear();
     //cout << "* " << mAtributo << " - " << mValor << " - " << mClasse << " - " << melhorQualidade << endl;
     //retorna um novo classificador com os parametros encontrados
     return new ClassificadorStump(classes, mAtributo, mValor, mClasse);
