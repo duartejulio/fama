@@ -9,7 +9,7 @@
 class ValidadorKDobras : public Validador
 {
     public:
-        ValidadorKDobras( Avaliador &avaliador, int dobras );
+        ValidadorKDobras( Avaliador &avaliador, int dobras, bool iniciarSemente );
         virtual ~ValidadorKDobras();
         vector< vector< float > > executarExperimento( Treinador &treinador, Corpus &corpus, int atributoTreino, int atributoTeste );
 

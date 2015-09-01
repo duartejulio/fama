@@ -1,9 +1,10 @@
 #include "validadorkdobras.h"
 
-ValidadorKDobras::ValidadorKDobras( Avaliador &avaliador, int dobras ) :
+ValidadorKDobras::ValidadorKDobras( Avaliador &avaliador, int dobras, bool iniciarSemente ) :
 Validador( avaliador, dobras )
 {
-    srand( time( NULL ) );
+    if (iniciarSemente)
+        srand( time( NULL ) );
 }
 
 ValidadorKDobras::~ValidadorKDobras()
