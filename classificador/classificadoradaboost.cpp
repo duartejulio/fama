@@ -69,8 +69,11 @@ bool ClassificadorAdaboost::carregarConhecimento( string arquivo ){
 
     //cout << "*" << n << "-" << classificadores.size() << endl;
 
-    if (classificadores.size()!=n)
-        throw (string)"carregarConhecimento precisa de classificadores base já criados";
+    if (classificadores.size()!=n){
+        ostringstream erro;
+        erro << "carregarConhecimento precisa de classificadores base já criados";
+        throw erro.str();
+    }
 
     for (i=0;i<n;i++){
         ostringstream nomeArq;
@@ -102,15 +105,19 @@ bool ClassificadorAdaboost::executarClassificacao( Corpus &corpusProva, int atri
     //generalizar para mais de um exemplo por conjunto
     for (c=0;c<n;c++){
         h = 0.0;
-        for (i = 0; i<it; i++)
+        for (i = 0; i<it; i++){
             if (corpusProva.pegarValor(c,0,atributos[i])==indices[1])
                 h += alphas[i];
             else
             if (corpusProva.pegarValor(c,0,atributos[i])==indices[0])
                 h -= alphas[i];
             else{
-                throw (string)"Saida errada no algoritmo base";
+                ostringstream erro;
+                erro << "Saida errada no algoritmo base";
+                throw erro.str();
             }
+        }
+
         if (h>=0)
             corpusProva.ajustarValor(c,0,atributo,indices[1]);
         else

@@ -3,7 +3,8 @@
 #include "adaboost.h"
 #include "../classificador/classificadoradaboost.h"
 
-TreinadorAdaboost::TreinadorAdaboost(TreinadorDistribuicao &base, vector<string> classes, unsigned iterations, double minalpha):base(base),classes(classes),iterations(iterations),minalpha(minalpha){
+TreinadorAdaboost::TreinadorAdaboost(Treinador &base, vector<string> classes, unsigned iterations, double minalpha, bool aceitaDistribuicao):
+ base(base),classes(classes),iterations(iterations),minalpha(minalpha),aceitaDistribuicao(aceitaDistribuicao){
 }
 
 Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atributo ){
@@ -12,6 +13,7 @@ Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atrib
     double beta, acertos, erros, sumdist;
     vector <double> alphas;
     vector<Classificador*> classificadores;
+    Corpus *corpusTrabalho = &corpus;
 
     unsigned i, atributoTemporario, c, e, nConjExemplos = corpus.pegarQtdTotalExemplos(), nExemplos;
     vector<double> dist(nConjExemplos, 1.0/nConjExemplos);
@@ -22,16 +24,20 @@ Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atrib
     for (i = 0; i < iterations; i++){
         fill_n(errado.begin(), nConjExemplos, false);
 
-        base.ajustarDistribuicao(dist);
-        cl = base.executarTreinamento(corpus, atributo);
-        cl->executarClassificacao(corpus, atributoTemporario);
+        if (aceitaDistribuicao)
+            ((TreinadorDistribuicao&)base).ajustarDistribuicao(dist);
+        else
+            corpusTrabalho = corpus.reamostrar(dist);
+
+        cl = base.executarTreinamento(*corpusTrabalho, atributo);
+        cl->executarClassificacao(*corpusTrabalho, atributoTemporario);
 
         //calcula erro, generalizar para vários exemplos por conjunto de exemplo
         acertos = erros = 0;
         for (c=0;c<nConjExemplos;c++){
-            nExemplos = corpus.pegarQtdExemplos(c);
+            nExemplos = corpusTrabalho->pegarQtdExemplos(c);
             for (e=0; e<nExemplos; e++){
-                if ((corpus.pegarValor(c,e,atributo)!=corpus.pegarValor(c,e,atributoTemporario))){
+                if ((corpusTrabalho->pegarValor(c,e,atributo)!=corpusTrabalho->pegarValor(c,e,atributoTemporario))){
                     errado[c] = true;
                     break;
                 }
@@ -54,7 +60,6 @@ Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atrib
 
         for (c=0;c<nConjExemplos;c++)
             dist[c] /= sumdist;
-
 
         classificadores.push_back(cl);
         alphas.push_back(.5*log(beta));

@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1438713262 source:c:\users\duarte\documents\github\fama\avaliador\avaliador.cpp
+1439820022 source:c:\users\duarte\documents\github\fama\avaliador\avaliador.cpp
 	"avaliador.h"
 
-1438713262 c:\users\duarte\documents\github\fama\avaliador\avaliador.h
+1439820022 c:\users\duarte\documents\github\fama\avaliador\avaliador.h
 	"../corpus/corpus.h"
 
-1438713262 c:\users\duarte\documents\github\fama\corpus\corpus.h
+1439903401 c:\users\duarte\documents\github\fama\corpus\corpus.h
 	<iostream>
 	<vector>
 	<map>
@@ -19,20 +19,20 @@
 1438713262 c:\users\duarte\documents\github\fama\avaliador\avaliador_acuracia.h
 	"avaliador.h"
 
-1438713262 source:c:\users\duarte\documents\github\fama\classificador\classificador.cpp
+1439820022 source:c:\users\duarte\documents\github\fama\classificador\classificador.cpp
 	"classificador.h"
 
-1439207989 c:\users\duarte\documents\github\fama\classificador\classificador.h
+1439820022 c:\users\duarte\documents\github\fama\classificador\classificador.h
 	"../corpus/corpus.h"
 
-1439209279 source:c:\users\duarte\documents\github\fama\corpus\corpusmatriz.cpp
+1439820022 source:c:\users\duarte\documents\github\fama\corpus\corpusmatriz.cpp
 	"corpusmatriz.h"
 
-1438713262 c:\users\duarte\documents\github\fama\corpus\corpusmatriz.h
+1439820022 c:\users\duarte\documents\github\fama\corpus\corpusmatriz.h
 	<fstream>
 	"corpus.h"
 
-1439207993 source:c:\users\duarte\documents\github\fama\testes\aulafama\me\main.cpp
+1441108030 source:c:\users\duarte\documents\github\fama\testes\aulafama\me\main.cpp
 	<iostream>
 	<fstream>
 	"../../../treinador/treinador.h"
@@ -43,31 +43,31 @@
 	"../../../avaliador/avaliador_acuracia.h"
 	"../../../validador/validadorkdobras.h"
 
-1438949465 c:\users\duarte\documents\github\fama\treinador\treinador.h
+1440094845 c:\users\duarte\documents\github\fama\treinador\treinador.h
 	"../corpus/corpus.h"
 	"../classificador/classificador.h"
 
-1438713263 c:\users\duarte\documents\github\fama\validador\validadorkdobras.h
+1440095886 c:\users\duarte\documents\github\fama\validador\validadorkdobras.h
 	"validador.h"
 	<cstdlib>
 	<ctime>
 	<algorithm>
 
-1438713263 c:\users\duarte\documents\github\fama\validador\validador.h
+1439820023 c:\users\duarte\documents\github\fama\validador\validador.h
 	"../corpus/corpus.h"
 	"../avaliador/avaliador.h"
 	"../treinador/treinador.h"
 
-1438713263 source:c:\users\duarte\documents\github\fama\treinador\treinador.cpp
+1439820023 source:c:\users\duarte\documents\github\fama\treinador\treinador.cpp
 	"treinador.h"
 
 1438713263 source:c:\users\duarte\documents\github\fama\validador\validador.cpp
 	"validador.h"
 
-1438713263 source:c:\users\duarte\documents\github\fama\validador\validadorkdobras.cpp
+1440096230 source:c:\users\duarte\documents\github\fama\validador\validadorkdobras.cpp
 	"validadorkdobras.h"
 
-1438793725 source:c:\users\duarte\documents\github\fama\corpus\corpus.cpp
+1441108002 source:c:\users\duarte\documents\github\fama\corpus\corpus.cpp
 	"corpus.h"
 	<stdlib.h>
 	<time.h>
@@ -114,28 +114,28 @@
 	<fstream>
 	<sstream>
 
-1439208024 source:c:\users\duarte\documents\github\fama\classificador\classificadoradaboost.cpp
+1440095267 source:c:\users\duarte\documents\github\fama\classificador\classificadoradaboost.cpp
 	"classificadoradaboost.h"
 	<fstream>
 
-1438949808 c:\users\duarte\documents\github\fama\classificador\classificadoradaboost.h
+1439820022 c:\users\duarte\documents\github\fama\classificador\classificadoradaboost.h
 	"classificador.h"
 
-1438949840 c:\users\duarte\documents\github\fama\treinador\adaboost.h
+1439903813 c:\users\duarte\documents\github\fama\treinador\adaboost.h
 	"treinador.h"
 	"../classificador/classificador.h"
 
-1439209163 source:c:\users\duarte\documents\github\fama\treinador\adaboost.cpp
+1440096262 source:c:\users\duarte\documents\github\fama\treinador\adaboost.cpp
 	<cmath>
 	"adaboost.h"
 	"../classificador/classificadoradaboost.h"
 
-1439208166 source:c:\users\duarte\documents\github\fama\stump\stump.cpp
+1440095005 source:c:\users\duarte\documents\github\fama\stump\stump.cpp
 	"stump.h"
 	<cmath>
 	<sstream>
 
-1438949991 c:\users\duarte\documents\github\fama\stump\stump.h
+1439820022 c:\users\duarte\documents\github\fama\stump\stump.h
 	"../treinador/treinador.h"
 	"../classificador/classificador.h"
 

@@ -17,8 +17,11 @@ int main()
     vector<string> atributos, classes;
     int atributo, novoatributo, c;
     Classificador *cl;//,*cl2;
+    AvaliadorAcuracia objAvalAcur;
 
     float media;
+
+    srand(time(NULL));
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ',', true, true);
@@ -33,7 +36,9 @@ int main()
 
     //treina
     DecisionStump stump(atributos,classes);
-    TreinadorAdaboost adab(stump, classes, 30);
+    TreinadorAdaboost adab(stump, classes, 30, 0.01, false);
+
+    novoatributo = objCorpus.criarAtributo("me");
 
     cl = adab.executarTreinamento(objCorpus, atributo);
     cout << cl->descricaoConhecimento() << endl;
@@ -43,24 +48,33 @@ int main()
     cl->carregarConhecimento("xpto");
 
     //classifica
-    novoatributo = objCorpus.criarAtributo("me");
+
 //    cl2->executarClassificacao(objCorpus, novoatributo);
     cl->executarClassificacao(objCorpus, novoatributo);
 
     objCorpus.gravarArquivo("#testeout.txt");
 
     //avalia
-    AvaliadorAcuracia objAvalAcur;
     cout << 100 * objAvalAcur.calcularDesempenho(objCorpus, atributo, novoatributo)[0] << "%\n";
 
     //faz experimento
     int ndobras = 10;
-    ValidadorKDobras objValidador(objAvalAcur, ndobras);
-    vector< vector< float > > v = objValidador.executarExperimento(adab, objCorpus, atributo, novoatributo);
-
+    ValidadorKDobras objValidador(objAvalAcur, ndobras, false);
+    vector< vector< float > > v;
+    try{
+        v = objValidador.executarExperimento(adab, objCorpus, atributo, novoatributo);
+    }
+    catch(string s){
+        cout << "*" << s << endl;
+        return 1;
+    }
+    catch(...){
+        cout << "Erro desconhecido" << endl;
+        return 2;
+    }
     media = 0;
     for (c=0;c<ndobras;c++){
-        cout << c << " - " << v[c][0] << "\n";
+        cout << c << " - " << 100.*v[c][0] << "%\n";
         media += v[c][0];
     }
     cout << "*" << media/ndobras << "\n";

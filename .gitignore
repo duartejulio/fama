@@ -1,0 +1,10 @@
+*.o
+*.o
+testes/aulaFama/ME/xpto
+*.o
+testes/aulaFama/ME/#testeout.txt
+*.depend
+testes/aulaFama/ME/Adab.layout
+testes/aulaFama/ME/xpto
+*.o
+*.exe
