@@ -34,7 +34,7 @@
 	<File name="..\..\..\stump\stump.h" open="1" top="0" tabpos="12">
 		<Cursor position="30" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
+	<File name="main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="566" topLine="14" />
 	</File>
 	<File name="..\..\..\treinador\adaboost.cpp" open="1" top="0" tabpos="7">
@@ -46,8 +46,8 @@
 	<File name="..\..\..\treinador\treinador.cpp" open="0" top="0" tabpos="14">
 		<Cursor position="299" topLine="0" />
 	</File>
-	<File name="..\..\..\treinador\treinador.h" open="1" top="0" tabpos="13">
-		<Cursor position="601" topLine="0" />
+	<File name="..\..\..\treinador\treinador.h" open="1" top="1" tabpos="13">
+		<Cursor position="377" topLine="0" />
 	</File>
 	<File name="..\..\..\validador\validador.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="0" topLine="0" />
