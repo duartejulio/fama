@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="..\..\..\avaliador\Avaliador.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificador.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="30" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificador.h" open="0" top="0" tabpos="6">
+		<Cursor position="122" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificadoradaboost.cpp" open="0" top="0" tabpos="11">
+		<Cursor position="3168" topLine="87" />
+	</File>
+	<File name="..\..\..\classificador\classificadoradaboost.h" open="0" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\classificador\classificadorknn.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="2602" topLine="69" />
+	</File>
+	<File name="..\..\..\classificador\classificadorknn.h" open="1" top="0" tabpos="7">
+		<Cursor position="1207" topLine="0" />
+	</File>
+	<File name="..\..\..\corpus\corpus.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="14170" topLine="436" />
+	</File>
+	<File name="..\..\..\corpus\corpus.h" open="0" top="0" tabpos="3">
+		<Cursor position="1876" topLine="8" />
+	</File>
+	<File name="..\..\..\corpus\corpusmatriz.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="7918" topLine="181" />
+	</File>
+	<File name="..\..\..\corpus\corpusmatriz.h" open="0" top="0" tabpos="4">
+		<Cursor position="503" topLine="0" />
+	</File>
+	<File name="..\..\..\stump\stump.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="5048" topLine="93" />
+	</File>
+	<File name="..\..\..\stump\stump.h" open="0" top="0" tabpos="12">
+		<Cursor position="30" topLine="0" />
+	</File>
+	<File name="mainKNN.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1418" topLine="39" />
+	</File>
+	<File name="..\..\..\treinador\adaboost.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="2499" topLine="25" />
+	</File>
+	<File name="..\..\..\treinador\adaboost.h" open="1" top="0" tabpos="6">
+		<Cursor position="171" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\knn.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="842" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\treinador.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="299" topLine="0" />
+	</File>
+	<File name="..\..\..\treinador\treinador.h" open="0" top="0" tabpos="13">
+		<Cursor position="588" topLine="0" />
+	</File>
+	<File name="..\..\..\validador\validador.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\validador\validadorkdobras.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="1274" topLine="1" />
+	</File>
+	<File name="..\..\..\validador\validadorkdobras.h" open="0" top="0" tabpos="15">
+		<Cursor position="282" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
