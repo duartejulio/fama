@@ -9,11 +9,12 @@ class TreinadorKNN : public Treinador
     vector<string> atributos;
     vector<string> classes;
     bool usarPesos;
-    int K, NATTRS, MAXVALUE;
-
+    int K;
+    int removerExemplosCorretos;
+    int NATTRS;
 public:
-    TreinadorKNN(vector<string> atributos, vector<string> classes, bool usarPesos = false, int K = 5, int MAXVALUE = 10000.0):
-     atributos(atributos), classes(classes), usarPesos(usarPesos), K(K), NATTRS(NATTRS), MAXVALUE(MAXVALUE){
+    TreinadorKNN(vector<string> atributos, vector<string> classes, bool usarPesos = false, int K = 5, int removerExemplosCorretos = 2):
+     atributos(atributos), classes(classes), usarPesos(usarPesos), K(K), removerExemplosCorretos(removerExemplosCorretos), NATTRS(NATTRS){
         NATTRS = atributos.size();
     }
 

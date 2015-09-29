@@ -14,7 +14,7 @@ int main()
 {
     vector<string> atributos, classes;
     int atributo, novoatributo, c;
-    Classificador *cl;//,*cl2;
+    Classificador *cl,*cl2;
     AvaliadorAcuracia objAvalAcur;
 
     float media;
@@ -23,7 +23,7 @@ int main()
 
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ',', true, true);
-    objCorpus.carregarArquivo( "../../../inputs/adult.data.medium");
+    objCorpus.carregarArquivo( "../../../inputs/adult.data");
     atributo = objCorpus.pegarPosAtributo("resposta");
 
     classes.push_back("<=50K");
@@ -39,21 +39,21 @@ int main()
     atributos.push_back("hours-per-week");
 
     //treina
-    TreinadorKNN knn(atributos,classes,true,5);
+    TreinadorKNN knn(atributos, classes, false, 5, 2);
 
     novoatributo = objCorpus.criarAtributo("me");
 
     cl = knn.executarTreinamento(objCorpus, atributo);
-    cout << cl->descricaoConhecimento() << endl;
-//    cl->gravarConhecimento("xpto");
+    //cout << cl->descricaoConhecimento() << endl;
+    cl->gravarConhecimento("xpto");
 
-//    cl2 = new ClassificadorMaisEsperto;
-//    cl->carregarConhecimento("xpto");
+    cl2 = new ClassificadorKNN;
+    cl2->carregarConhecimento("xpto");
+    //cout << cl2->descricaoConhecimento() << endl;
 
     //classifica
 
-//    cl2->executarClassificacao(objCorpus, novoatributo);
-    cl->executarClassificacao(objCorpus, novoatributo);
+    cl2->executarClassificacao(objCorpus, novoatributo);
 
     objCorpus.gravarArquivo("#testeout.txt");
 
@@ -61,6 +61,8 @@ int main()
     cout << 100 * objAvalAcur.calcularDesempenho(objCorpus, atributo, novoatributo)[0] << "%\n";
 
     //faz experimento
+    cout << "Validação Cruzada\n";
+
     int ndobras = 10;
     ValidadorKDobras objValidador(objAvalAcur, ndobras, false);
     vector< vector< float > > v;
