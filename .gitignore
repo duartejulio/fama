@@ -10,3 +10,5 @@ testes/aulaFama/ME/xpto
 *.exe
 testes/aulaFama/ME/Adab.layout
 *.o
+testes/aulaFama/ME/#testeout.txt
+*.exe
