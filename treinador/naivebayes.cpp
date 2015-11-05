@@ -24,6 +24,7 @@ Classificador* NaiveBayes::executarTreinamento( Corpus &corpus, int atributo ){
 
     medias.resize(classes.size());
     desvio.resize(classes.size());
+
     //determina valores das classes no dicionario
     for (i=0; i<classes.size();i++){
         mapaClasses[corpus.pegarIndice(classes[i])] = i;
