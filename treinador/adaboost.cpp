@@ -7,6 +7,10 @@ TreinadorAdaboost::TreinadorAdaboost(Treinador &base, vector<string> classes, un
  base(base),classes(classes),iterations(iterations),minalpha(minalpha),aceitaDistribuicao(aceitaDistribuicao){
 }
 
+void TreinadorAdaboost::ajustaDistribuicaoInicial(vector<double> distribuicaoInicial){
+    this->distribuicaoInicial = distribuicaoInicial;
+}
+
 Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atributo ){
 
     Classificador *cl;
@@ -16,8 +20,20 @@ Classificador* TreinadorAdaboost::executarTreinamento( Corpus &corpus, int atrib
     Corpus *corpusTrabalho = &corpus;
 
     unsigned i, atributoTemporario, c, e, nConjExemplos = corpus.pegarQtdTotalExemplos(), nExemplos;
-    vector<double> dist(nConjExemplos, 1.0/nConjExemplos);
+    vector<double> dist(nConjExemplos);
     vector<bool> errado(nConjExemplos);
+
+    //cout << "*" << distribuicaoInicial.size() << "," << nConjExemplos << "*\n";
+    if (distribuicaoInicial.size())
+        dist = distribuicaoInicial;
+    else
+        fill(dist.begin(), dist.end(), 1.0/nConjExemplos);
+
+    if (dist.size()!=nConjExemplos){
+        ostringstream erro;
+        erro << "Distribuicao Inicial Invalida " << dist.size() << " != " << nConjExemplos;
+        throw erro.str();
+    }
 
     atributoTemporario = corpus.criarAtributo("adab");
 

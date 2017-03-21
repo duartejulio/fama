@@ -175,7 +175,12 @@ bool ClassificadorHMM::executarClassificacao( Corpus &corpusProva, int atributo 
 
         for( register int j = column - 1; j >= 0 ; --j )
         {
-            corpusProva.ajustarValor( i, j, atributo, numPos[ maiorIndice ] );
+            if (maiorIndice >= 0)
+                corpusProva.ajustarValor( i, j, atributo, numPos[ maiorIndice ] );
+            else{
+                //houve um problema na classificação termina
+                break;
+            }
             maiorIndice = caminho[j][ maiorIndice ];
         }
     }

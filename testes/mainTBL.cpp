@@ -3,14 +3,14 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "corpusmatriz.h"
-#include "maisprovavel.h"
-#include "hmm.h"
-#include "tbl.h"
-#include "avaliador_acuracia.h"
-#include "classificador_maisprovavel.h"
-#include "classificadorhmm.h"
-#include "classificadortbl.h"
+#include "../corpus/corpusmatriz.h"
+#include "../treinador/maisprovavel.h"
+#include "../treinador/hmm.h"
+#include "../treinador/tbl.h"
+#include "../avaliador/avaliador_acuracia.h"
+#include "../classificador/classificador_maisprovavel.h"
+#include "../classificador/classificadorhmm.h"
+#include "../classificador/classificadortbl.h"
 
 #define LIM_FREQ_UNKNOWN 3
 #define ATRBT_ANALISADO 1
@@ -90,11 +90,11 @@ int main()
     objCorpus.carregarArquivo( "inputs/train.txt" );
 
     Classificador *objClassInicial;
-    MaisProvavel objMProv( LIM_FREQ_UNKNOWN );
+    MaisProvavel objMProv( "word", LIM_FREQ_UNKNOWN );
     objClassInicial = objMProv.executarTreinamento( objCorpus, ATRBT_ANALISADO );
 
     Classificador *objClass;
-    TBL objTBL( objClassInicial, "inputs/molde.txt", 2 );
+    TBL objTBL( objClassInicial, "inputs/molde.txt", "tpos", 2 );
     objClass = objTBL.executarTreinamento( objCorpus, ATRBT_ANALISADO );
 
     //Classificador *objClass = new ClassificadorTBL( objClassInicial );

@@ -11,10 +11,12 @@ class TreinadorAdaboost : public Treinador
     unsigned iterations;
     double minalpha;
     bool aceitaDistribuicao;
+    vector<double> distribuicaoInicial;
 public:
     TreinadorAdaboost(Treinador &base, vector<string> classes, unsigned iterations=10, double minalpha = 0.01, bool aceitaDistribuicao = true);
     virtual ~TreinadorAdaboost() {}
     Classificador* executarTreinamento( Corpus &corpus, int atributo );
+    void ajustaDistribuicaoInicial(vector<double>);
 };
 
 #endif // ADABOST_H

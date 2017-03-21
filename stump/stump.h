@@ -9,8 +9,8 @@ class ClassificadorStump:public Classificador{
     public:
         ClassificadorStump(vector<string>, string, string, string);
         bool executarClassificacao( Corpus &corpusProva, int atributo );
-        bool gravarConhecimento( string arquivo ){return true;}
-        bool carregarConhecimento( string arquivo ){return true;}
+        bool gravarConhecimento( string arquivo );
+        bool carregarConhecimento( string arquivo );
         string descricaoConhecimento();
 };
 

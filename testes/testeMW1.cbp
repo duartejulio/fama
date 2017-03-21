@@ -139,7 +139,9 @@
 		<Unit filename="..\treinador\c50treinador.cpp" />
 		<Unit filename="..\treinador\treinador.cpp" />
 		<Unit filename="..\validador\validador.cpp" />
+		<Unit filename="..\validador\validador.h" />
 		<Unit filename="..\validador\validadorkdobras.cpp" />
+		<Unit filename="..\validador\validadorkdobras.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

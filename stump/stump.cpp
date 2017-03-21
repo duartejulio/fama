@@ -1,6 +1,7 @@
 #include "stump.h"
 
 #include <cmath>
+#include <fstream>
 #include <sstream>
 
 ClassificadorStump::ClassificadorStump(vector<string> clas, string atr, string val, string cla):Classificador(){
@@ -9,6 +10,43 @@ ClassificadorStump::ClassificadorStump(vector<string> clas, string atr, string v
     atributo = atr;
     classe = cla;
     valor = val;
+}
+
+bool ClassificadorStump::gravarConhecimento( string arquivo ){
+    ofstream arq(arquivo.c_str());
+    unsigned i;
+
+    arq << classes.size() << " ";
+    for (i = 0; i < classes.size(); i++)
+        arq << classes[i] << " ";
+    arq << endl;
+
+    arq << atributo << endl;
+    arq << classe << endl;
+    arq << valor << endl;
+
+    arq.close();
+    return true;}
+
+bool ClassificadorStump::carregarConhecimento( string arquivo ){
+    unsigned n, i;
+
+    ifstream arq(arquivo.c_str());
+
+    arq >> n;
+    classes.clear();
+    for (i = 0; i < n; i++){
+        arq >> classe;
+        classes.push_back(classe);
+    }
+
+    arq >> atributo;
+    arq >> classe;
+    arq >> valor;
+
+    arq.close();
+
+    return true;
 }
 
 bool ClassificadorStump::executarClassificacao( Corpus &corpus, int atributo ){

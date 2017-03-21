@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include "../corpus/corpusmatriz.h"
+#include "../id3/dtree.h"
 #include "../avaliador/avaliador_acuracia.h"
 
 using namespace std;

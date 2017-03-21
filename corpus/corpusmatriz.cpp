@@ -179,10 +179,12 @@ bool CorpusMatriz::carregarArquivo( string arquivo )
                     frases[row][0].resize( qtd_atributos );
                     column = 0;
                 }
+                //cout << "***" << ch << endl;
                 if( arqin.eof() )
                 {
                     qtd_sentencas = frases.size(); //atualiza qtd de sentencas
                     qtd_simbolos = simbolos.size(); //atualiza qtd de simbolos
+                    //cout << qtd_sentencas << "---" << qtd_simbolos << endl;
                     break;
                 }
             }

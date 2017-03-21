@@ -28,6 +28,7 @@ vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &trei
 
     for( i = 0; i < numeroIteracoes; ++i )
     {
+
         //cria vetor de mascara
         for( j = 0; j < qtd_ConjExemplos; ++j )
             vetMascara[j] = (vetDobras[j] == i);
@@ -38,9 +39,10 @@ vector< vector< float > > ValidadorKDobras::executarExperimento( Treinador &trei
         //treina o classificador
         classificador = treinador.executarTreinamento( *vetCorpus[0], atributoTreino );
 
+  //      cout << "Classifica";
         //aplica classificador no corpus de teste
         classificador->executarClassificacao( *vetCorpus[1], atributoTeste );
-
+//cout << "Classifica2";
         //armazena resultado
         resultado.push_back( avaliador->calcularDesempenho( *vetCorpus[1], atributoTreino, atributoTeste ) );
 

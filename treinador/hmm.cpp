@@ -1,6 +1,6 @@
 #include "hmm.h"
 
-HMM::HMM( string atributoBase )
+HMM::HMM( string atributoBase)
 {
     this->atributoBase = atributoBase;
 }
@@ -13,6 +13,7 @@ HMM::~HMM()
 Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
 {
     int atributo_base;
+
     if( ( atributo_base = corpus.pegarPosAtributo( atributoBase ) ) == -1 )
     {
         cout << "Erro: executarTreinamento!\nAtributo inexistente!" << endl;
@@ -24,6 +25,7 @@ Classificador *HMM::executarTreinamento( Corpus &corpus, int atributo )
     map< string, map< string, double > > tabFreqObservacoes;
     int row = corpus.pegarQtdSentencas(), column, i, j;
     double total = 0.0;
+
 
     if ( atributo <= 0 || atributo >= ( int )corpus.pegarQtdAtributos() )
     {

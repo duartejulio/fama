@@ -456,7 +456,7 @@ Corpus* Corpus::reamostrar (vector<double> distribuicao) {
         //Vai diminuindo o random do peso do exemplo iterado, e, se o valor do random for menor ou igual a zero, significa
         //que ele o exemplo da iteraçao atual deve entrar
         int exemplo = -1;
-        double g = random;
+        //double g = random;
         //cout << random << "-";
         try{
             for (;random>=0;){

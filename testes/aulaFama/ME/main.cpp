@@ -35,17 +35,17 @@ int main()
     atributos.pop_back();
 
     //treina
-    DecisionStump stump(atributos,classes);
+    DecisionStump stump(atributos, classes);
     TreinadorAdaboost adab(stump, classes, 30, 0.01, false);
 
     novoatributo = objCorpus.criarAtributo("me");
 
     cl = adab.executarTreinamento(objCorpus, atributo);
     cout << cl->descricaoConhecimento() << endl;
-    cl->gravarConhecimento("xpto");
+//    cl->gravarConhecimento("xpto");
 
 //    cl2 = new ClassificadorMaisEsperto;
-    cl->carregarConhecimento("xpto");
+//    cl->carregarConhecimento("xpto");
 
     //classifica
 
