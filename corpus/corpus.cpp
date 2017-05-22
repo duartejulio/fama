@@ -381,6 +381,42 @@ Corpus* Corpus::gerarSubCorpus( vector< vector< bool > > vetMascara )
     return subCorpus;
 }
 
+Corpus* Corpus::gerarSubCorpus( vector< int > vetMascara )
+{
+    Corpus *subCorpus;
+    vector< vector<int> > frase;
+    register int i, j, k, qtd_tokens;
+
+    if( vetMascara.size() != ( unsigned )qtd_sentencas )
+    {
+        ostringstream erro;
+        erro << "Erro: gerarSubCorpus!\nMascara invalida! ( "
+         << (int)vetMascara.size() << " / " << qtd_sentencas << " )";
+        throw erro.str();
+        return NULL;
+    }
+
+    //a responsabilidade de liberar essa memória é passada a quem
+    //chamou o método
+    subCorpus = this->clone();
+    subCorpus->frases.clear();
+
+    for( i = 0; i < qtd_sentencas; ++i ){
+        qtd_tokens = pegarQtdExemplos(i);
+
+        for(k = 0; k < vetMascara[i]; ++k ){
+            vector< vector<int> > frase;
+            for(j = 0; j < qtd_tokens; ++j )
+                frase.push_back(frases[i][j]);
+            subCorpus->frases.push_back( frase);
+        }
+    }
+
+    subCorpus->qtd_sentencas = subCorpus->frases.size();
+
+    return subCorpus;
+}
+
 bool Corpus::discreto(int atributo, vector<string> &possiveisValores){
     string val;
     bool continuo;

@@ -41,6 +41,7 @@ class Corpus
         vector< Corpus* > splitCorpus( vector< bool > vetMascara );
         vector< Corpus* > splitCorpus( vector< int > vetMascara, int nCorpus );
         Corpus* gerarSubCorpus( vector< vector< bool > > vetMascara );
+        Corpus* gerarSubCorpus( vector< int > vetMascara );
         bool discreto(int, vector<string>& );
         bool discreto(string, vector<string>& );
         virtual Corpus* reamostrar(vector<double> distribuicao);
