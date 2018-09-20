@@ -257,6 +257,18 @@ vector< string > Corpus::pegarAtributos()
     return atributos;
 }
 
+string Corpus::listarAtributos()
+{
+    vector<string>::iterator it;
+    stringstream ssAtrib;
+    for (it = atributos.begin(); it != atributos.end(); ++it){
+         if (it!=atributos.begin())
+            ssAtrib << ", ";
+         ssAtrib << *it;
+    }
+    return ssAtrib.str();
+}
+
 vector< Corpus* > Corpus::splitCorpus( vector< bool > vetMascara )
 {
     vector< Corpus* > vetCorpus( 2 );

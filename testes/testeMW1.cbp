@@ -128,6 +128,7 @@
 		<Unit filename="..\classificador\c50classificador.h" />
 		<Unit filename="..\classificador\classificador.cpp" />
 		<Unit filename="..\corpus\corpus.cpp" />
+		<Unit filename="..\corpus\corpus.h" />
 		<Unit filename="..\corpus\corpusmatriz.cpp" />
 		<Unit filename="..\id3\dtree.cpp" />
 		<Unit filename="..\id3\dtree.h" />

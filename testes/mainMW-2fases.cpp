@@ -14,7 +14,7 @@
 
 #define NFOLDS 10
 
-#define FASE 2
+#define FASE 1
 
 using namespace std;
 
@@ -27,7 +27,7 @@ int main()
     //carrega conjunto de dados
     CorpusMatriz objCorpus(atributos, ';', true, true);
     if (FASE==1)
-        objCorpus.carregarArquivo( "../inputs/experimento.dat" );
+        objCorpus.carregarArquivo( "../inputs/experimentoI.dat" );
     else
         objCorpus.carregarArquivo( "#experimento_fase1.txt");
 
@@ -35,6 +35,10 @@ int main()
 
     //quantidade de atributos
     cout << (atributos.size()) << " atributos\n";
+
+    //lista de atributos
+    cout << "Atributos: " << objCorpus.listarAtributos() << "|" << endl;
+
 
     //quantidade de conjuntos de exemplos
     cout << (nConjExemplos = objCorpus.pegarQtdConjExemplos()) << " exemplos\n";

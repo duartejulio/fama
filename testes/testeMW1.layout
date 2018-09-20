@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="mainMW-2fases.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="3120" topLine="81" />
+	<File name="..\classificador\c50classificador.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="2417" topLine="82" />
 	</File>
-	<File name="..\validador\validador.cpp" open="1" top="0" tabpos="5">
+	<File name="..\corpus\corpus.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="7812" topLine="249" />
+	</File>
+	<File name="..\corpus\corpus.h" open="1" top="0" tabpos="5">
+		<Cursor position="1529" topLine="24" />
+	</File>
+	<File name="mainMW-2fases.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="4503" topLine="120" />
+	</File>
+	<File name="..\treinador\c50treinador.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2407" topLine="66" />
+	</File>
+	<File name="..\validador\validador.cpp" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\validador\validadorkdobras.cpp" open="1" top="1" tabpos="4">
+	<File name="..\validador\validadorkdobras.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="277" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

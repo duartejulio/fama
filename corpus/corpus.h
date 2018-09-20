@@ -38,6 +38,7 @@ class Corpus
         string pegarAtributo( int indice );
         int pegarPosAtributo( string atributo );
         vector<string> pegarAtributos();
+        string listarAtributos();
         vector< Corpus* > splitCorpus( vector< bool > vetMascara );
         vector< Corpus* > splitCorpus( vector< int > vetMascara, int nCorpus );
         Corpus* gerarSubCorpus( vector< vector< bool > > vetMascara );
